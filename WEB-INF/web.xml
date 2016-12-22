@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app
+    xmlns="http://java.sun.com/xml/ns/javaee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	version="3.0">
+
+    <servlet>
+        <servlet-name>rpc</servlet-name>
+        <servlet-class>
+            io.totem.http.servlet.DispatcherServlet
+        </servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>rpc</servlet-name>
+        <url-pattern>/p/rpc</url-pattern>
+    </servlet-mapping>
+    <error-page>
+        <error-code>401</error-code>
+        <location>/WEB-INF/401.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>403</error-code>
+        <location>/WEB-INF/403.jsp</location>
+    </error-page>
+    <error-page>
+        <exception-type>java.lang.Throwable</exception-type >
+        <location>/errorHandler</location>
+    </error-page>
+
+
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>search report interface (for humans)</web-resource-name>
+            <url-pattern>/cloud/test.jsp</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>manager-search</role-name>
+        </auth-constraint>
+    </security-constraint>
+
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>search report interface (for humans)</web-resource-name>
+            <url-pattern>/cloud/test/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>manager-search</role-name>
+        </auth-constraint>
+    </security-constraint>
+
+    <login-config>
+        <auth-method>BASIC</auth-method>
+        <realm-name>please enter key</realm-name>
+    </login-config>
+
+</web-app>
