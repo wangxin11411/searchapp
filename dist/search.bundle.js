@@ -49,8 +49,9 @@
 	//引入toolbar相关模块
 	__webpack_require__(3);
 	__webpack_require__(6);
-	__webpack_require__(21);
-	//引入页面事件的模块-价格获取，懒加载图片
+	__webpack_require__(24);
+	//引入页面事件的模
+	// 块-价格获取，懒加载图片
 	__webpack_require__(7);
 	//引入页面事件的模块-商品事件
 	__webpack_require__(9);
@@ -63,16 +64,21 @@
 	},0);
 
 	if(window.isResult){
-	    __webpack_require__(22);//右侧店铺精选和底部的推广商品
-	    __webpack_require__(23);//右侧热销推荐
-	    __webpack_require__(24);//右侧搜索了还购买了
-	    __webpack_require__(25);//右侧底部推荐活动（图片）
-	    __webpack_require__(26);//页面底部推荐活动（图片）
+	    __webpack_require__(25);//右侧店铺精选和底部的推广商品
+	    __webpack_require__(26).getData("#prdRight-2");//右侧热销推荐
+	    __webpack_require__(27).getData("#prdRight-3");//右侧搜索了还购买了
+	    __webpack_require__(28).getData("#prdRight-4");//右侧底部推荐活动（图片）
+	    __webpack_require__(29).getData("#prdBottom-4");//页面底部推荐活动（图片）
 	}else{
-	    __webpack_require__(27);//无结果情况底部热销推荐
+	    __webpack_require__(30).getData("#prdBottom-1");//无结果情况底部热销推荐
 	}
+	document.getElementById("lazyajaxloadarea").onmouseenter = function (event) {
+	    __webpack_require__(31).getData("#prdBottom-2");//猜你喜欢
+	    __webpack_require__(23).getData("search","#prdBottom-recent");//最近浏览
+	    this.remove()
+	};
 
-	__webpack_require__(28);//猜你喜欢
+
 
 /***/ },
 /* 1 */
@@ -1116,7 +1122,7 @@
 	                    }
 	                    pageData.bwsData = data.products;
 	                }
-	                pageData.bwsString = data_arr.join(",");
+	                pageData.bwsString = data_arr.join(",") || 0;
 	            }
 	        })
 	    }
@@ -1127,7 +1133,9 @@
 
 /***/ },
 /* 12 */,
-/* 13 */
+/* 13 */,
+/* 14 */,
+/* 15 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -1146,27 +1154,66 @@
 	}
 
 /***/ },
-/* 14 */,
-/* 15 */,
-/* 16 */
+/* 16 */,
+/* 17 */,
+/* 18 */
 /***/ function(module, exports) {
 
 	module.exports = {
 	    tpl:'{{each lst as value}}\
 	            <li class="buy-items">\
 	                <div class="pic"><a class="bigD_item" track="{{value.maima_param}}" href="{{value.purl}}" target="_blank"><img gome-src="{{value.iurl}}" src="//img.gomein.net.cn/images/grey.gif"></a></div>\
-	                <div class="price">楼<span>{{value.price}}</span></div>\
+	                <div class="price">¥<span>{{value.price}}</span></div>\
 	                <div class="name"><a class="bigD_item" track="{{value.maima_param}}" href="{{value.purl}}" target="_blank">{{value.pn}}</a></div>\
 	            </li>\
 	        {{/each}}'
 	};
 
 /***/ },
-/* 17 */,
-/* 18 */,
 /* 19 */,
 /* 20 */,
-/* 21 */
+/* 21 */,
+/* 22 */,
+/* 23 */
+/***/ function(module, exports) {
+
+	/**
+	 * 根据cookie--proid120517atg 请求前台组获取最近浏览商品信息
+	 * pagename 接口标识，判断请求来源
+	 * */
+	var tpl = '{{each result as value}}\
+	            <li class="item">\
+	                <p class="pic"><a href="{{value.url}}" target="_blank"><img gome-src="{{value.pic}}" src="//img.gomein.net.cn/images/grey.gif"></a></p>\
+	                <p class="name"><a href="{{value.url}}" target="_blank">{{value.name}}</a></p>\
+	                <p class="price">¥<span>{{value.price}}</span></p>\
+	            </li>\
+	        {{/each}}';
+	function getData(pagename,domId){
+	    var product_id = $.cookie("proid120517atg");
+	    if(product_id == null || product_id ==""){return false;}
+
+	    $.ajax({
+	        type:"get",
+	        dataType:"jsonp",
+	        url:"//ss"+window.cookieDomain+"/item/v1/browse/prdreturn/"+$.parseJSON(product_id).join("")+"/80/flag/"+pagename+"/recentViewed",
+	        jsonpName:"recentViewed"
+	    }).done(function(data){
+	        if(data.success && data.result.length>0){
+	            var listTpl = templateSimple.compile(tpl)(data);
+	            $(domId).html('<dl class="nSearch-recentVisit"><dt class="hd">最近浏览</dt><dd class="bd"><ul class="recentVisit-lists clearfix" id="recentVisit-lists" modelid="9000002000">'+listTpl+'</ul></dd></dl>');
+	        }
+	    }).fail(function(){
+	        console.log("请求失败")
+	    });
+	}
+	module.exports = {
+	    getData:getData
+	}
+
+
+
+/***/ },
+/* 24 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -1197,10 +1244,10 @@
 	});
 
 /***/ },
-/* 22 */
+/* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var tpl_normal = __webpack_require__(13).tpl;
+	var tpl_normal = __webpack_require__(15).tpl;
 	$.ajax({
 	    type:"get",
 	    dataType:"jsonp",
@@ -1241,162 +1288,134 @@
 	});
 
 /***/ },
-/* 23 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var tpl_normal = __webpack_require__(16).tpl;
-	$.get(
-	    window.url.bigdata_url,
-	    {
-	        boxid: "box94",
-	        area: pageData.regionId,
-	        cid: $.cookie("__clickidc"),
-	        imagesize: 160,
-	        c1id:window.dsp_gome_c1id,
-	        c3id:window.dsp_gome_c3id,
-	        brid: window.dsp_gome_brid,
-	        search: window.searchkey
-	    },
-	    function(data){
-	        if (data.lst && data.lst.length > 0) {
-	            data.lst.splice(6,data.lst.length)
-	            var listTpl = templateSimple.compile(tpl_normal)(data);
-	            $("#prdRight-2").append('<div class="prd-right-normal"><h3 class="hd">热销推荐</h3><ul class="bd" id="bigD_rexiao">'+listTpl+'</ul></div>');
-	        }
-	    }
-	);
-
-/***/ },
-/* 24 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var tpl_normal = __webpack_require__(16).tpl;
-	$.get(
-	    window.url.bigdata_url,
-	    {
-	        boxid: "box93",
-	        area: pageData.regionId,
-	        cid: $.cookie("__clickidc"),
-	        imagesize: 160,
-	        c1n: window.dsp_gome_c1name,
-	        c3n: window.dsp_gome_c3name,
-	        c1id: window.dsp_gome_c1id,
-	        c3id: window.dsp_gome_c3id,
-	        brid: window.dsp_gome_brid,
-	        search: window.searchkey
-	    },
-	    function(data){
-	        if (data.lst && data.lst.length > 0) {
-	            data.lst.splice(6,data.lst.length)
-	            var listTpl = templateSimple.compile(tpl_normal)(data);
-	            $("#prdRight-3").append('<div class="prd-right-normal"><h3 class="hd">搜了此类商品的用户还买了</h3><ul class="bd" id="bigD_liulan">'+listTpl+'</ul></div>');
-	        }
-	    }
-	);
-
-/***/ },
-/* 25 */
-/***/ function(module, exports) {
-
-	$.ajax({
-	    type:"get",
-	    dataType:"jsonp",
-	    url:window.url.dsp_url_c,
-	    data:{
-	        "p":124,
-	        "catid":window.dsp_gome_c3id,
-	        "c":"dsp_act",
-	        "area":pageData.regionId
-	    },
-	    jsonpName:"dsp_act",
-	    success:function(data){
-	        var listTpl = ""; 
-	        for(var i=0,j=data.length;i<j && i<2;i++){
-	            listTpl += '<a href="'+data[i].ldp+'" target="_blank" title="'+data[i].org+'"><img src="'+data[i].src+'" /></a>';
-	            new Image().src= data[i].pm;
-	        }
-	        $("#prdRight-4").append('<div class="prd-right-normal" id="dsp_advertisement">'+listTpl+'</div>');
-	    }
-	});
-
-/***/ },
 /* 26 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	$.ajax({
-	    type:"get",
-	    dataType:"jsonp",
-	    url:window.url.dsp_url_c,
-	    data:{
-	        "p":184,
-	        "catid":window.dsp_gome_c3id,
-	        "c":"dsp_act_b",
-	        "area":pageData.regionId
-	    },
-	    jsonpName:"dsp_act_b",
-	    success:function(data){
-	        var listTpl = ""; 
-	        for(var i=0,j=data.length;i<j && i<2;i++){
-	            listTpl += '<a href="'+data[i].ldp+'" target="_blank" title="'+data[i].org+'"><img src="'+data[i].src+'" /></a>';
-	            new Image().src= data[i].pm;
+	var tpl_normal = __webpack_require__(18).tpl;
+	function getData(domId){
+	    $.get(
+	        window.url.bigdata_url,
+	        {
+	            boxid: "box94",
+	            area: pageData.regionId,
+	            cid: $.cookie("__clickidc"),
+	            imagesize: 160,
+	            c1id:window.dsp_gome_c1id,
+	            c3id:window.dsp_gome_c3id,
+	            brid: window.dsp_gome_brid,
+	            search: window.searchkey
+	        },
+	        function(data){
+	            if (data.lst && data.lst.length > 0) {
+	                data.lst.splice(6,data.lst.length)
+	                var listTpl = templateSimple.compile(tpl_normal)(data);
+	                $(domId).append('<div class="prd-right-normal"><h3 class="hd">热销推荐</h3><ul class="bd" id="bigD_rexiao">'+listTpl+'</ul></div>');
+	            }
 	        }
-	        $("#prdBottom-4").append('<div class="nSearch-bottomTuiGuangAD" id="dsp_bottomAD">'+listTpl+'</div>');
-	    }
-	});
+	    );
+	}
+	module.exports = {
+	    getData:getData
+	}
 
 /***/ },
 /* 27 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	var tpl = '{{each lst as value}}\
-	    <li class="buy-items">\
-	        <div class="pic"><a class="bigD_item" track="{{value.maima_param}}" href="{{value.purl}}" target="_blank"><img gome-src="{{value.iurl}}" src="//img.gomein.net.cn/images/grey.gif"></a></div>\
-	        <div class="price">¥<span>{{value.price}}</span></div>\
-	        <div class="name"><a class="bigD_item" track="{{value.maima_param}}" href="{{value.purl}}" target="_blank">{{value.pn}}</a></div>\
-	    </li>\
-	{{/each}}'
-
-	$.get(
-	    window.url.bigdata_url,
-	    {
-	        boxid: "box45",
-	        area: pageData.regionId,
-	        cid: $.cookie("__clickidc"),
-	        imagesize: 160,
-	        c1id:window.dsp_gome_c1id,
-	        c3id:window.dsp_gome_c3id,
-	        brid: window.dsp_gome_brid,
-	        search: window.searchkey
-	    },
-	    function(data){
-	        if (data.lst && data.lst.length > 0) {
-	        var listTpl = templateSimple.compile(tpl)(data);
-	        var _length = data.lst.length;
-	        $("#prdBottom-1").append('<dl class="nSearch-bottom-advertisement" id="nSearch-bottomHotSale"><dt class="hd"><span id="bottomHotSale-refresh" class="bottom-advertisement-refresh" curp="0">换一组</span>热销推荐</dt><dd class="bd"><ul class="bottom-advertisement-lists clearfix" id="bottomHotSale">'+listTpl+'</ul></dd></dl>');
-	        if(_length<=6){$("#bottomHotSale-refresh").hide()}
-	        var totlnum = (_length %6 ==0)?(parseInt(_length /6,10)-1):parseInt(_length /6,10);
-	        var _i = 0;
-	        $("#bottomHotSale").find(".item").each(function(){
-	            if($(this).index()<6){
-	                $(this).addClass("cShow");
+	var tpl_normal = __webpack_require__(18).tpl;
+	function getData(domId){
+	    $.get(
+	        window.url.bigdata_url,
+	        {
+	            boxid: "box93",
+	            area: pageData.regionId,
+	            cid: $.cookie("__clickidc"),
+	            imagesize: 160,
+	            c1n: window.dsp_gome_c1name,
+	            c3n: window.dsp_gome_c3name,
+	            c1id: window.dsp_gome_c1id,
+	            c3id: window.dsp_gome_c3id,
+	            brid: window.dsp_gome_brid,
+	            search: window.searchkey
+	        },
+	        function(data){
+	            if (data.lst && data.lst.length > 0) {
+	                data.lst.splice(6,data.lst.length)
+	                var listTpl = templateSimple.compile(tpl_normal)(data);
+	                $(domId).append('<div class="prd-right-normal"><h3 class="hd">搜了此类商品的用户还买了</h3><ul class="bd" id="bigD_liulan">'+listTpl+'</ul></div>');
 	            }
-	            $(this).addClass("item"+parseInt($(this).index()/6,10))
-	        })
-	        $("#bottomHotSale-refresh").bind("click",function(){
-	            $("#bottomHotSale").find(".item").removeClass("cShow");
-	            if(_i++ == totlnum || _i==3){
-	                _i=0;
-	            }
-	            $("#bottomHotSale").find(".item"+_i).addClass("cShow")
-	        })
-	    }
-	    }
-	);
+	        }
+	    );
+	}
+	module.exports = {
+	    getData:getData
+	}
 
 /***/ },
 /* 28 */
 /***/ function(module, exports) {
 
+	
+	function getData(domId){
+	    $.ajax({
+	        type:"get",
+	        dataType:"jsonp",
+	        url:window.url.dsp_url_c,
+	        data:{
+	            "p":124,
+	            "catid":window.dsp_gome_c3id,
+	            "c":"dsp_act",
+	            "area":pageData.regionId
+	        },
+	        jsonpName:"dsp_act",
+	        success:function(data){
+	            var listTpl = "";
+	            for(var i=0,j=data.length;i<j && i<2;i++){
+	                listTpl += '<a href="'+data[i].ldp+'" target="_blank" title="'+data[i].org+'"><img src="'+data[i].src+'" /></a>';
+	                new Image().src= data[i].pm;
+	            }
+	            $(domId).append('<div class="prd-right-normal" id="dsp_advertisement">'+listTpl+'</div>');
+	        }
+	    });
+	}
+	module.exports = {
+	    getData:getData
+	}
+
+/***/ },
+/* 29 */
+/***/ function(module, exports) {
+
+	function getData(domId){
+	    $.ajax({
+	        type:"get",
+	        dataType:"jsonp",
+	        url:window.url.dsp_url_c,
+	        data:{
+	            "p":184,
+	            "catid":window.dsp_gome_c3id,
+	            "c":"dsp_act_b",
+	            "area":pageData.regionId
+	        },
+	        jsonpName:"dsp_act_b",
+	        success:function(data){
+	            var listTpl = "";
+	            for(var i=0,j=data.length;i<j && i<2;i++){
+	                listTpl += '<a href="'+data[i].ldp+'" target="_blank" title="'+data[i].org+'"><img src="'+data[i].src+'" /></a>';
+	                new Image().src= data[i].pm;
+	            }
+	            $(domId).append('<div class="nSearch-bottomTuiGuangAD" id="dsp_bottomAD">'+listTpl+'</div>');
+	        }
+	    });
+	}
+	module.exports = {
+	    getData:getData
+	}
+
+/***/ },
+/* 30 */
+/***/ function(module, exports) {
+
 	var tpl = '{{each lst as value}}\
 	    <li class="buy-items">\
 	        <div class="pic"><a class="bigD_item" track="{{value.maima_param}}" href="{{value.purl}}" target="_blank"><img gome-src="{{value.iurl}}" src="//img.gomein.net.cn/images/grey.gif"></a></div>\
@@ -1405,43 +1424,104 @@
 	    </li>\
 	{{/each}}'
 
-	$.get(
-	    window.url.bigdata_url,
-	    {
-	        boxid: "box92",
-	        area: pageData.regionId,
-	        cid: $.cookie("__clickidc"),
-	        imagesize: 160,
-	        c1id:window.dsp_gome_c1id,
-	        c3id:window.dsp_gome_c3id,
-	        brid: window.dsp_gome_brid,
-	        search: window.searchkey
-	    },
-	    function(data){
-	        if (data.lst && data.lst.length > 0) {
-	        var listTpl = templateSimple.compile(tpl)(data);
-	        var _length = data.lst.length;
-	        $("#prdBottom-2").append('<dl class="nSearch-bottom-advertisement" id="nSearch-quessYouLike"><dt class="hd"><span id="quessYouLike-refresh" class="bottom-advertisement-refresh" curp="0">换一组</span>根据浏览猜你喜欢</dt><dd class="bd"><ul class="bottom-advertisement-lists clearfix" id="bigD_quessLike">'+listTpl+'</ul></dd></dl>');
-	        
-	        if(_length<=6){$("#quessYouLike-refresh").hide()}
-	        var totlnum = (_length %6 ==0)?(parseInt(_length /6,10)-1):parseInt(_length /6,10);
-	        var _i = 0;
-	        $("#bigD_quessLike").find(".item").each(function(){
-	            if($(this).index()<6){
-	                $(this).addClass("cShow");
+	function getData(domId){
+	    $.get(
+	        window.url.bigdata_url,
+	        {
+	            boxid: "box45",
+	            area: pageData.regionId,
+	            cid: $.cookie("__clickidc"),
+	            imagesize: 160,
+	            c1id:window.dsp_gome_c1id,
+	            c3id:window.dsp_gome_c3id,
+	            brid: window.dsp_gome_brid,
+	            search: window.searchkey
+	        },
+	        function(data){
+	            if (data.lst && data.lst.length > 0) {
+	                var listTpl = templateSimple.compile(tpl)(data);
+	                var _length = data.lst.length;
+	                $(domId).append('<dl class="nSearch-bottom-advertisement" id="nSearch-bottomHotSale"><dt class="hd"><span id="bottomHotSale-refresh" class="bottom-advertisement-refresh" curp="0">换一组</span>热销推荐</dt><dd class="bd"><ul class="bottom-advertisement-lists clearfix" id="bottomHotSale">'+listTpl+'</ul></dd></dl>');
+	                if(_length<=6){$("#bottomHotSale-refresh").hide()}
+	                var totlnum = (_length %6 ==0)?(parseInt(_length /6,10)-1):parseInt(_length /6,10);
+	                var _i = 0;
+	                $("#bottomHotSale").find(".item").each(function(){
+	                    if($(this).index()<6){
+	                        $(this).addClass("cShow");
+	                    }
+	                    $(this).addClass("item"+parseInt($(this).index()/6,10))
+	                })
+	                $("#bottomHotSale-refresh").bind("click",function(){
+	                    $("#bottomHotSale").find(".item").removeClass("cShow");
+	                    if(_i++ == totlnum || _i==3){
+	                        _i=0;
+	                    }
+	                    $("#bottomHotSale").find(".item"+_i).addClass("cShow")
+	                })
 	            }
-	            $(this).addClass("item"+parseInt($(this).index()/6,10))
-	        })
-	        $("#quessYouLike-refresh").bind("click",function(){
-	            $("#bigD_quessLike").find(".item").removeClass("cShow");
-	            if(_i++ == totlnum || _i==3){
-	                _i=0;
+	        }
+	    );
+	}
+	module.exports = {
+	    getData:getData
+	}
+
+
+/***/ },
+/* 31 */
+/***/ function(module, exports) {
+
+	var tpl = '{{each lst as value}}\
+	    <li class="buy-items">\
+	        <div class="pic"><a class="bigD_item" track="{{value.maima_param}}" href="{{value.purl}}" target="_blank"><img gome-src="{{value.iurl}}" src="//img.gomein.net.cn/images/grey.gif"></a></div>\
+	        <div class="price">¥<span>{{value.price}}</span></div>\
+	        <div class="name"><a class="bigD_item" track="{{value.maima_param}}" href="{{value.purl}}" target="_blank">{{value.pn}}</a></div>\
+	    </li>\
+	{{/each}}'
+
+	function getData(domId){
+	    $.get(
+	        window.url.bigdata_url,
+	        {
+	            boxid: "box92",
+	            area: pageData.regionId,
+	            cid: $.cookie("__clickidc"),
+	            imagesize: 160,
+	            c1id:window.dsp_gome_c1id,
+	            c3id:window.dsp_gome_c3id,
+	            brid: window.dsp_gome_brid,
+	            search: window.searchkey
+	        },
+	        function(data){
+	            if (data.lst && data.lst.length > 0) {
+	                var listTpl = templateSimple.compile(tpl)(data);
+	                var _length = data.lst.length;
+	                $(domId).append('<dl class="nSearch-bottom-advertisement" id="nSearch-quessYouLike"><dt class="hd"><span id="quessYouLike-refresh" class="bottom-advertisement-refresh" curp="0">换一组</span>根据浏览猜你喜欢</dt><dd class="bd"><ul class="bottom-advertisement-lists clearfix" id="bigD_quessLike">'+listTpl+'</ul></dd></dl>');
+
+	                if(_length<=6){$("#quessYouLike-refresh").hide()}
+	                var totlnum = (_length %6 ==0)?(parseInt(_length /6,10)-1):parseInt(_length /6,10);
+	                var _i = 0;
+	                $("#bigD_quessLike").find(".item").each(function(){
+	                    if($(this).index()<6){
+	                        $(this).addClass("cShow");
+	                    }
+	                    $(this).addClass("item"+parseInt($(this).index()/6,10))
+	                })
+	                $("#quessYouLike-refresh").bind("click",function(){
+	                    $("#bigD_quessLike").find(".item").removeClass("cShow");
+	                    if(_i++ == totlnum || _i==3){
+	                        _i=0;
+	                    }
+	                    $("#bigD_quessLike").find(".item"+_i).addClass("cShow")
+	                })
 	            }
-	            $("#bigD_quessLike").find(".item"+_i).addClass("cShow")
-	        })
-	    }
-	    }
-	);
+	        }
+	    )
+	}
+	module.exports = {
+	    getData:getData
+	}
+
 
 /***/ }
 /******/ ]);

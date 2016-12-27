@@ -61,12 +61,18 @@
 	},0);
 
 	__webpack_require__(12);//右侧店铺精选和底部的推广商品
-	__webpack_require__(14);//右侧一周销量排行广商品
-	__webpack_require__(15);//右侧浏览了还购买商品
-	__webpack_require__(17);//右侧购买了还购买商品
-	__webpack_require__(18);//右侧底部推荐活动（图片）
-	__webpack_require__(19);//页面底部推荐活动（图片）
-	__webpack_require__(20);//猜你喜欢
+	__webpack_require__(14);//右侧店铺精选和底部的推广商品
+	__webpack_require__(16);//右侧一周销量排行广商品
+	__webpack_require__(17);//右侧浏览了还购买商品
+	__webpack_require__(19);//右侧购买了还购买商品
+
+	document.getElementById("lazyajaxloadarea").onmouseenter = function (event) {
+	    __webpack_require__(20);//右侧底部推荐活动（图片）
+	    __webpack_require__(21);//页面底部推荐活动（图片）
+	    __webpack_require__(22);//猜你喜欢
+	    __webpack_require__(23).getData("list");//最近浏览
+	    this.remove()
+	};
 
 /***/ },
 /* 1 */
@@ -1110,7 +1116,7 @@
 	                    }
 	                    pageData.bwsData = data.products;
 	                }
-	                pageData.bwsString = data_arr.join(",");
+	                pageData.bwsString = data_arr.join(",") || 0;
 	            }
 	        })
 	    }
@@ -1123,7 +1129,121 @@
 /* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var tpl_normal = __webpack_require__(13).tpl;
+	/**
+	 * 根据cookie--proid120517atg 请求前台组获取最近浏览商品信息
+	 * pagename 接口标识，判断请求来源
+	 * */
+
+	var tpl_list = '\
+	<div class="hot-cuxiao-list-box">\
+	    <span class="icon_tj">促销<br>活动</span>\
+	    <ul class="hot-cuxiao-list" id="hot-cuxiao-list">\
+	    {{each activity as value}}\
+	        <li><i></i><a href="{{value.url}}" target="_blank" data-code="9000000001-{{index+1}}">{{value.title}}</a></li>\
+	    {{/each}}\
+	    </ul>\
+	</div>'
+
+	var tpl_item = '\
+	{{each products as value}}\
+	<li class="item" from="云眼">\
+	<p class="pic"><a target="_blank" href="{{value.sUrl}}" title="{{value.alt}}" data-code="9000000000-{{index}}"><img src="{{value.sImg}}" alt=""></a></p>\
+	<p class="name"><a target="_blank" href="{{value.sUrl}}" title="{{value.alt}}" data-code="9000000000-{{index}}">{{value.name}}</a></p>\
+	<p class="price aPrice"><span></span></p>\
+	<p class="btn"><a target="_blank" class=" buy" href="{{value.sUrl}}" data-code="9000000000-{{index}}">立即抢购</a></p>\
+	</li>\
+	{{/each}}'
+
+
+
+
+
+
+	function getData(){
+	    var product_id = $.cookie("proid120517atg");
+	    if(product_id == null || product_id ==""){return false;}
+
+	    $.ajax({
+	        type:"get",
+	        dataType:"jsonp",
+	        url:"//api.search"+window.cookieDomain+"/p/asynSearch",
+	        jsonpName:"recentViewed",
+	        data:{module:"recommendActivity",from:"self",catId:window.dsp_gome_c3id}
+	    }).done(function(data){
+	        if (data.activity.length>4){
+	            var listTpl_a = templateSimple.compile(tpl_list)(data);
+	            $(".hot-tj").append(listTpl_a)
+	        }
+	        if(data.products.length>3){
+	            var listTpl_b = templateSimple.compile(tpl_item)(data);
+	            $("#hot-list").append(listTpl_b)
+	        }else{
+	            __webpack_require__(13).getData("#hot-list")
+	        }
+
+	    }).fail(function(){
+	        console.log("请求失败")
+	    });
+	}
+	module.exports = {
+	    getData:getData
+	}
+
+
+
+/***/ },
+/* 13 */
+/***/ function(module, exports) {
+
+	/**
+	 * 列表页面 顶部热销推荐
+	 * 请求条件，搜索云眼配置的商品少于3个时
+	 */
+	var tpl_item = '\
+	{{each lst as value}}\
+	    <li class="item">\
+	        <p class="pic">\
+	            <a target="_blank" href="{{value.purl}}" title="{{value.pn}}"><img src="{{value.iurl}}" alt="{{value.pn}}"></a>\
+	        </p>\
+	        <p class="name">\
+	            <a target="_blank" href="{{value.purl}}" target="_blank" title="{{value.pn}}">{{value.pn}}</a>\
+	        </p>\
+	        <p class="price">¥<span>{{value.pr}}</span></p>\
+	        <p class="btn"><a class="buy" target="_blank" href="{{value.purl}}">立即抢购</a></p>\
+	    </li>\
+	{{/each}}\
+	'
+	function getData(domId){
+	    $.get(
+	        window.url.bigdata_url,
+	        {
+	            boxid: "box01",
+	            area: pageData.regionId,
+	            cid: $.cookie("__clickidc"),
+	            imagesize: 160,
+	            c1n: dsp_gome_c1name,
+	            c3n: dsp_gome_c3name,
+	            c1id: window.dsp_gome_c1id,
+	            c3id: window.dsp_gome_c3id,
+	            brid: window.dsp_gome_brid
+	        },
+	        function(data){
+	            if (data.lst && data.lst.length > 0) {
+	                var listTpl = templateSimple.compile(tpl_item)(data);
+	                $(domId).append(listTpl);
+	            }
+	        }
+	    );
+	}
+	module.exports = {
+	    getData:getData
+	}
+
+/***/ },
+/* 14 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var tpl_normal = __webpack_require__(15).tpl;
 	$.ajax({
 	    type:"get",
 	    dataType:"jsonp",
@@ -1163,7 +1283,7 @@
 	});
 
 /***/ },
-/* 13 */
+/* 15 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -1182,7 +1302,7 @@
 	}
 
 /***/ },
-/* 14 */
+/* 16 */
 /***/ function(module, exports) {
 
 	var tpl = '{{each lst as value index}}\
@@ -1218,10 +1338,10 @@
 	);
 
 /***/ },
-/* 15 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var tpl_normal = __webpack_require__(16).tpl;
+	var tpl_normal = __webpack_require__(18).tpl;
 	$.get(
 	    window.url.bigdata_url,
 	    {
@@ -1233,8 +1353,7 @@
 	        c3n: window.dsp_gome_c3name,
 	        c1id: window.dsp_gome_c1id,
 	        c3id: window.dsp_gome_c3id,
-	        brid: window.dsp_gome_brid,
-	        search: window.searchkey
+	        brid: window.dsp_gome_brid
 	    },
 	    function(data){
 	        if (data.lst && data.lst.length > 0) {
@@ -1246,24 +1365,24 @@
 	);
 
 /***/ },
-/* 16 */
+/* 18 */
 /***/ function(module, exports) {
 
 	module.exports = {
 	    tpl:'{{each lst as value}}\
 	            <li class="buy-items">\
 	                <div class="pic"><a class="bigD_item" track="{{value.maima_param}}" href="{{value.purl}}" target="_blank"><img gome-src="{{value.iurl}}" src="//img.gomein.net.cn/images/grey.gif"></a></div>\
-	                <div class="price">楼<span>{{value.price}}</span></div>\
+	                <div class="price">¥<span>{{value.price}}</span></div>\
 	                <div class="name"><a class="bigD_item" track="{{value.maima_param}}" href="{{value.purl}}" target="_blank">{{value.pn}}</a></div>\
 	            </li>\
 	        {{/each}}'
 	};
 
 /***/ },
-/* 17 */
+/* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var tpl_normal = __webpack_require__(16).tpl;
+	var tpl_normal = __webpack_require__(18).tpl;
 	$.get(
 	    window.url.bigdata_url,
 	    {
@@ -1275,8 +1394,7 @@
 	        c3n: window.dsp_gome_c3name,
 	        c1id: window.dsp_gome_c1id,
 	        c3id: window.dsp_gome_c3id,
-	        brid: window.dsp_gome_brid,
-	        search: window.searchkey
+	        brid: window.dsp_gome_brid
 	    },
 	    function(data){
 	        if (data.lst && data.lst.length > 0) {
@@ -1288,7 +1406,7 @@
 	);
 
 /***/ },
-/* 18 */
+/* 20 */
 /***/ function(module, exports) {
 
 	$.ajax({
@@ -1313,7 +1431,7 @@
 	});
 
 /***/ },
-/* 19 */
+/* 21 */
 /***/ function(module, exports) {
 
 	$.ajax({
@@ -1340,7 +1458,7 @@
 
 
 /***/ },
-/* 20 */
+/* 22 */
 /***/ function(module, exports) {
 
 	var tpl = '{{each lst as value}}\
@@ -1389,6 +1507,45 @@
 	    }
 	    }
 	);
+
+/***/ },
+/* 23 */
+/***/ function(module, exports) {
+
+	/**
+	 * 根据cookie--proid120517atg 请求前台组获取最近浏览商品信息
+	 * pagename 接口标识，判断请求来源
+	 * */
+	var tpl = '{{each result as value}}\
+	            <li class="item">\
+	                <p class="pic"><a href="{{value.url}}" target="_blank"><img gome-src="{{value.pic}}" src="//img.gomein.net.cn/images/grey.gif"></a></p>\
+	                <p class="name"><a href="{{value.url}}" target="_blank">{{value.name}}</a></p>\
+	                <p class="price">¥<span>{{value.price}}</span></p>\
+	            </li>\
+	        {{/each}}';
+	function getData(pagename,domId){
+	    var product_id = $.cookie("proid120517atg");
+	    if(product_id == null || product_id ==""){return false;}
+
+	    $.ajax({
+	        type:"get",
+	        dataType:"jsonp",
+	        url:"//ss"+window.cookieDomain+"/item/v1/browse/prdreturn/"+$.parseJSON(product_id).join("")+"/80/flag/"+pagename+"/recentViewed",
+	        jsonpName:"recentViewed"
+	    }).done(function(data){
+	        if(data.success && data.result.length>0){
+	            var listTpl = templateSimple.compile(tpl)(data);
+	            $(domId).html('<dl class="nSearch-recentVisit"><dt class="hd">最近浏览</dt><dd class="bd"><ul class="recentVisit-lists clearfix" id="recentVisit-lists" modelid="9000002000">'+listTpl+'</ul></dd></dl>');
+	        }
+	    }).fail(function(){
+	        console.log("请求失败")
+	    });
+	}
+	module.exports = {
+	    getData:getData
+	}
+
+
 
 /***/ }
 /******/ ]);

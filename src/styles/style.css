@@ -814,13 +814,13 @@ filter-bottom 閫佽揣鍦板潃锛� 鏈夋棤璐э紝鍥界背閰嶉€侊紝
     _display:inline;
     text-align: center;
 }
-.recentVisit-lists .item-pic{
+.recentVisit-lists .pic{
     width: 80px;
     overflow: hidden;
     margin-bottom: 5px;
     text-align: center;
 }
-.recentVisit-lists .item-price{
+.recentVisit-lists .price{
     color: #e3101e;
     font-size: 14px;
     font-weight: 700;

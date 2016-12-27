@@ -28,7 +28,7 @@ define(function(require,exports,module){
                     }
                     pageData.bwsData = data.products;
                 }
-                pageData.bwsString = data_arr.join(",");
+                pageData.bwsString = data_arr.join(",") || 0;
             }
         })
     }

@@ -169,7 +169,7 @@
 </div>
 <#--页面商品列表主体-->
 <div class="nSearchWarp">
-    <div class="nSearchWarp-main">
+    <div class="nSearchWarp-main clearfix">
         <div class="product-right-box">
             <div id="prdRight-1"><#--店铺精选商品 dsp--></div>
             <div id="prdRight-2"><#--一周销量排行榜 bigdata--></div>
@@ -201,6 +201,8 @@
         </div>
     </div>
 </div>
+</div>
+<div id="lazyajaxloadarea"><div></div></div>
 <div class="nSearchWarp">
     <div id="prdBottom-1"><#--推广商品（） dsp--></div>
     <div id="prdBottom-2"><#--猜你喜欢 bigdata--></div>
