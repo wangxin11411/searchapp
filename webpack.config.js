@@ -12,7 +12,7 @@ module.exports = {
     //入口文件输出配置
     //path.resolve(__dirname,'src/entry.js')，
     output: {
-        path: path.resolve(__dirname,'dist'),
+        path: path.resolve(__dirname,'static/search2017/js'),
         filename: '[name].bundle.js'
     },
     module: {
