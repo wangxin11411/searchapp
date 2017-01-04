@@ -191,7 +191,7 @@
                         </#if>
                     </#list>
                     <#--相关分类facets-->
-                    <#if (facetsRelevant.items)??>
+                    <#if (facetsRelevant.items)?? && facetsRelevant.items ?size &gt; 0>
                         <#assign facetsItem = facetsRelevant>
                         <#assign displayType = "facets-rele">
                         <#include "module/facet/facet_together.ftl">
