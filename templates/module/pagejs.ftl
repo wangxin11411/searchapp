@@ -1,7 +1,7 @@
 <script type="text/javascript">
-    window.dsp_gome_c1name = "${(searchObj.content.selectData.category.fir.name)!}";
-    window.dsp_gome_c2name = "${(searchObj.content.selectData.category.sec.name)!}";
-    window.dsp_gome_c3name = "${(searchObj.content.selectData.category.third.name)!}";
+    window.dsp_gome_c1name = "${(varSelectData.category.fir.name)!}";
+    window.dsp_gome_c2name = "${(varSelectData.category.sec.name)!}";
+    window.dsp_gome_c3name = "${(varSelectData.category.third.name)!}";
     window.dsp_gome_c1id = (function(){
             var el = document.getElementsByClassName('facets-hot-itemfir');
             if(el.length > 0){
@@ -12,7 +12,7 @@
                 return str.join(",");
             }
             return "";
-        })() || "${(searchObj.content.selectData.category.fir.id)!}";
+        })() || "${(varSelectData.category.fir.id)!}";
 
     window.dsp_gome_c3id = (function(){
             var el = document.getElementsByClassName('facets-hot-item');
@@ -24,7 +24,7 @@
                 return str.join(",");
             }
             return "";
-        })() || "${(searchObj.content.selectData.category.third.id)!}";
+        })() || "${(varSelectData.category.third.id)!}";
 
     window.dsp_gome_brid = (function(){
         var el = document.getElementById("brandChoose");
@@ -33,7 +33,8 @@
         }
         return "";
     })();
-    window.searchkey = "${((searchObj.header.searchReq.question)!)?replace('\\','')?replace('\"','')}";
+
+    window.searchkey = "${(varSelectData.keywords)!}";
 
     window.url={
         dsp_url_s:"//dsp.gome.com.cn/decision/hotword",
@@ -49,18 +50,19 @@
 
 <script type="text/javascript">
     var pageData = {
-        'currentPage':${(searchObj.content.pageBar.pageNumber)!},
-        'totalPage':${(searchObj.content.pageBar.totalPage)!},
-        'regionId':'${(searchObj.header.searchReq.regionId)!}' || '11010200',
-        'regionId_2':'${(searchObj.header.searchReq.regionId)!}'.substr(0,4)+"0000" || '11010000',
-        'sort':'${(searchObj.content.selectData.toolBar.selectedSort)!}',
-        'ajaxStatus':false,
-        'bwsStaus':'1',
-        'bwsData':[],//综合第一页 补位推荐的联营商品
-        'bwsString':''
+        ajaxURL     :"${(searchObj.header.url)!}",
+        currentPage :${(searchObj.content.pageBar.pageNumber)!},
+        totalPage   :${(searchObj.content.pageBar.totalPage)!},
+        regionId    :'${(searchObj.header.searchReq.regionId)!}' || '11010200',
+        regionId_2  :'${(searchObj.header.searchReq.regionId)!}'.substr(0,4)+"0000" || '11010000',
+        ajaxStatus  :false,
+        sort        :"${varSelectData.toolBar.selectedSort!}",
+        isBW        :${(searchObj.header.bwSec)?c},
+        valueBW     :"${(searchObj.header.bwFrom)!}x${(searchObj.header.bwSize)!}",
+        dataBW      :{} //存放店铺商品数据
     };
     var loggerData = {
-        "t4":"${(searchObj.content.selectData.category.third.id)!}",
+        "t4":"${(varSelectData.category.third.id)!}",
         "t5":"${((searchObj.header.searchReq.question)!)?replace('\\','')?replace('\"','')}",
         "t7":"${(searchObj.header.searchReq.facets)!}",
         "t8":"${(searchObj.content.seoData.totalCount)!}",
@@ -76,8 +78,6 @@
 </script>
 
 <script>
-
-    var apiSite='',cloudSite="${(storeConfiguration.searchSite)!}",contextPath='/ec/homeus';
     var productSite="${(storeConfiguration.productSite)!}";
     var isSearch=false;
 <#if searchObj??>
@@ -86,25 +86,22 @@
 
 
 
-
-
-
 <#if noSkusStock?? && noSkusStock>
     var noSkusStock = true;
 <#else>
     var noSkusStock = false;
 </#if>
-<#if (searchObj.header.searchReq.bwSec)?? && searchObj.header.searchReq.bwSec>
-    var isBwSec = true;
-<#else>
-    var isBwSec = false;
-</#if>
+
     <#--bug:搜索品牌时，筛选条件多选时丢失品牌条件-->
 <#if searchObj.content.banner?? && !isGomehigo>
     var defaultFacets = "${(searchObj.content.selectData.facets.brand.items[0].id)!}";
 <#else>
     var defaultFacets = "";
 </#if>
+
+
+
+
 </script>
 
 <script src='<!--# include virtual="/n/common/default/script.html"-->,/gmlib/unit/cart/1.0.0/addCart.min.js,/gmlib/unit/g/1.0.0/g.min.js,/gmlib/unit/gcity/1.0.0/gcity.min.js'></script>

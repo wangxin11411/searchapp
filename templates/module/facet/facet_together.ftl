@@ -4,7 +4,7 @@
     <dd class="category-syn-con">
         <ul class="category-syn-list clearfix">
             <#list facetsItem.items as item>
-            <li><a class="facet" data-code="${modelId!}-${(item_index)!}" href="${varWebsite!}${(item.url)!}" facetsId="${item.id!}"><i></i>${item.value!}${item.name!}</a></li>
+            <li><a class="facet" data-code="${modelId!}-${(item_index)!}" href="${(item.url)!}" facetsId="${item.id!}"><i></i>${item.value!}${item.name!}</a></li>
             </#list>
         </ul>
         <p class="category-syn-btn">

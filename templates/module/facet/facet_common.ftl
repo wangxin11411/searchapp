@@ -9,7 +9,7 @@
         <div class="category-normal">
             <ul class="clearfix" modelid="${modelId!}">
                 <#list thisFacets.items as item>
-                    <li><a class="facet ${facethotitem!}" data-code="${modelId!}-${(item_index)!}" href="${varWebsite!}${(item.url)!}" facetsId="${item.id!}"><i></i>${item.value!}${item.name!}</a></li>
+                    <li><a class="facet ${facethotitem!}" data-code="${modelId!}-${(item_index)!}" href="${(item.url)!}" facetsId="${item.id!}"><i></i>${item.value!}${item.name!}</a></li>
                 </#list>
             </ul>
         </div>

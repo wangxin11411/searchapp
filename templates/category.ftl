@@ -63,7 +63,7 @@
     <meta http-equiv="mobile-agent" content="format=html5; url= http://m.gome.com.cn/category-${(searchObj.header.searchReq.catId)!}.html">
     <link rel="shortcut icon" href="//app.gomein.net.cn/favicon.ico" type="image/x-icon" />
     <link rel="stylesheet" href='<!--# include virtual="/n/common/a18/style.html"-->,/css/n/detail/gCity.min.css'>
-    <link rel="stylesheet" href="http://localhost:8080/dist/style/style.css">
+    <link rel="stylesheet" href="http://localhost:8080/search/search2017/css/style.css">
     <!--# include virtual="/n/common/global/global.html"-->
     <#if (searchObj.header.serverInfo.refPage)!?index_of("-00-0-48-1-0-0-0-1-0-0-0-0-0-0-0-0-0")!=-1>
         <link rel="canonical" href="${(storeConfiguration.listSite)!}/${(searchObj.content.seoData.catId)!}.html"/>
@@ -118,7 +118,7 @@
             <dd class="category-box"  id="category-box-third" modelid="9000000103">
                 <#if (pageCategory.sec.childs)?? && (pageCategory.sec.childs?size gt 0)>
                     <#list pageCategory.sec.childs as thirdItem>
-                        <a href="${searchSite!}${(thirdItem.url)!}" data-code="9000000103-${(thirdItem_index+1)!}">${(thirdItem.name)!}</a>
+                        <a href="${(thirdItem.url)!}" data-code="9000000103-${(thirdItem_index+1)!}">${(thirdItem.name)!}</a>
                     </#list>
                 </#if>
             </dd>
@@ -210,10 +210,6 @@
     <div id="prdBottom-4"><#--底部推荐广告 dsp--></div>
 </div>
 
-<div id="search_info_box" style="display:none">
-    <div id="searchReq">${searchReq!}</div>
-    <div id="pageType">${pageType!}</div>
-</div>
 <!--# include virtual="/n/common/default/aside.html"-->
 <!--# include virtual="/n/common/default/foot.html"-->
 <script>
@@ -225,10 +221,9 @@
 </script>
 <script type="text/javascript">
     var isHyg = false;//${(storeConfiguration.isHwg)!};
-    var searchSite = '${(storeConfiguration.listSite)!}';
     var pageName = '三级列表页';
 </script>
 <#include "module/pagejs.ftl">
-<script src="${(storeConfiguration.stageJsServer)!}/search2017/js/category.bundle.js"></script>
+<script src="${(storeConfiguration.stageJsServer)!}/search/search2017/js/category.bundle.js"></script>
 </body>
 </html>

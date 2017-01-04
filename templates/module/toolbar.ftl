@@ -38,11 +38,11 @@
 <div id="filter-box" modelid="${modelId!}">
     <div id="filter-top" class="filter-top clearfix">
         <ul class="filter-order-box" id="filter-order-box">
-            <li id="sort-general" class="${defaultClassName!}" data-sort="00"><a href="${searchSite!}${(sort.default.url)!}">综合</a></li>
-            <li class="${saleClassName!}" data-sort="10"><a href="${searchSite!}${(sort.sale.url)!}">销量</a></li>
-            <li class="${startDateClassName!}" data-sort="30"><a href="${searchSite!}${(sort.startDate.url)!}">新品</a></li>
-            <li class="${evaluateCountClassName!}" data-sort="50"><a href="${searchSite!}${(sort.evaluateCount.url)!}">评价</a></li>
-            <li id="sort-price" class="${priceClassName!}" data-sort="${priceSort!}"><a href="${searchSite!}${(sort.price.url)!}">价格</a><i class="icon-up-down"></i></li>
+            <li id="sort-general" class="${defaultClassName!}" data-sort="00"><a href="${(sort.default.url)!}">综合</a></li>
+            <li class="${saleClassName!}" data-sort="10"><a href="${(sort.sale.url)!}">销量</a></li>
+            <li class="${startDateClassName!}" data-sort="30"><a href="${(sort.startDate.url)!}">新品</a></li>
+            <li class="${evaluateCountClassName!}" data-sort="50"><a href="${(sort.evaluateCount.url)!}">评价</a></li>
+            <li id="sort-price" class="${priceClassName!}" data-sort="${priceSort!}"><a href="${(sort.price.url)!}">价格</a><i class="icon-up-down"></i></li>
         </ul>
         <#--价格区间-->
         <#if searchObj.content.selectData.price??>
@@ -103,12 +103,12 @@
             <#if isGomehigo>
                 <#assign hideDom = "hide-dom">
             </#if>
-            <a class="gmform-label ${delivChecked!} ${hideDom!}" id="deliv" data-code="${modelId!}-10" href="${searchSite!}${delivUrl!}"><i class="iic"></i>国美自营</a>
-            <a class="gmform-label ${instoclChecked!}" id="instock" data-code="${modelId!}-11" href="${searchSite!}${(instock.url)!}"><i class="iic"></i>仅显示有货</a>
-            <a class="gmform-label ${discountPromoChecked!} ${hideDom!}" id="discountPromo" data-code="${modelId!}-12" href="${searchSite!}${(discountPromo.url)!}"><i class="iic"></i>促销商品</a>
-            <a class="gmform-label ${discountQiangChecked!} ${hideDom!}" id="discountQiang" data-code="${modelId!}-13" href="${searchSite!}${(discountQiang.url)!}"><i class="iic"></i>真划算</a>
+            <a class="gmform-label ${delivChecked!} ${hideDom!}" id="deliv" data-code="${modelId!}-10" href="${delivUrl!}"><i class="iic"></i>国美自营</a>
+            <a class="gmform-label ${instoclChecked!}" id="instock" data-code="${modelId!}-11" href="${(instock.url)!}"><i class="iic"></i>仅显示有货</a>
+            <a class="gmform-label ${discountPromoChecked!} ${hideDom!}" id="discountPromo" data-code="${modelId!}-12" href="${(discountPromo.url)!}"><i class="iic"></i>促销商品</a>
+            <a class="gmform-label ${discountQiangChecked!} ${hideDom!}" id="discountQiang" data-code="${modelId!}-13" href="${(discountQiang.url)!}"><i class="iic"></i>真划算</a>
             <#if (searchObj.content.selectData.isSearch)>
-            <a class="gmform-label ${marketChecked!} ${hideDom!}" id="market" data-code="${modelId!}-14" href="${searchSite!}${(market.url)!}"><i class="iic"></i>海外购</a>
+            <a class="gmform-label ${marketChecked!} ${hideDom!}" id="market" data-code="${modelId!}-14" href="${(market.url)!}"><i class="iic"></i>海外购</a>
             </#if>
             <#if ((searchObj.content.promoInfo)?? && searchObj.content.promoInfo[0]??)>
                 <label class="gmform-label filter-label-specialScreening ${hideDom!}" for="specialScreening" id="specialScreening" data-code="${modelId!}-15"><i class="iic"></i>

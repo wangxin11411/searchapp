@@ -23,33 +23,33 @@ define(function(require,exports,module){
     {{each products}}\
     {{if $value.isActive}}\
     <li class="product-item product-ad" style="height:{{$value.height}}px">\
-        <a class="item-link activeImg" data-code="{{modelid}}-{{pageBar.pageNumber}}_activities_{{$index+1}}" href="{{$value.url}}" title="{{$value.title}}" target="_blank">\
+        <a class="item-link activeImg" data-code="{{modelid}}-{{pageNumber}}_activities_{{$index+1}}" href="{{$value.mUrl}}" title="{{$value.title}}" target="_blank">\
         <img src="//img.gomein.net.cn/images/grey.gif" gome-src="{{$value.img}}" alt="{{$value.pTxt}}">\
         </a>\
         <span class="product-ad-info">\
         <em class="product-ad-name">{{$value.title}}</em>\
         <em class="product-ad-title">{{$value.pTxt}}</em>\
-        <a class="product-ad-btn" data-code="{{modelid}}-{{pageBar.pageNumber}}_activities_{{$index+1}}" href="{{$value.url}}" target="_blank">点击进入</a>\
+        <a class="product-ad-btn" data-code="{{modelid}}-{{pageNumber}}_activities_{{$index+1}}" href="{{$value.mUrl}}" target="_blank">点击进入</a>\
         </span>\
     </li>\
     {{else}}\
-    <li class="product-item">\
-        <input class="productInfo" type="hidden" isMCard="{{$value.skus.gomeCardType}}" isHyg="{{$value.marketTag}}" isTaogou="false" pid="{{$value.pId}}" skuid="{{$value.skuId}}" prd-index="{{$index+1}}" saleCount="{{$value.salesVolume}}" evaluateCount="{{$value.evaluateCount}}" firstCat="{{$value.firstCat}}" secondCat="{{$value.secondCat}}" thirdCat="{{$value.defCatId}}" brandIds="" thirdProduct="{{$value.thirdProduct | formatBoolean}}" shopId="{{$value.shopId}}"  promoScore="{{$value.promoScore}}" score="{{$value.score}}" pStock="{{$value.skus.stock}}" pWeight="{{$value.skus.promoStock}}"/>\
+    <li class="product-item" from="ajax">\
+        <input class="productInfo" type="hidden" isMCard="{{$value.gomeCardType}}" isHyg="{{$value.marketTag}}" isTaogou="false" pid="{{$value.pId}}" skuid="{{$value.skuId}}" prd-index="{{$index+1}}" saleCount="{{$value.salesVolume}}" evaluateCount="{{$value.evaluateCount}}" firstCat="{{$value.firstCat}}" secondCat="{{$value.secondCat}}" thirdCat="{{$value.defCatId}}" brandIds="" thirdProduct="{{$value.thirdProduct | formatBoolean}}" shopId="{{if $value.shopId}}{{$value.shopId}}{{/if}}"  promoScore="{{$value.promoScore}}" score="{{$value.score}}" pStock="{{$value.stock}}" pWeight="{{$value.promoStock}}"/>\
         <ul class="arbitrage clearfix {{if $value.taoGou}}bor-bott{{/if}}">\
         {{if $value.taoGou}}\
-            <li class="arbitrage-num arbitrage-cur" taogou="true" pId="{{$value.pId}}" sId="{{$value.skuId}}">单件</li>\
+            <li class="arbitrage-num arbitrage-cur" taogou="false" pId="{{$value.pId}}" sId="{{$value.skuId}}">单件</li>\
             {{each $value.taoGou}}\
             {{if $index < 3}}\
-            <li class="arbitrage-num" taogou="false" pId="{{$value.pId}}" sId="{{$value.skuId}}">{{$value.num}}件套</li>\
+            <li class="arbitrage-num" taogou="true" pId="{{$value.pId}}" sId="{{$value.skuId}}">{{$value.num}}件套</li>\
             {{/if}}\
             {{/each}}\
         {{/if}}\
         </ul>\
         <div class="item-tab-warp asynPriceBox" id="gm-{{$value.pId}}-{{$value.skuId}}">\
         {{if $value.isBigImg}}\
-        <p class="item-pic bigp"><a class="emcodeItem item-link" rel="nofollow" href="{{$value.skus.pUrl}}" target="_blank" data-code="{{modelid}}-{{pageBar.pageNumber}}_{{$index+1}}_1" title="{{$value.skus.alt}}"><img gome-src="{{$value.skus.sImg}}_220_275.jpg" alt="{{$value.skus.alt}}" src="//img.gomein.net.cn/images/grey.gif"></a></p>\
+        <p class="item-pic bigp"><a class="emcodeItem item-link" rel="nofollow" href="{{$value.sUrl}}" target="_blank" data-code="{{modelid}}-{{pageNumber}}_{{$index+1}}_1" title="{{$value.alt}}"><img gome-src="{{$value.sImg}}_220_275.jpg" alt="{{$value.alt}}" src="//img.gomein.net.cn/images/grey.gif"></a></p>\
         {{else}}\
-        <p class="item-pic"><a class="emcodeItem item-link" rel="nofollow" href="{{$value.skus.pUrl}}" target="_blank" data-code="{{modelid}}-{{pageBar.pageNumber}}_{{$index+1}}_1" title="{{$value.skus.alt}}"><img gome-src="{{$value.skus.sImg}}_210.jpg" src="//img.gomein.net.cn/images/grey.gif" alt="{{$value.skus.alt}}"></a>{{if $value.skus.energyTag == 1}}<span class="save-energy"></span>{{/if}}</p>\
+        <p class="item-pic"><a class="emcodeItem item-link" rel="nofollow" href="{{$value.sUrl}}" target="_blank" data-code="{{modelid}}-{{pageNumber}}_{{$index+1}}_1" title="{{$value.alt}}"><img gome-src="{{$value.sImg}}_210.jpg" src="//img.gomein.net.cn/images/grey.gif" alt="{{$value.alt}}"></a>{{if $value.energyTag == 1}}<span class="save-energy"></span>{{/if}}</p>\
         {{/if}}\
         {{if clothes || merchandise}}\
         <div class="item-pic-small-box" index="{{$value.images.length}}" curIndex="{{$value.images.length}}">\
@@ -73,59 +73,57 @@ define(function(require,exports,module){
         <div class="item-price-info">\
             <p class="item-price">\
                 <span class="price asynPrice" pid="{{$value.pId}}" skuid="{{$value.skuId}}"></span>\
-                {{if $value.skus.goodsType && $value.skus.goodsType == "ZC2M"}}\
+                {{if $value.goodsType == "ZC2M"}}\
                 <span class="promotion-c2m"></span>\
                 {{/if}}\
-                {{if $value.marketTag && $value.marketTag == 1}}\
+                {{if $value.marketTag == 1}}\
                 <span class="promotion-hwg"></span>\
                 {{/if}}\
-                {{if $value.allPromos && $value.allPromos.length > 0}}\
-                {{each $value.allPromos}}\
-                <span class="promotion-normal">{{$value.name}}</span>\
-                {{/each}}\
+                {{if $value.isVip == 1}}\
+                    <span class="promotion-normal">会员商品</span>\
                 {{/if}}\
             </p>\
         </div>\
-        <p class="item-name"><a rel="nofollow" class="emcodeItem item-link" data-code="{{modelid}}-{{pageBar.pageNumber}}_{{$index+1}}_1" href="{{$value.skus.pUrl}}" target="_blank" title="{{$value.skus.alt}}">{{#$value.skus.name}}</a></p>\
-        {{if $value.skus.promoDesc !=""}}\
+        <p class="item-name"><a rel="nofollow" class="emcodeItem item-link" data-code="{{modelid}}-{{pageNumber}}_{{$index+1}}_1" href="{{$value.sUrl}}" target="_blank" title="{{$value.alt}}">{{#$value.name}}</a></p>\
+        {{if $value.promoDesc !=""}}\
         <p class="item-promotional-language">\
             <!--{{if $value.promoTags && $value.promoTags != null && $value.promoTags.promoType && $value.promoTags.promoType == 2}}\
                 【{{$value.promoTags.promoPrice}}手机专享价】\
             {{/if}}-->\
-            {{$value.skus.promoDesc}}\
+            {{$value.promoDesc}}\
         </p>\
         {{/if}}\
         <p class="item-comment-dispatching">\
-        {{if $value.skus.stock==0 || noSkusStock}}\
-            <span class="dispatching">{{$value.skus.cityName}}无货</span>\
-        {{else if $value.skus.stock==1}}\
-            <span class="dispatching">{{$value.skus.cityName}}有货</span>\
-        {{else if $value.skus.stock==2}}\
-            <span class="dispatching nOrange">{{$value.skus.cityName}}暂不支持配送</span>\
-        {{else if $value.skus.stock==3}}\
+        {{if $value.stock==0 || noSkusStock}}\
+            <span class="dispatching">{{$value.cityName}}无货</span>\
+        {{else if $value.stock==1}}\
+            <span class="dispatching">{{$value.cityName}}有货</span>\
+        {{else if $value.stock==2}}\
+            <span class="dispatching nOrange">{{$value.cityName}}暂不支持配送</span>\
+        {{else if $value.stock==3}}\
             <span class="dispatching nOrange">正在预约中</span>\
-        {{else if $value.skus.stock==4}}\
+        {{else if $value.stock==4}}\
             <span class="dispatching nHeigh">正在抢购中</span>\
         {{else}}\
-            <span class="dispatching">{{$value.skus.cityName}}无货</span>\
+            <span class="dispatching">{{$value.cityName}}无货</span>\
         {{/if}}\
-            <a href="{{$value.skus.pUrl}}#j-comment-section" target="_blank" class="comment emcodeItem" data-code="{{modelid}}-{{pageBar.pageNumber}}_{{$index+1}}_2">{{$value.evaluateCount}}</a>\
+            <a href="{{$value.sUrl}}#j-comment-section" target="_blank" class="comment emcodeItem" data-code="{{modelid}}-{{pageNumber}}_{{$index+1}}_2">{{$value.evaluateCount}}</a>\
         </p>\
         <p class="item-option clearfix">\
-            <span class="add-contrast display-page-compare-checkbox emcodeProp17"></span>\
+            <span class="add-contrast display-page-compare-checkbox"></span>\
             <span class="add-collection">收藏</span>\
-        {{if $value.skus.stock == 0 || noSkusStock}}\
-            <span class="add-cart next-buy emcodeProp17">到货通知</span>\
-        {{else if $value.skus.stock == 3 || $value.skus.stock == 4}}\
-            <a href="{{productSite}}/{{$value.pId}}-{{$value.skus.skuId}}.html" target="_blank" class="add-cart prev-buy emcodeItem" data-code="{{modelid}}-{{pageBar.pageNumber}}_{{$index+1}}_3">预约购买</a>\
+        {{if $value.stock == 0 || noSkusStock}}\
+            <span class="add-cart next-buy">到货通知</span>\
+        {{else if $value.stock == 3 || $value.stock == 4}}\
+            <a href="{{productSite}}/{{$value.pId}}-{{$value.skuId}}.html" target="_blank" class="add-cart prev-buy emcodeItem" data-code="{{modelid}}-{{pageNumber}}_{{$index+1}}_3">预约购买</a>\
         {{else}}\
-            <a class="add-cart addTo-cart emcodeProp17" href="javascript:void(0);" data-code="{{modelid}}-{{pageBar.pageNumber}}_{{$index+1}}_3">加入购物车</a>\
+            <a class="add-cart addTo-cart" href="javascript:void(0);" data-code="{{modelid}}-{{pageNumber}}_{{$index+1}}_3">加入购物车</a>\
         {{/if}}\
         </p>\
         </div>\
         <p class="item-shop">\
         {{if $value.thirdProduct}}\
-            <a class="nname" data-code="{{modelid}}-{{pageBar.pageNumber}}_{{$index+1}}_4" target="_blank" href="{{$value.mUrl}}">{{$value.sName}}</a>{{if $value.shopId =="80009736" || $value.shopId =="80010355" || $value.shopId =="80010423"}}<span class="hyg-shopType">国美自营</span>{{/if}}\
+            <a class="nname" data-code="{{modelid}}-{{pageNumber}}_{{$index+1}}_4" target="_blank" href="{{$value.mUrl}}">{{$value.sName}}</a>{{if $value.shopId =="80009736" || $value.shopId =="80010355" || $value.shopId =="80010423"}}<span class="hyg-shopType">国美自营</span>{{/if}}\
         {{else}}\
             <span class="nname">国美自营</span>\
         {{/if}}\
@@ -192,23 +190,13 @@ define(function(require,exports,module){
      */
     function getGoods(){
         if(pageData.sort === '00' && pageData.currentPage > 1){
-            pageData.bwsStaus = '['+pageData.bwsString+']';
+            ajaxData = pageData.dataBW.bwsString;
         }else{
-            pageData.bwsStaus = '1';
+            ajaxData = "0";
         }
         $.ajax({
-            type:'get',
-            url:searchSite+'/cloud/asynSearch',
-            data:{
-                module: 'product',
-                from: $('#pageType').text(),
-                page: pageData.currentPage,
-                sorts:pageData.sort,
-                paramJson: $('#searchReq').text(),
-                bws:pageData.bwsStaus
-            },
-            dataType:'jsonp',
-            jsonpCallback:'callback_product',
+            url:pageData.ajaxURL,
+            data:{page:pageData.currentPage,bws:ajaxData,type:"json"},
             timeout:1000,
             beforeSend:function(){
                 $('#product-waiting').show();
@@ -216,31 +204,35 @@ define(function(require,exports,module){
             success:function(data){
                 pageData.ajaxStatus = false;
                 $('#product-waiting').hide();
-                pageData.currentPage = data.pageBar.pageNumber;
-                pageData.totalPage = data.pageBar.totalPage;
-                if(pageData.sort === '00' && pageData.currentPage == 1 && pageData.bwsData.length>0){
+                pageData.currentPage = data.content.pageBar.pageNumber;
+                pageData.totalPage = data.content.pageBar.totalPage;
+                if(pageData.sort === '00' && pageData.currentPage == 1 && pageData.dataBW.bwsData.length>0){
                     //如果是综合第一页时，混合推荐联营商品
-                    mixedShopData(data.products,pageData.bwsData);
+                    mixedShopData(data.content.prodInfo.products,pageData.dataBW.bwsData);
                 }
-                if(data.activities && data.activities.length > 0){
+                console.log(215)
+                if(data.content.activities && data.content.activities.length > 0){
                     var active_h = 427;
-                    if(data.clothes || data.merchandise){active_h=+45};
-                    if(data.products[0].isBigImg){active_h=+65};
-                    mixActiveData(data.products,data.activities,active_h);
+                    if(data.content.prodInfo.clothes || data.content.prodInfo.merchandise){active_h=+45};
+                    if(data.content.prodInfo.products[0].isBigImg){active_h=+65};
+                    mixActiveData(data.content.prodInfo.products,data.content.activities,active_h);
                 }
+                console.log(222)
                 //活动推广位
-                if(data.regionPromoInfo.promUrl){
+                if(data.content.regionPromoInfo){
                     $("#szSpread").remove();
                     $(".product-right-box").prepend("<a id='szSpread' data-code='9000000900-0' target='_blank' href='"+data.regionPromoInfo.promUrl+"'><img src='"+data.regionPromoInfo.imgUrl+"'></a>")
                 }else{
                     $("#szSpread").remove();
                 }
+                console.log(229)
                 //模板渲染
                 template.helper("formatBoolean",function(data,format){
                     return String(data);
                 });
-
-                var itemHTML = templateSimple.compile(tpl_item)($.extend(data,{'noSkusStock':noSkusStock,'modelid':9000000700}));
+                console.log(235)
+                var itemHTML = templateSimple.compile(tpl_item)($.extend({},data.content.prodInfo,{'noSkusStock':noSkusStock,'modelid':9000000700,'pageNumber':pageData.currentPage}));
+                console.log(237)
                 if($.trim(itemHTML) !=""){
                     $('#product-box').empty().html(itemHTML);
                     initPageNumber();

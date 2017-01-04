@@ -31,7 +31,7 @@
     <meta property="qc:admins" content="2500556177677556375636"/>
     <link rel="shortcut icon" href="//app.gomein.net.cn/favicon.ico" type="image/x-icon" />
     <link rel="stylesheet" href='<!--# include virtual="/n/common/a18/style.html"-->,/css/n/detail/gCity.min.css'>
-    <link rel="stylesheet" href="http://localhost:8080/dist/style/style.css">
+    <link rel="stylesheet" href="http://localhost:8080/search2017/css/style.css">
     <!--# include virtual="/n/common/global/global.html"-->
 </head>
 
@@ -219,7 +219,7 @@
         <div class="searchBox-bottom">
             <ul class="related-list clearfix" id="related-list" modelid="9000000800"></ul>
             <div class="search-box clearfix" modelid="9000000801">
-                <input type="text" class="search-box-input" id="search-box-input" value="${searchKeyWords!}" defaultVal="${searchKeyWords!}">
+                <input type="text" class="search-box-input" id="search-box-input" value="${varSearchKeyWords!}" defaultVal="${varSearchKeyWords!}">
                 <a href="javascript:void(0)" class="search-box-btn" id="search-box-btn" data-code="9000000801-0">搜索</a>
             </div>
         </div>
@@ -259,7 +259,6 @@
 </script>
 <script type="text/javascript">
     var isHyg = false;//${(storeConfiguration.isHwg)!};
-    var searchSite = '${(storeConfiguration.searchSite)!}';
     var pageName = '搜索结果页';
 </script>
 <#include "module/pagejs.ftl">

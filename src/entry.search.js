@@ -10,11 +10,11 @@ require("./scripts/about/lazyload");
 //引入页面事件的模块-商品事件
 require("./scripts/about/product");
 
-if(isBwSec){
-    require('./scripts/function/getShopGoods').getShopGoods();
+if(pageData.isBW){
+    pageData.dataBW = require('./scripts/function/getShopGoods').getShopGoods(pageData.ajaxURL,1,pageData.valueBW);
 }
 setTimeout(function(){
-    require('./scripts/function/getGoods').getGoods("搜索结果页");
+    require('./scripts/function/getGoods').getGoods();
 },0);
 
 if(window.isResult){

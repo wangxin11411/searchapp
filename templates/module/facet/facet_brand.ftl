@@ -28,7 +28,7 @@
                     <#else>
                         <#assign brandStyle = "text-indent:0">
                     </#if>
-                        <a id="brandID${item.id!}" data-code="${modelId!}-${(item_index)!}" facetsId="${item.id!}" href="${varWebsite!}${item.url!}" class="facet" name="${item.value!}" style="${brandStyle!}">${item.value!}<i></i></a>
+                        <a id="brandID${item.id!}" data-code="${modelId!}-${(item_index)!}" facetsId="${item.id!}" href="${item.url!}" class="facet" name="${item.value!}" style="${brandStyle!}">${item.value!}<i></i></a>
                     </li>
                 </#list>
             </#if>
