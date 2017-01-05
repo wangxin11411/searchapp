@@ -51,7 +51,7 @@ define(function(require,exports,module){
         {{else}}\
         <p class="item-pic"><a class="emcodeItem item-link" rel="nofollow" href="{{$value.sUrl}}" target="_blank" data-code="{{modelid}}-{{pageNumber}}_{{$index+1}}_1" title="{{$value.alt}}"><img gome-src="{{$value.sImg}}_210.jpg" src="//img.gomein.net.cn/images/grey.gif" alt="{{$value.alt}}"></a>{{if $value.energyTag == 1}}<span class="save-energy"></span>{{/if}}</p>\
         {{/if}}\
-        {{if clothes || merchandise}}\
+        {{if $value.isMulti}}\
         <div class="item-pic-small-box" index="{{$value.images.length}}" curIndex="{{$value.images.length}}">\
             {{if $value.images.length> 5 }}\
             <a href="javascript:void(0);" class="icon-prev disable" onClick="javascript:smallImgSprev(this)"></a>\
@@ -206,7 +206,7 @@ define(function(require,exports,module){
                 $('#product-waiting').hide();
                 pageData.currentPage = data.content.pageBar.pageNumber;
                 pageData.totalPage = data.content.pageBar.totalPage;
-                if(pageData.sort === '00' && pageData.currentPage == 1 && pageData.dataBW.bwsData.length>0){
+                if(pageData.sort === '00' && pageData.currentPage == 1 && pageData.dataBW.bwsData){
                     //如果是综合第一页时，混合推荐联营商品
                     mixedShopData(data.content.prodInfo.products,pageData.dataBW.bwsData);
                 }

@@ -4,7 +4,7 @@
         <#assign cleanURL="/search?question=${varSearchKeyWords!}&market=11&marketPage=1">
     </#if>
 <#else>
-    <#assign cleanURL="${varSelectData.third.id!}.html">
+    <#assign cleanURL="${varSelectData.category.third.id!}.html">
 </#if>
 <a id="clearallfacts" class="nSearch-crumb-clearFacets" href="${cleanURL!}">全部清空</a>
 <div class="nSearch-crumb-facetsCurrent-warp" id="nSearch-crumb-facetsCurrent-warp">

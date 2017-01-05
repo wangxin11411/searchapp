@@ -625,7 +625,7 @@
 	                $('#product-waiting').hide();
 	                pageData.currentPage = data.content.pageBar.pageNumber;
 	                pageData.totalPage = data.content.pageBar.totalPage;
-	                if(pageData.sort === '00' && pageData.currentPage == 1 && pageData.dataBW.bwsData.length>0){
+	                if(pageData.sort === '00' && pageData.currentPage == 1 && pageData.dataBW.bwsData){
 	                    //如果是综合第一页时，混合推荐联营商品
 	                    mixedShopData(data.content.prodInfo.products,pageData.dataBW.bwsData);
 	                }

@@ -620,7 +620,7 @@
 	                $('#product-waiting').hide();
 	                pageData.currentPage = data.content.pageBar.pageNumber;
 	                pageData.totalPage = data.content.pageBar.totalPage;
-	                if(pageData.sort === '00' && pageData.currentPage == 1 && pageData.dataBW.bwsData.length>0){
+	                if(pageData.sort === '00' && pageData.currentPage == 1 && pageData.dataBW.bwsData){
 	                    //如果是综合第一页时，混合推荐联营商品
 	                    mixedShopData(data.content.prodInfo.products,pageData.dataBW.bwsData);
 	                }
@@ -1116,7 +1116,6 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
-	 * 根据cookie--proid120517atg 请求前台组获取最近浏览商品信息
 	 * pagename 接口标识，判断请求来源
 	 * */
 
