@@ -465,7 +465,7 @@
 	        {{else}}\
 	        <p class="item-pic"><a class="emcodeItem item-link" rel="nofollow" href="{{$value.sUrl}}" target="_blank" data-code="{{modelid}}-{{pageNumber}}_{{$index+1}}_1" title="{{$value.alt}}"><img gome-src="{{$value.sImg}}_210.jpg" src="//img.gomein.net.cn/images/grey.gif" alt="{{$value.alt}}"></a>{{if $value.energyTag == 1}}<span class="save-energy"></span>{{/if}}</p>\
 	        {{/if}}\
-	        {{if clothes || merchandise}}\
+	        {{if $value.isMulti && $value.images.length>0}}\
 	        <div class="item-pic-small-box" index="{{$value.images.length}}" curIndex="{{$value.images.length}}">\
 	            {{if $value.images.length> 5 }}\
 	            <a href="javascript:void(0);" class="icon-prev disable" onClick="javascript:smallImgSprev(this)"></a>\
@@ -608,55 +608,51 @@
 	        }else{
 	            ajaxData = "0";
 	        }
+
 	        $.ajax({
 	            url:pageData.ajaxURL,
+	            dataType:"json",
 	            data:{page:pageData.currentPage,bws:ajaxData,type:"json"},
 	            timeout:1000,
 	            beforeSend:function(){
 	                $('#product-waiting').show();
-	            },
-	            success:function(data){
-	                pageData.ajaxStatus = false;
-	                $('#product-waiting').hide();
-	                pageData.currentPage = data.content.pageBar.pageNumber;
-	                pageData.totalPage = data.content.pageBar.totalPage;
-	                if(pageData.sort === '00' && pageData.currentPage == 1 && pageData.dataBW.bwsData){
-	                    //如果是综合第一页时，混合推荐联营商品
-	                    mixedShopData(data.content.prodInfo.products,pageData.dataBW.bwsData);
-	                }
-	                console.log(215)
-	                if(data.content.activities && data.content.activities.length > 0){
-	                    var active_h = 427;
-	                    if(data.content.prodInfo.clothes || data.content.prodInfo.merchandise){active_h=+45};
-	                    if(data.content.prodInfo.products[0].isBigImg){active_h=+65};
-	                    mixActiveData(data.content.prodInfo.products,data.content.activities,active_h);
-	                }
-	                console.log(222)
-	                //活动推广位
-	                if(data.content.regionPromoInfo){
-	                    $("#szSpread").remove();
-	                    $(".product-right-box").prepend("<a id='szSpread' data-code='9000000900-0' target='_blank' href='"+data.regionPromoInfo.promUrl+"'><img src='"+data.regionPromoInfo.imgUrl+"'></a>")
-	                }else{
-	                    $("#szSpread").remove();
-	                }
-	                console.log(229)
-	                //模板渲染
-	                template.helper("formatBoolean",function(data,format){
-	                    return String(data);
-	                });
-	                console.log(235)
-	                var itemHTML = templateSimple.compile(tpl_item)($.extend({},data.content.prodInfo,{'noSkusStock':noSkusStock,'modelid':9000000700,'pageNumber':pageData.currentPage}));
-	                console.log(237)
-	                if($.trim(itemHTML) !=""){
-	                    $('#product-box').empty().html(itemHTML);
-	                    initPageNumber();
-	                }
-	            },
-	            error:function(req,error){
-	                pageData.ajaxStatus = false;
-	                $('#product-waiting').hide();
 	            }
-	        })
+	        }).always(function () {
+	            pageData.ajaxStatus = false;
+	            $('#product-waiting').hide();
+	        }).done(function (data) {
+	            if(!data.content) {return false};
+	            pageData.currentPage = data.content.pageBar.pageNumber;
+	            pageData.totalPage = data.content.pageBar.totalPage;
+	            if(pageData.sort === '00' && pageData.currentPage == 1 && pageData.dataBW.bwsData){
+	                //如果是综合第一页时，混合推荐联营商品
+	                mixedShopData(data.content.prodInfo.products,pageData.dataBW.bwsData);
+	            }
+	            if(data.content.activities && data.content.activities.length > 0){
+	                var active_h = 427;
+	                if(data.content.prodInfo.clothes || data.content.prodInfo.merchandise){active_h=+45};
+	                if(data.content.prodInfo.products[0].isBigImg){active_h=+65};
+	                mixActiveData(data.content.prodInfo.products,data.content.activities,active_h);
+	            }
+	            //活动推广位
+	            if(data.content.regionPromoInfo){
+	                $("#szSpread").remove();
+	                $(".product-right-box").prepend("<a id='szSpread' data-code='9000000900-0' target='_blank' href='"+data.regionPromoInfo.promUrl+"'><img src='"+data.regionPromoInfo.imgUrl+"'></a>")
+	            }else{
+	                $("#szSpread").remove();
+	            }
+	            //模板渲染
+	            template.helper("formatBoolean",function(data,format){
+	                return String(data);
+	            });
+	            var itemHTML = templateSimple.compile(tpl_item)($.extend({},data.content.prodInfo,{'noSkusStock':noSkusStock,'modelid':9000000700,'pageNumber':pageData.currentPage}));
+	            if($.trim(itemHTML) !=""){
+	                $('#product-box').empty().html(itemHTML);
+	                initPageNumber();
+	            }
+	        }).fail(function () {
+	            console.log("请求错误")
+	        });
 	    }
 	    module.exports = {
 	        getGoods:getGoods
@@ -1090,6 +1086,7 @@
 	    var bwsString = "";
 	    $.ajax({
 	        url:url,
+	        dataType:"json",
 	        async:false,
 	        data:{page:pageNumber,bws:bwValue,type:"json"}
 	    }).done(function(data){

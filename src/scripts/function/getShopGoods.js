@@ -9,6 +9,7 @@ function getShopGoods(url,pageNumber,bwValue){
     var bwsString = "";
     $.ajax({
         url:url,
+        dataType:"json",
         async:false,
         data:{page:pageNumber,bws:bwValue,type:"json"}
     }).done(function(data){
