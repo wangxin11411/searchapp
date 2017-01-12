@@ -22,6 +22,7 @@ define(function(require,exports,module){
             }
             href = (href.indexOf(queryString)!= -1)? href.replace(reg, replaceContent) : href+ "&"+queryString+"="+window.defaultFacets+valueString+(queryString=="price"?"&priceTag=1":"")+"&pzpq=0&pzin=v5";
         }else{
+            href = window.location.pathname;
             if(href.split("-").length <= 1){
                 href = href.split(".html")[0] + "-00-0-48-1-0-0-0-1-0-0-0-0-0-0-0-0-0.html";
             }
