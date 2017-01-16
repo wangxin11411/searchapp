@@ -49,7 +49,7 @@
 	//引入toolbar相关模块
 	__webpack_require__(3);
 	__webpack_require__(6);
-	__webpack_require__(24);
+	__webpack_require__(25);
 	//引入页面事件的模
 	// 块-价格获取，懒加载图片
 	__webpack_require__(7);
@@ -57,24 +57,24 @@
 	__webpack_require__(9);
 
 	if(pageData.isBW){
-	    pageData.dataBW = __webpack_require__(11).getShopGoods(pageData.ajaxURL,1,pageData.valueBW);
+	    pageData.dataBW = __webpack_require__(12).getShopGoods(pageData.ajaxURL,1,pageData.valueBW);
 	}
 	setTimeout(function(){
 	    __webpack_require__(4).getGoods();
 	},0);
 
 	if(window.isResult){
-	    __webpack_require__(25);//右侧店铺精选和底部的推广商品
-	    __webpack_require__(26).getData("#prdRight-2");//右侧热销推荐
-	    __webpack_require__(27).getData("#prdRight-3");//右侧搜索了还购买了
-	    __webpack_require__(28).getData("#prdRight-4");//右侧底部推荐活动（图片）
-	    __webpack_require__(29).getData("#prdBottom-4");//页面底部推荐活动（图片）
+	    __webpack_require__(26);//右侧店铺精选和底部的推广商品
+	    __webpack_require__(27).getData("#prdRight-2");//右侧热销推荐
+	    __webpack_require__(28).getData("#prdRight-3");//右侧搜索了还购买了
+	    __webpack_require__(29).getData("#prdRight-4");//右侧底部推荐活动（图片）
+	    __webpack_require__(30).getData("#prdBottom-4");//页面底部推荐活动（图片）
 	}else{
-	    __webpack_require__(30).getData("#prdBottom-1");//无结果情况底部热销推荐
+	    __webpack_require__(31).getData("#prdBottom-1");//无结果情况底部热销推荐
 	}
 	document.getElementById("lazyajaxloadarea").onmouseenter = function (event) {
-	    __webpack_require__(31).getData("#prdBottom-2");//猜你喜欢
-	    __webpack_require__(23).getData("search","#prdBottom-recent");//最近浏览
+	    __webpack_require__(32).getData("#prdBottom-2");//猜你喜欢
+	    __webpack_require__(24).getData("search","#prdBottom-recent");//最近浏览
 	    this.remove()
 	};
 
@@ -308,6 +308,7 @@
 	            }
 	            href = (href.indexOf(queryString)!= -1)? href.replace(reg, replaceContent) : href+ "&"+queryString+"="+window.defaultFacets+valueString+(queryString=="price"?"&priceTag=1":"")+"&pzpq=0&pzin=v5";
 	        }else{
+	            href = window.location.pathname;
 	            if(href.split("-").length <= 1){
 	                href = href.split(".html")[0] + "-00-0-48-1-0-0-0-1-0-0-0-0-0-0-0-0-0.html";
 	            }
@@ -1030,13 +1031,14 @@
 
 	//添加收藏
 	$("#product-box").delegate(".add-collection", "click", function() {
-
-
 	    g.login(function(){
 	        //searchBase.addCollection($productInfoInput.attr("pId"),$productInfoInput.attr("sId"), loginData.loginId, "wishlist", $productInfoInput.attr("pName"));
-	        __webpack_require__(10).add();
+	        __webpack_require__(10).addCollect($productInfoInput.attr("pId"),$productInfoInput.attr("sId"),loginData.loginId,$productInfoInput.attr("pName"),"wishlist");
+
 	    });
-	})
+	});
+
+
 
 /***/ },
 /* 10 */
@@ -1044,40 +1046,96 @@
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/**
 	 * [description]
-	 * 根据不同筛选条件，设置页面跳转地址，包括facet多选，特殊活动，价格区间，在结果中搜索(仅结果页)
-	 * &pzpq=0&pzin=v5 用于品牌预测的时候用
-	 * queryString:筛选字段facets，promoFlag，price，et(仅搜索结果页调用)
-	 * valueString：修改的值，（promoFlag仅限0,1）
+	 * 根据请求返回结果判断收藏是否成功
+	 * 请求地址："//ss"+cookieDomain + "/item/v1/sc/"+ productId +"/"+skuId+"/"+userId+"/homeSite/flag/sc/wishlist",
+	 * 传入参数：productId,skuId,userId
 	 */
 	!(__WEBPACK_AMD_DEFINE_RESULT__ = function(require,exports,module){
-	    var href = window.location.href;
-	    var queryRelation = {"facets":9,"promoFlag":10,"price":6,"et":-1}; //搜索页面url的query与列表页url中对应query的index位置
-	    var pageCategoryQueryArray = [];
-	    function assembleHref(queryString,valueString){
-	        var reg = new RegExp("(^|&)" + queryString + "=([^&]*)(&|$)", "i");
-	        var replaceContent = "&"+queryString+"="+valueString+"&";
+	    function addCollect(skuId,productId,userId,productName,callbackName){
 
-	        if(window.isSearch){
-	            href = (href.indexOf(queryString)!= -1)? href.replace(reg, replaceContent) : href+ "&"+queryString+"="+valueString+(queryString=="price"?"&priceTag=1":"")+"&pzpq=0&pzin=v5";
-	        }else{
-	            if(href.split("-").length <= 1){
-	                href = href.split(".html")[0] + "-00-0-48-1-0-0-0-1-0-0-0-0-0-0-0-0-0.html";
+	        $.ajax({
+	            type:"get",
+	            url:"//ss"+cookieDomain + "/item/v1/sc/"+ productId +"/"+skuId+"/"+userId+"/homeSite/flag/sc/wishlist",
+	            dataType:"jsonp",
+	            jsonpCallback:callbackName
+	        }).done(function(data){
+	            var content = '';
+	            var request_tre = function(){};
+	            var dataType = data.errorType;
+	            switch(dataType){
+	                case "isError":
+	                    content = '<div class="mask-icon icon-waring"></div><h3 class="mask-tit">错误！</h3>';
+	                    break;
+	                case "isSuccess":
+	                    content = '<div class="mask-icon"></div><h3 class="mask-tit">成功加入收藏夹！</h3><p id="collecion-content-n">'+productName+'</p>';
+	                    break;
+	                case "isCollect":
+	                    content = '<div class="mask-icon icon-waring"></div><h3 class="mask-tit">您已收藏过此商品！</h3><p id="collecion-content-n">'+productName+'</p>';http://myhome.atguat.com.cn/member/myFavorites
+	                    break;
+	                case "下架商品不能收藏":
+	                    content = '<div class="mask-icon icon-waring"></div><h3 class="mask-tit">下架商品不能收藏!</h3>';
+	                    break;
+	                default:
+	                    break;
 	            }
-	            pageCategoryQueryArray = href.split("-");
-	            pageCategoryQueryArray[queryRelation[queryString]] = valueString;
-	            href = pageCategoryQueryArray.join("-");
-	        }
-	        window.location.href = href;
+	            content = content + '<div class="mask-addCart-btn"><a class="mask-shopping closeBtn" href="javascript:void(0);">继续购物</a><a class="link" href="http://myhome'+cookieDomain+'/member/myFavorites" target="_blank">查看收藏夹</a></div>'
+	            __webpack_require__(11).showMask(content,request_tre);
+	        });
 	    }
 		module.exports = {
-			dofacet:assembleHref
+			addCollect:addCollect
 		}
-
-	    
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ },
 /* 11 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_RESULT__ = function(require,exports,module){
+		/**
+		 * [showMask description] 创建弹出层
+		 * @param  {[type]} content [html内容]
+		 * @param  {Function} callback [description]
+		 * @return {[type]}         [description]
+		 */
+		function showMask(content,callback){
+			//遮罩层
+	        var $bodyHeight = $("body").height(),
+		        $windowHeight = $(window).height(),
+		        $h = Math.max($bodyHeight,$windowHeight);
+	        //弹出层主内容
+	        var $maskContentWarp = $('<div class="mask-box" id="mask-box"><a class="mask-close closeBtn" href="javascript:void(0);">╳</a><div class="mask-content-warp" id="mask-content-warp">'+content+'</div></div>'),
+	        	$contentHeight = $maskContentWarp.height(),
+	        	$contentWidth = $maskContentWarp.width()
+
+	        $('<div id="mask-overlay" class="mask-overlay"></div>').css("height",$h).appendTo('body');
+	        $maskContentWarp.css({
+	            "margin-left":-($contentWidth/2),
+	            "margin-top":-($contentHeight/2)
+	        }).appendTo('body');
+
+	        if(callback && typeof callback == "function"){
+	            callback.apply();
+	        }
+	        $(".closeBtn").on('click',function(){
+	            closeMask();
+	        })
+		}
+
+		function closeMask(){
+			$("#mask-overlay").remove();
+	        $("#mask-box").remove();
+		}
+
+
+		module.exports = {
+			showMask:showMask,
+			closeMask:closeMask
+		}
+	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__))
+
+/***/ },
+/* 12 */
 /***/ function(module, exports) {
 
 	/**
@@ -1114,10 +1172,10 @@
 	}
 
 /***/ },
-/* 12 */,
 /* 13 */,
 /* 14 */,
-/* 15 */
+/* 15 */,
+/* 16 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -1136,9 +1194,9 @@
 	}
 
 /***/ },
-/* 16 */,
 /* 17 */,
-/* 18 */
+/* 18 */,
+/* 19 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -1152,11 +1210,11 @@
 	};
 
 /***/ },
-/* 19 */,
 /* 20 */,
 /* 21 */,
 /* 22 */,
-/* 23 */
+/* 23 */,
+/* 24 */
 /***/ function(module, exports) {
 
 	/**
@@ -1195,7 +1253,7 @@
 
 
 /***/ },
-/* 24 */
+/* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -1226,10 +1284,10 @@
 	});
 
 /***/ },
-/* 25 */
+/* 26 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var tpl_normal = __webpack_require__(15).tpl;
+	var tpl_normal = __webpack_require__(16).tpl;
 	$.ajax({
 	    type:"get",
 	    dataType:"jsonp",
@@ -1270,10 +1328,10 @@
 	});
 
 /***/ },
-/* 26 */
+/* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var tpl_normal = __webpack_require__(18).tpl;
+	var tpl_normal = __webpack_require__(19).tpl;
 	function getData(domId){
 	    $.get(
 	        window.url.bigdata_url,
@@ -1301,10 +1359,10 @@
 	}
 
 /***/ },
-/* 27 */
+/* 28 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var tpl_normal = __webpack_require__(18).tpl;
+	var tpl_normal = __webpack_require__(19).tpl;
 	function getData(domId){
 	    $.get(
 	        window.url.bigdata_url,
@@ -1334,7 +1392,7 @@
 	}
 
 /***/ },
-/* 28 */
+/* 29 */
 /***/ function(module, exports) {
 
 	
@@ -1365,7 +1423,7 @@
 	}
 
 /***/ },
-/* 29 */
+/* 30 */
 /***/ function(module, exports) {
 
 	function getData(domId){
@@ -1395,7 +1453,7 @@
 	}
 
 /***/ },
-/* 30 */
+/* 31 */
 /***/ function(module, exports) {
 
 	var tpl = '{{each lst as value}}\
@@ -1450,7 +1508,7 @@
 
 
 /***/ },
-/* 31 */
+/* 32 */
 /***/ function(module, exports) {
 
 	var tpl = '{{each lst as value}}\
