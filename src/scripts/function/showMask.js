@@ -11,7 +11,7 @@ define(function(require,exports,module){
 	        $windowHeight = $(window).height(),
 	        $h = Math.max($bodyHeight,$windowHeight);
         //弹出层主内容
-        var $maskContentWarp = $('<div class="mask-box" id="mask-box"><div class="mask-content-warp" id="mask-content-warp">'+content+'</div></div>'),
+        var $maskContentWarp = $('<div class="mask-box" id="mask-box"><a class="mask-close closeBtn" href="javascript:void(0);">╳</a><div class="mask-content-warp" id="mask-content-warp">'+content+'</div></div>'),
         	$contentHeight = $maskContentWarp.height(),
         	$contentWidth = $maskContentWarp.width()
 
@@ -24,12 +24,16 @@ define(function(require,exports,module){
         if(callback && typeof callback == "function"){
             callback.apply();
         }
+        $(".closeBtn").on('click',function(){
+            closeMask();
+        })
 	}
 
 	function closeMask(){
 		$("#mask-overlay").remove();
         $("#mask-box").remove();
 	}
+
 
 	module.exports = {
 		showMask:showMask,

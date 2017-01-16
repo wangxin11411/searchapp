@@ -14,10 +14,10 @@ $("#product-box").delegate(".addTo-cart", "click", function() {
 
 //添加收藏
 $("#product-box").delegate(".add-collection", "click", function() {
-
-
     g.login(function(){
         //searchBase.addCollection($productInfoInput.attr("pId"),$productInfoInput.attr("sId"), loginData.loginId, "wishlist", $productInfoInput.attr("pName"));
-        require('../function/addCollection').add();
+        require('../function/addCollection').addCollect($productInfoInput.attr("pId"),$productInfoInput.attr("sId"),loginData.loginId,$productInfoInput.attr("pName"),"wishlist");
+
     });
-})
+});
+
