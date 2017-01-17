@@ -1,33 +1,42 @@
 /**
  * [description]
- * 根据不同筛选条件，设置页面跳转地址，包括facet多选，特殊活动，价格区间，在结果中搜索(仅结果页)
- * &pzpq=0&pzin=v5 用于品牌预测的时候用
- * queryString:筛选字段facets，promoFlag，price，et(仅搜索结果页调用)
- * valueString：修改的值，（promoFlag仅限0,1）
+ * 根据请求返回结果判断收藏是否成功
+ * 请求地址："//ss"+cookieDomain + "/item/v1/sc/"+ productId +"/"+skuId+"/"+userId+"/homeSite/flag/sc/wishlist",
+ * 传入参数：productId,skuId,userId
  */
 define(function(require,exports,module){
-    var href = window.location.href;
-    var queryRelation = {"facets":9,"promoFlag":10,"price":6,"et":-1}; //搜索页面url的query与列表页url中对应query的index位置
-    var pageCategoryQueryArray = [];
-    function assembleHref(queryString,valueString){
-        var reg = new RegExp("(^|&)" + queryString + "=([^&]*)(&|$)", "i");
-        var replaceContent = "&"+queryString+"="+valueString+"&";
+    function addCollect(skuId,productId,userId,productName,callbackName){
 
-        if(window.isSearch){
-            href = (href.indexOf(queryString)!= -1)? href.replace(reg, replaceContent) : href+ "&"+queryString+"="+valueString+(queryString=="price"?"&priceTag=1":"")+"&pzpq=0&pzin=v5";
-        }else{
-            if(href.split("-").length <= 1){
-                href = href.split(".html")[0] + "-00-0-48-1-0-0-0-1-0-0-0-0-0-0-0-0-0.html";
+        $.ajax({
+            type:"get",
+            url:"//ss"+cookieDomain + "/item/v1/sc/"+ productId +"/"+skuId+"/"+userId+"/homeSite/flag/sc/wishlist",
+            dataType:"jsonp",
+            jsonpCallback:callbackName
+        }).done(function(data){
+            var content = '';
+            var request_tre = function(){};
+            var dataType = data.errorType;
+            switch(dataType){
+                case "isError":
+                    content = '<div class="mask-icon icon-waring"></div><h3 class="mask-tit">错误！</h3>';
+                    break;
+                case "isSuccess":
+                    content = '<div class="mask-icon"></div><h3 class="mask-tit">成功加入收藏夹！</h3><p id="collecion-content-n">'+productName+'</p>';
+                    break;
+                case "isCollect":
+                    content = '<div class="mask-icon icon-waring"></div><h3 class="mask-tit">您已收藏过此商品！</h3><p id="collecion-content-n">'+productName+'</p>';http://myhome.atguat.com.cn/member/myFavorites
+                    break;
+                case "下架商品不能收藏":
+                    content = '<div class="mask-icon icon-waring"></div><h3 class="mask-tit">下架商品不能收藏!</h3>';
+                    break;
+                default:
+                    break;
             }
-            pageCategoryQueryArray = href.split("-");
-            pageCategoryQueryArray[queryRelation[queryString]] = valueString;
-            href = pageCategoryQueryArray.join("-");
-        }
-        window.location.href = href;
+            content = content + '<div class="mask-addCart-btn"><a class="mask-shopping closeBtn" href="javascript:void(0);">继续购物</a><a class="link" href="http://myhome'+cookieDomain+'/member/myFavorites" target="_blank">查看收藏夹</a></div>'
+            require('../function/showMask').showMask(content,request_tre);
+        });
     }
 	module.exports = {
-		dofacet:assembleHref
+		addCollect:addCollect
 	}
-
-    
 });
