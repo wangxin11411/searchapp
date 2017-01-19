@@ -26,12 +26,9 @@ $("#product-box").delegate(".add-collection", "click", function() {
 
 /*到货通知*/
 $("#product-box").delegate(".next-buy","click",function(){
-    var request_tre = function(){};
-    var content = '<div class="dh-warp"><h3 class="dh-title">到货通知</h3><p class="dh-info">一旦该商品到货，我们会通过手机短信或邮件通知您</p><table class="dh-form"><tbody><tr><td class="dh-hd"><em class="nHeigh">*</em>手机号码：</td><td><input class="dh-input-text" id="dh-telNum" type="text"><span id="dh-telNum-warn"></span></td></tr><tr><td class="dh-hd"><em class="nHeigh">*</em>邮箱地址：</td><td><input class="dh-input-text" id="dh-email" type="text"><span id="dh-email-warn"></span></td></tr><tr><td>&nbsp;</td><td class="dh-label-box"><label class="gmform-label" for="dhAddCollection"><input class="gmform-input-check" name="dhAddCollection" id="dhAddCollection" type="checkbox">同时加入收藏夹</label></td></tr><tr><td>&nbsp;</td><td class="dh-btn-box"><a href="javascript:void(0)" class="dh-btn-submite" id="dh-submite">确定</a><a href="javascript:void(0)" class="dh-btn-cancel closeBtn">取消</a></td></tr></tbody></table></div>';
-    require('../function/showMask').showMask(content,request_tre);
-    $("#mask-overlay").remove();
-
-
+    var cookieAg = $.cookie("atgregion").split("|")[0];
+    var userId = $.cookie("SSO_USER_ID");
+    require('../function/arriveNotice').arriveNotice("9134521004","1123461018",userId,cookieAg);
 })
 
 

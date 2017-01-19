@@ -28,25 +28,6 @@ define(function(require,exports,module){
         $(".closeBtn").on('click',function(){
             closeMask();
         })
-        $(".dh-btn-submite").on('click',function(){
-            var a = $("#dhAddCollection").attr("checked");
-            var collect = "";
-            var cookieAg = $.cookie("atgregion").split("|")[0];
-            var userId = $.cookie("SSO_USER_ID");
-            require('../function/addCart').check_phone($("#dh-telNum").val(),$("#dh-telNum-warn"));
-            if(require('../function/addCart').check_phone($("#dh-telNum").val(),$("#dh-telNum-warn"))== true){
-                require('../function/addCart').check_email($("#dh-email").val(),$("#dh-email-warn"));
-                if(require('../function/addCart').check_email($("#dh-email").val(),$("#dh-email-warn")) == true){
-                    if(a=="checked"){
-                        collect = true;
-                    }else{
-                        collect = false;
-                    }
-                    require('../function/addCart').arriveNotice("9134521004","1123461018",userId,cookieAg,$("#dh-telNum").val(),$("#dh-email").val(),collect);
-                    closeMask();
-                }
-            }
-        })
 	}
 
 	function closeMask(){
