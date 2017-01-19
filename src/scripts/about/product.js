@@ -2,7 +2,6 @@
 $("#product-box").delegate(".addTo-cart", "click", function() {
     var $info = $(this).parents(".product-item").find(".productInfo");
     var _type = 0;
-    var infoBox = $("#item-info-body");
     if($info.attr("isHyg") == "1"){_type = 16};
     if($info.attr("isTaogou") == "true"){_type = 24};
     /* 加入购物车美通卡入口*/

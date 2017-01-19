@@ -1,8 +1,8 @@
 /**
  * [description]
  * 到货通知：根据请求返回结果判断到货通知是否成功
- * 请求地址："//ss"+cookieDomain + "/item/v1/sc/"+ productId +"/"+skuId+"/"+userId+"/homeSite/flag/sc/wishlist",
- * 传入参数：productId,skuId,userId
+ * 请求地址："//ss"+cookieDomain+"/item/v1/notice/arrival/"+pId+"/"+sId+"/"+cookieSid+"/"+cookieAtg+"/"+phoneNum+"/"+noticeMall+"/"+collect+"/flag/search/notice",
+ * 传入参数：pId,sId,cookieSid,cookieAtg
  */
 define(function(require,exports,module){
     var base = {
@@ -21,10 +21,10 @@ define(function(require,exports,module){
             var collect = "",
             phoneNum = $("#dh-telNum").val(),
             noticeMall = $("#dh-email").val();
-            check_phone($("#dh-telNum").val(),$("#dh-telNum-warn"));
-            if(check_phone($("#dh-telNum").val(),$("#dh-telNum-warn"))== true){
-                check_email($("#dh-email").val(),$("#dh-email-warn"));
-                if(check_email($("#dh-email").val(),$("#dh-email-warn")) == true){
+            check_phone(phoneNum,$("#dh-telNum-warn"));
+            if(check_phone(phoneNum,$("#dh-telNum-warn"))== true){
+                check_email(noticeMall,$("#dh-email-warn"));
+                if(check_email(noticeMall,$("#dh-email-warn")) == true){
                     if(a=="checked"){
                         collect = true;
                     }else{
