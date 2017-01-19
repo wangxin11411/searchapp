@@ -1,7 +1,7 @@
+/*加入购物车*/
 $("#product-box").delegate(".addTo-cart", "click", function() {
     var $info = $(this).parents(".product-item").find(".productInfo");
     var _type = 0;
-
     if($info.attr("isHyg") == "1"){_type = 16};
     if($info.attr("isTaogou") == "true"){_type = 24};
     /* 加入购物车美通卡入口*/
@@ -12,12 +12,24 @@ $("#product-box").delegate(".addTo-cart", "click", function() {
     }
 });
 
-//添加收藏
+
+
+/*添加收藏*/
 $("#product-box").delegate(".add-collection", "click", function() {
     g.login(function(){
         //searchBase.addCollection($productInfoInput.attr("pId"),$productInfoInput.attr("sId"), loginData.loginId, "wishlist", $productInfoInput.attr("pName"));
-        require('../function/addCollection').addCollect($productInfoInput.attr("pId"),$productInfoInput.attr("sId"),loginData.loginId,$productInfoInput.attr("pName"),"wishlist");
+        require('../function/addCollection').addCollect("9134521004","1123461018",loginData.loginId,"华为 HUAWEI Mate 9 4GB+32GB 全网通版 月光银","wishlist");
 
     });
 });
+
+/*到货通知*/
+$("#product-box").delegate(".next-buy","click",function(){
+    var cookieAg = $.cookie("atgregion").split("|")[0];
+    var userId = $.cookie("SSO_USER_ID");
+    require('../function/arriveNotice').arriveNotice("9134521004","1123461018",userId,cookieAg);
+})
+
+
+
 
