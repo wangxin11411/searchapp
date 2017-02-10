@@ -35,6 +35,8 @@
     })();
 
     window.searchkey = "${(varSelectData.keywords)!}";
+    window.brandId = "${(varSelectData.brandId)!}";
+
 
     window.url={
         dsp_url_s:"//dsp.gome.com.cn/decision/hotword",
@@ -46,6 +48,16 @@
     <#else>
     window.isResult = false;
     </#if>
+
+    <#if searchObj.content.selectData.isSearch == true>
+        window.tag = "search"; //搜索
+        <#if searchObj.content.selectData.brandId??>
+        window.tag = "brand"; //品牌
+        </#if>
+    <#else>
+        window.tag = "category"; //分类
+    </#if>
+
 </script>
 
 <script type="text/javascript">
@@ -56,7 +68,6 @@
         regionId    :'${(searchObj.header.searchReq.regionId)!}' || '11010200',
         regionId_2  :'${(searchObj.header.searchReq.regionId)!}'.substr(0,4)+"0000" || '11010000',
         ajaxStatus  :false,
-        sort        :"${varSelectData.toolBar.selectedSort!}",
         isBW        :${(searchObj.header.bwSec)?c},
         valueBW     :"${(searchObj.header.bwFrom)!}x${(searchObj.header.bwSize)!}",
         dataBW      :{} //存放店铺商品数据

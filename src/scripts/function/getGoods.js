@@ -194,7 +194,6 @@ define(function(require,exports,module){
         }else{
             ajaxData = "0";
         }
-
         $.ajax({
             url:pageData.ajaxURL,
             dataType:"json",

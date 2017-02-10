@@ -12,8 +12,7 @@ define(function(require,exports,module){
     function assembleHref(queryString,valueString){
         var reg = new RegExp("(^|&)" + queryString + "=([^&]*)(&|$)", "i");
         var replaceContent = "";
-
-        if(window.isSearch){
+        if(window.tag == "search"){
             var r =href.substr(1).match(reg);
             if (r != null && queryString == "facets"){
                 replaceContent = "&"+queryString+"="+unescape(r[2])+valueString+"&";
@@ -21,7 +20,7 @@ define(function(require,exports,module){
                 replaceContent = "&"+queryString+"="+valueString+"&";
             }
             href = (href.indexOf(queryString)!= -1)? href.replace(reg, replaceContent) : href+ "&"+queryString+"="+window.defaultFacets+valueString+(queryString=="price"?"&priceTag=1":"")+"&pzpq=0&pzin=v5";
-        }else{
+        }else if(window.tag == "category"){
             href = window.location.pathname;
             if(href.split("-").length <= 1){
                 href = href.split(".html")[0] + "-00-0-48-1-0-0-0-1-0-0-0-0-0-0-0-0-0.html";
@@ -33,6 +32,9 @@ define(function(require,exports,module){
                 pageCategoryQueryArray[queryRelation[queryString]] = valueString;
             }
             href = pageCategoryQueryArray.join("-");
+        }else if(window.tag == "brand"){
+            var hre = "search"+cookieDomain+"/search?question="+window.searchkey;
+            href = hre + "&" + queryString + "=" + window.brandId + window.defaultFacets + valueString + (queryString == "price" ? "&priceTag=1" : "") + "&pzpq=0&pzin=v5";
         }
         window.location.href = href;
     }

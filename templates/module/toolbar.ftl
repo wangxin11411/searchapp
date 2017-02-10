@@ -1,7 +1,7 @@
 <#assign instock = searchObj.content.toolBar.instock><#--是否为有货商品-->
 <#assign deliv = searchObj.content.toolBar.deliv><#--是否为国美自营商品-->
 <#assign market = searchObj.content.toolBar.market><#--是否为海外购商品-->
-<#assign discountQiang = searchObj.content.toolBar.sale.qiang><#--是否为聚划算商品-->
+<#--<#assign discountQiang = searchObj.content.toolBar.sale.qiang>&lt;#&ndash;是否为聚划算商品&ndash;&gt;-->
 <#assign discountPromo = searchObj.content.toolBar.sale.promo><#--是否为促销活动商品-->
 <#--定义页面排序综合、销量、新品、评价、价格规则-->
 <#assign sort = searchObj.content.toolBar.sort>
@@ -42,7 +42,9 @@
             <li class="${saleClassName!}" data-sort="10"><a href="${(sort.sale.url)!}">销量</a></li>
             <li class="${startDateClassName!}" data-sort="30"><a href="${(sort.startDate.url)!}">新品</a></li>
             <li class="${evaluateCountClassName!}" data-sort="50"><a href="${(sort.evaluateCount.url)!}">评价</a></li>
-            <li id="sort-price" class="${priceClassName!}" data-sort="${priceSort!}"><a href="${(sort.price.url)!}">价格</a><i class="icon-up-down"></i></li>
+            <li id="sort-price" class="${priceClassName!}" data-sort="${priceSort!}" prdUrl1="${(sort.price.url1)!}" prdUrl2="${(sort.price.url2)!}"><a href ="">价格</a>
+                <i class="icon-up-down"></i>
+            </li>
         </ul>
         <#--价格区间-->
         <#if searchObj.content.selectData.price??>
@@ -97,16 +99,16 @@
             <#if discountPromo.isDefault??>
                 <#assign discountPromoChecked = "checke">
             </#if>
-            <#if discountQiang.isDefault??>
+           <#-- <#if discountQiang.isDefault??>
                 <#assign discountQiangChecked = "checke">
-            </#if>
+            </#if>-->
             <#if isGomehigo>
                 <#assign hideDom = "hide-dom">
             </#if>
             <a class="gmform-label ${delivChecked!} ${hideDom!}" id="deliv" data-code="${modelId!}-10" href="${delivUrl!}"><i class="iic"></i>国美自营</a>
             <a class="gmform-label ${instoclChecked!}" id="instock" data-code="${modelId!}-11" href="${(instock.url)!}"><i class="iic"></i>仅显示有货</a>
             <a class="gmform-label ${discountPromoChecked!} ${hideDom!}" id="discountPromo" data-code="${modelId!}-12" href="${(discountPromo.url)!}"><i class="iic"></i>促销商品</a>
-            <a class="gmform-label ${discountQiangChecked!} ${hideDom!}" id="discountQiang" data-code="${modelId!}-13" href="${(discountQiang.url)!}"><i class="iic"></i>真划算</a>
+            <#--<a class="gmform-label ${discountQiangChecked!} ${hideDom!}" id="discountQiang" data-code="${modelId!}-13" href="${(discountQiang.url)!}"><i class="iic"></i>真划算</a>-->
             <#if (searchObj.content.selectData.isSearch)>
             <a class="gmform-label ${marketChecked!} ${hideDom!}" id="market" data-code="${modelId!}-14" href="${(market.url)!}"><i class="iic"></i>海外购</a>
             </#if>

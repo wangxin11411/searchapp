@@ -16,11 +16,14 @@ define(function(require,exports,module){
             var _this = $(this);
             if(_this.attr('data-sort') === "21"){
                 _this.attr('data-sort',"20").removeClass("price-down").addClass("price-up");
+                $(this).find('a').attr("href",$(this).attr("prdurl1"));
             }else{
                 _this.attr('data-sort',"21").removeClass("price-up").addClass("price-down");
+                $(this).find('a').attr("href",$(this).attr("prdurl2"));
             }
         }
     });
+
 	$('#filter-order-box li').bind('click', function (event) {
         var _this = $(this),
             sort_target = _this.attr('data-sort');
@@ -29,10 +32,14 @@ define(function(require,exports,module){
             _this.addClass('cur').siblings('.cur').removeClass('cur');
             pageData.sort = sort_target;
             pageData.currentPage=1;
-
-            require('../function/getGoods').getGoods();
+            if(window.tag== "brand"){
+                window.location.href = $(this).find('a').attr("href");
+            }else {
+                pageData.ajaxURL = $(this).find('a').attr("href");
+                require('../function/getGoods').getGoods();
+            }
         }
-    }).find('a').click(function (event) {
+    }).find('a').click(function(event){
         event.preventDefault();
     });
     /**

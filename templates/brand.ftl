@@ -1,5 +1,4 @@
 <#assign TDK = searchObj.content.seoData>
-<#assign REQ = searchObj.header.searchReq>
 <#assign quession = "${(TDK.question)?if_exists}${(TDK.catName)?if_exists}">
 <#assign pageSelectData = searchObj.content.selectData>
 <#assign isCatId = "${(isCatId)!}">
@@ -9,15 +8,9 @@
     <#assign brandName = "${(pageSelectData.keywords)!}">
 </#if>
 <#if TDK.XSearch>
-    <#if isCatId=="Y">
-        <#assign title = "${brandName!}官网提供${brandName!}大全及${brandName!}官网报价-国美在线">
-        <#assign description ="国美在线${brandName!}官网提供${brandName!}最新商品,查看最新${brandName!}官网报价,网购就到国美在线${brandName!}大全产品专区"  >
-        <#assign keywords = "${brandName!},${brandName!}大全, ${brandName!}官网,${brandName!}官网报价">
-    <#else>
         <#assign title = "${brandName!}官网提供${brandName!}大全及${brandName!}官网报价-国美在线">
         <#assign description ="国美在线${brandName!}官网提供${brandName!}最新商品,查看最新${brandName!}官网报价,网购就到国美在线${brandName!}大全产品专区"  >
         <#assign keywords = "${brandName!},${brandName!}大全,${brandName!}官网,${brandName!}官网报价">
-    </#if>
 </#if>
 
 <#if pageSelectData.facets.catfacets?? && pageSelectData.facets.catfacets.id??>
@@ -46,15 +39,26 @@
 <#else>
     <link rel="canonical" href="http://brand${(storeConfiguration.cookieDomain)!}/${(pageSelectData.brandId)?if_exists}-0.html"/>
 </#if>
-
     <link rel="alternate" media="only screen and(max-width:640px)" href="${href_url!}"/>
-
     <link rel="shortcut icon" href="//app.gomein.net.cn/favicon.ico" type="image/x-icon" />
-    <link rel="stylesheet" href='${(storeConfiguration.stageCssServer)!}/??<!--# include virtual="/n/common/default/css.html"-->'>
-    <link rel="stylesheet" href="${(storeConfiguration.stageCssServer)!}/??/css/n/detail/gCity.min.css,/search/search2016/css/search2015.min.css,/f2ecss/stage/overseasbuy/overseas-basic.min.css?${jsCssVersion!}">
+    <link rel="stylesheet" href='<!--# include virtual="/n/common/a18/style.html"-->,/css/n/detail/gCity.min.css'>
+    <link rel="stylesheet" href="http://localhost:8080/search2017/css/style.css">
+
 <!--# include virtual="/n/common/global/global.html"-->
 </head>
 <body data-page="brand">
+<div id="delscript">
+    <script type="text/javascript">
+        var winWidth = window.screen.width,objb = document.body;if (winWidth<=1024) {objb.className += " " +"w990"; }else {objb.className=objb.className.replace("w990", '');};
+    </script>
+</div>
+<div style="display:none" id="severInfolist">
+    server:${(searchObj.header.serverInfo.serverIp)!}<br/>
+    from:${(searchObj.header.serverInfo.from)!}<br/>
+    thread:${(searchObj.header.serverInfo.thread)!}<br/>
+    job:${(searchObj.header.serverInfo.job)!}<br/>
+    time:${(searchObj.header.serverInfo.time)!}<br/>
+</div>
 <#--nginx  -->
 <!--# include virtual="/n/common/default/head.html"-->
 <#--在本地测试环境引入公共头-->
@@ -105,15 +109,47 @@
         </#if>
     </div>
     <#--facets展示 -->
-    <div class="nSearchWarp nSearch-facets">
-        <#include "module/facet_hot_relevant.ftl">
-        <#include "module/facet_common.ftl">
+    <div class="nSearchWarp nSearch-facets" id="module-facet">
+        <#assign showThreshold = 4 />
+        <#assign showThresholdText = "" />
+        <#if isCatId=="N">
+            <#--【facet】分类 -->
+            <#if (searchObj.content.facets.hotCategory)??>
+                <#assign facetsHot = (searchObj.content.facets.hotCategory)!>
+                <#assign displayType = "facets-hot">
+                <#assign facethotitem = "facets-hot-item">
+                <#list facetsHot as facetsItem>
+                    <#assign thisFacets = facetsItem>
+                    <#include "module/facet/facet_common.ftl">
+                </#list>
+                <#assign displayType = "">
+                <#assign facethotitem = "">
+            </#if>
+        </#if>
+        <#--【facet】一般筛选  【展示方式】超过showThreshold的分类隐藏，通过更多展示按钮控制-->
+        <#assign facetsCommon = (searchObj.content.facets.commonfacets)!>
+        <#list facetsCommon as facetsItem>
+            <#if (facetsItem_index >=  showThreshold)>
+                <#assign showThresholdText =showThresholdText+ "," + (facetsItem.label)!/>
+                <#assign displayType ="fc-hide"/>
+            </#if>
+            <#assign thisFacets = facetsItem>
+            <#include "module/facet/facet_common.ftl">
+        </#list>
+        <#if facetsCommon?size &gt; showThreshold>
+            <div class="fccc-control-warp">
+                <span class="fccc-control"  id="fc-common-show">更多选项（${showThresholdText?substring(1)}）</span>
+                <span class="fccc-up" id="fc-common-hide">收起&nbsp;&nbsp;</span>
+            </div>
+        </#if>
     </div>
     <#--页面商品列表主体-->
     <div class="nSearchWarp">
         <div class="nSearchWarp-main">
             <div class="product-right-box">
-                <#include "module/prd_right.ftl" >
+                <div id="prdRight-1"><#--店铺精选商品 dsp--></div>
+                <div id="prdRight-2"><#--热销推荐商品 bigdata--></div>
+                <div id="prdRight-3"><#--搜了还还购买了 bigdata--></div>
             </div>
             <div class="product-left-list" id="product-left">
                 <#include "module/toolbar.ftl">
@@ -121,24 +157,21 @@
             </div>
         </div>
     </div>
-    <div class="nSearchWarp">
-        <#--猜你喜欢的商品-->
-        <#include "module/bottom_mayBeLike.ftl">
-        <#--最近浏览商品-->
-        <#include "module/bottom_recentVisit.ftl">
-    </div>
 <#else>
     <div class="brandNoResult layout" style="height:150px; text-align:center;border:1px solid #e0e0e0; margin:10px auto; line-height:150px; color:#5e5e5e">非常抱歉，此页面无<b style="color:#06c">${brandName!}</b>相关商品，更多内容请访问：<a href="http://brand.gome.com.cn/" style="color:#06c;">品牌大全</a></div>
     <div class="nSearchWarp">
         <div id="related-list" style="display: none"><div id="prd-right-hot"></div></div>
         <div id="product-left"><div id="filter-box"></div><div id="filter-bottom"></div></div>
         <div id="personrecommend-warp" style="display:none"><div id="personrecommend" class="personrecommend prd-right-normal"></div></div>
-        <#--底部热销-->
-        <#include "module/bottom_hotSale.ftl">
-        <#--最近浏览商品-->
-        <#include "module/bottom_recentVisit.ftl">
     </div>
 </#if>
+<div id="lazyajaxloadarea"><div></div></div>
+<div class="nSearchWarp">
+    <#--猜你喜欢的商品-->
+    <div id="prdBottom-1"><#--猜你喜欢 bigdata--></div>
+    <#--最近浏览商品-->
+    <div id="prdBottom-recent"><#--最近浏览--></div>
+</div>
 <div id="search_info_box" style="display:none">
     <div id="searchReq">${searchReq!}</div>
     <div id="pageType">${pageType!}</div>
@@ -152,77 +185,23 @@
 
 <script>
     var productId_list = "";
-    var keyword = "${(searchObj.content.seoData.catName)?default('平板电视')}";
+    var keyword = "";
     var order = [];
-    var orderby=""
+    var orderby="";
 </script>
 <script type="text/javascript">
-    var isHyg = false//${(storeConfiguration.isHwg)!};
-    var searchSite = '${(storeConfiguration.searchSite)!}';
-    var timerLazyload = null;
-    var interVal = null;
-    <#if asyncPrice>
-        var asyncPrice = true;
-    <#else>
-        var asyncPrice = false;
-    </#if>
+    var isHyg = false;//${(storeConfiguration.isHwg)!};
+    var pageName = '品牌列表页';
+    var searchSite = '//search.gome.com.cn';
 </script>
+
 <#include "module/pagejs.ftl">
-<script>
-<#if asyncPrice>
-clearInterval(interVal)
-timerLazyload = setInterval(priceInterval,1000)
-<#else>
-clearInterval(timerLazyload)
-interVal=setInterval(nomalInterval,1000);   
-</#if>
-    $(function(){
-        var prods_li = $("#prodByAjax ul.products li:lt(10)");
-        $.each(prods_li,function(i,item){
-            if(i>0){
-                productId_list = productId_list + "," + $(item).attr("g-li");
-            }else{
-                productId_list = productId_list + $(item).attr("g-li");
-            }
-        });
-        if($("#filterBox a.cur").attr("track")!=undefined){
-            order = $("#filterBox a.cur").attr("track").split(":");
-        }
-        orderby = order[2];
-
-//        gomeJsConfig.customConfig = {
-//            jsMerge:[
-//                { id : "searchMerge",mergeJs : ["gCity","uc_pager","gomeLib","template","gLoad"]}
-//            ]
-//        };
-
-        //各种埋码
-        window.setTimeout(function(){
-            s.pageName="商品列表:品牌大全:${(pageSelectData.keywords)?if_exists}:${brandName!}";
-            s.channel=s.pageName.split(':')[0];
-            s.prop1=s.pageName.split(':')[0]+":"+s.pageName.split(':')[1];
-            s.prop2=s.pageName.split(':')[0]+":"+s.pageName.split(':')[1]+":"+s.pageName.split(':')[2];
-            s.prop3=s.pageName.split(':')[0]+":"+s.pageName.split(':')[1]+":"+s.pageName.split(':')[3];
-            s.prop4="品牌列表页";
-            s.eVar3="品牌列表页";
-            var s_code=s.t();
-            if(s_code)document.write(s_code);
-        },2000);
-    })
-</script>
-<script>
-    (function(){
-        var bp = document.createElement('script');
-        bp.src = '//push.zhanzhang.baidu.com/push.js';
-        var s = document.getElementsByTagName("script")[0];
-        s.parentNode.insertBefore(bp, s);
-    })();
-</script>
 <script>
     $(function(){
         $(".filter-priceRange-box").css("display","none");
         $(".filter-resultSearch-box").css("display","none");
     })
 </script>
+<script src="${(storeConfiguration.stageJsServer)!}/search2017/js/brand.bundle.js"></script>
 </body>
 </html>
