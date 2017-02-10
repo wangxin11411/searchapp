@@ -50,9 +50,10 @@
     </#if>
 
     <#if searchObj.content.selectData.isSearch == true>
-        window.tag = "search"; //搜索
         <#if searchObj.content.selectData.brandId??>
         window.tag = "brand"; //品牌
+        <#else>
+        window.tag = "search"; //搜索
         </#if>
     <#else>
         window.tag = "category"; //分类
