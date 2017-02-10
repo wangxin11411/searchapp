@@ -79,6 +79,9 @@ define(function(require,exports,module){
                 {{if $value.marketTag == 1}}\
                 <span class="promotion-hwg"></span>\
                 {{/if}}\
+                {{if $value.rebate == 1}}\
+                    <span class="promotion-normal">返利</span>\
+                {{/if}}\
                 {{if $value.isVip == 1}}\
                     <span class="promotion-normal">会员商品</span>\
                 {{/if}}\

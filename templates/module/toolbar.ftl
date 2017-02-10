@@ -3,6 +3,7 @@
 <#assign market = searchObj.content.toolBar.market><#--是否为海外购商品-->
 <#assign discountQiang = searchObj.content.toolBar.sale.qiang><#--是否为聚划算商品-->
 <#assign discountPromo = searchObj.content.toolBar.sale.promo><#--是否为促销活动商品-->
+<#assign discountRebate = searchObj.content.toolBar.sale.rebate><#--是否为返利活动商品-->
 <#--定义页面排序综合、销量、新品、评价、价格规则-->
 <#assign sort = searchObj.content.toolBar.sort>
 <#assign modelId = "9000000600"/>
@@ -100,6 +101,9 @@
             <#if discountQiang.isDefault??>
                 <#assign discountQiangChecked = "checke">
             </#if>
+            <#if discountRebate.isDefault??>
+                <#assign discountRebateChecked = "checke">
+            </#if>
             <#if isGomehigo>
                 <#assign hideDom = "hide-dom">
             </#if>
@@ -110,6 +114,7 @@
             <#if (searchObj.content.selectData.isSearch)>
             <a class="gmform-label ${marketChecked!} ${hideDom!}" id="market" data-code="${modelId!}-14" href="${(market.url)!}"><i class="iic"></i>海外购</a>
             </#if>
+            <a class="gmform-label ${discountRebateChecked!} ${hideDom!}" id="discountRebate" data-code="${modelId!}-15" href="${(discountRebate.url)!}"><i class="iic"></i>返利商品</a>
             <#if ((searchObj.content.promoInfo)?? && searchObj.content.promoInfo[0]??)>
                 <label class="gmform-label filter-label-specialScreening ${hideDom!}" for="specialScreening" id="specialScreening" data-code="${modelId!}-15"><i class="iic"></i>
                     <#if (searchObj.content.promoInfo[0].imgUrl !="")>
