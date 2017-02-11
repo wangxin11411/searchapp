@@ -43,7 +43,9 @@
             <li class="${saleClassName!}" data-sort="10"><a href="${(sort.sale.url)!}">销量</a></li>
             <li class="${startDateClassName!}" data-sort="30"><a href="${(sort.startDate.url)!}">新品</a></li>
             <li class="${evaluateCountClassName!}" data-sort="50"><a href="${(sort.evaluateCount.url)!}">评价</a></li>
-            <li id="sort-price" class="${priceClassName!}" data-sort="${priceSort!}"><a href="${(sort.price.url)!}">价格</a><i class="icon-up-down"></i></li>
+            <li id="sort-price" class="${priceClassName!}" data-sort="${priceSort!}" prdUrl1="${(sort.price.url1)!}" prdUrl2="${(sort.price.url2)!}"><a href ="${(sort.price.url1)!}">价格</a>
+                <i class="icon-up-down"></i>
+            </li>
         </ul>
         <#--价格区间-->
         <#if searchObj.content.selectData.price??>
@@ -58,13 +60,11 @@
             <li class="priceRange-btn"><a id="fc-btn-ok" class="fc-btn-ok" href="javascript:void(0)">确定</a></li>
         </ul>
         <#--在结果中搜素哦-->
-        <#if searchObj.content.selectData.isSearch>
         <#assign et = (searchObj.header.searchReq.et)! />
         <div class="filter-resultSearch-box">
             <input type="text" value="${et!}" class="filter-resultSearch-input" />
             <a data-code="${modelId!}-0" href="javascript:void(0)" class="filter-resultSearch-btn">确定</a>
         </div>
-        </#if>
         <#--小分页-->
         <div class="min-pager-box">
             <a href="javascript:void(0)" class="min-pager-next <#if searchObj.content.pageBar.totalPage == 1>mp-disable</#if>" id="mp-next">&gt;</a>

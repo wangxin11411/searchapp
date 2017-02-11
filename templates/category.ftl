@@ -221,7 +221,7 @@
 </script>
 <script type="text/javascript">
     var isHyg = false;//${(storeConfiguration.isHwg)!};
-    var pageName = '三级列表页';
+    window.pageName = '三级列表页';
 </script>
 <#include "module/pagejs.ftl">
 <script src="${(storeConfiguration.stageJsServer)!}/search2017/js/category.bundle.js"></script>

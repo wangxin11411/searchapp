@@ -12,31 +12,36 @@ define(function(require,exports,module){
     function assembleHref(queryString,valueString){
         var reg = new RegExp("(^|&)" + queryString + "=([^&]*)(&|$)", "i");
         var replaceContent = "";
-
-        if(window.isSearch){
-            var r =href.substr(1).match(reg);
-            if (r != null && queryString == "facets"){
-                replaceContent = "&"+queryString+"="+unescape(r[2])+valueString+"&";
-            }else{
-                replaceContent = "&"+queryString+"="+valueString+"&";
-            }
-            href = (href.indexOf(queryString)!= -1)? href.replace(reg, replaceContent) : href+ "&"+queryString+"="+window.defaultFacets+valueString+(queryString=="price"?"&priceTag=1":"")+"&pzpq=0&pzin=v5";
-        }else{
-            href = window.location.pathname;
-            if(href.split("-").length <= 1){
-                href = href.split(".html")[0] + "-00-0-48-1-0-0-0-1-0-0-0-0-0-0-0-0-0.html";
-            }
-            pageCategoryQueryArray = href.split("-");
-            if (queryString === "facets" && pageCategoryQueryArray[9] !== "0"){
-                pageCategoryQueryArray[queryRelation[queryString]] += valueString;
-            }else{
-                pageCategoryQueryArray[queryRelation[queryString]] = valueString;
-            }
-            href = pageCategoryQueryArray.join("-");
+        switch(window.pageName){
+            case "搜索结果页":
+                var r =href.substr(1).match(reg);
+                if (r != null && queryString == "facets"){
+                    replaceContent = "&"+queryString+"="+unescape(r[2])+valueString+"&";
+                }else{
+                    replaceContent = "&"+queryString+"="+valueString+"&";
+                }
+                href = (href.indexOf(queryString)!= -1)? href.replace(reg, replaceContent) : href+ "&"+queryString+"="+window.defaultFacets+valueString+(queryString=="price"?"&priceTag=1":"")+"&pzpq=0&pzin=v5";
+                break;
+            case "三级列表页":
+                href = window.location.pathname;
+                if(href.split("-").length <= 1){
+                    href = href.split(".html")[0] + "-00-0-48-1-0-0-0-1-0-0-0-0-0-0-0-0-0.html";
+                }
+                pageCategoryQueryArray = href.split("-");
+                if (queryString === "facets" && pageCategoryQueryArray[9] !== "0"){
+                    pageCategoryQueryArray[queryRelation[queryString]] += valueString;
+                }else{
+                    pageCategoryQueryArray[queryRelation[queryString]] = valueString;
+                }
+                href = pageCategoryQueryArray.join("-");
+                break;
+            case "品牌商品页":
+                href = window.location.protocol+"//search"+cookieDomain+"/search?question="+window.searchkey + "&" + queryString + "=" + window.brandId  + valueString +"&pzpq=0&pzin=v5";
+                break;
         }
         window.location.href = href;
     }
-	module.exports = {
-		dofacet:assembleHref
-	}
+    module.exports = {
+        dofacet:assembleHref
+    }
 });

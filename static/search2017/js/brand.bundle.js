@@ -48,37 +48,31 @@
 	__webpack_require__(1);
 	//引入toolbar相关模块
 	__webpack_require__(3);
-	__webpack_require__(21);
-	__webpack_require__(28);
-	//引入页面事件的模
-	// 块-价格获取，懒加载图片
+	//引入页面事件的模块-价格获取，懒加载图片
 	__webpack_require__(6);
 	//引入页面事件的模块-商品事件
 	__webpack_require__(8);
 
 	if(pageData.isBW){
-	    pageData.dataBW = __webpack_require__(12).getShopGoods(pageData.ajaxURL,1,pageData.valueBW);
-	}
+	 pageData.dataBW = __webpack_require__(12).getShopGoods(pageData.ajaxURL,1,pageData.valueBW);
+	 }
 	setTimeout(function(){
 	    __webpack_require__(4).getGoods();
 	},0);
 
 	if(window.isResult){
-	    __webpack_require__(29);//右侧店铺精选和底部的推广商品
+	    __webpack_require__(13);//右侧店铺精选和底部的推广商品
 	    __webpack_require__(15).getData("#prdRight-2");//右侧热销推荐
-	    __webpack_require__(30).getData("#prdRight-3");//右侧搜索了还购买了
-	    __webpack_require__(31).getData("#prdRight-4");//右侧底部推荐活动（图片）
-	    __webpack_require__(32).getData("#prdBottom-4");//页面底部推荐活动（图片）
+	    __webpack_require__(17).getData("#prdRight-3");//右侧浏览了还购买商品
 	}else{
 	    __webpack_require__(18).getData("#prdBottom-1");//无结果情况底部热销推荐
 	}
+
 	document.getElementById("lazyajaxloadarea").onmouseenter = function (event) {
-	    __webpack_require__(33).getData("#prdBottom-2");//猜你喜欢
-	    __webpack_require__(20).getData("search","#prdBottom-recent");//最近浏览
+	    __webpack_require__(19).getData("#prdBottom-2");//猜你喜欢
+	    __webpack_require__(20).getData("list","#prdBottom-recent");//最近浏览
 	    this.remove()
 	};
-
-
 
 /***/ },
 /* 1 */
@@ -1232,7 +1226,49 @@
 	}
 
 /***/ },
-/* 13 */,
+/* 13 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var tpl_normal = __webpack_require__(14).tpl;
+	$.ajax({
+	    type:"get",
+	    dataType:"jsonp",
+	    url:window.url.dsp_url_c,
+	    data:{
+	        "p":1,
+	        "catid":window.dsp_gome_c3id,
+	        "c":"dsp_tg",
+	        "width_height":"210-210",
+	        "area":pageData.regionId
+	    },
+	    jsonpName:"dsp_tg",
+	    success:function(data){
+	        var _dataShow = [];
+	        var data_left = {
+	            "data": data.splice(0,8)
+	        };
+	        var data_bottom = {
+	            "data": data.length >= 6?data.splice(0,6):[]
+	        };
+	        if(data_left.data.length > 0){
+	            var listTpl = templateSimple.compile(tpl_normal)(data_left);
+	            $("#prdRight-1").append('<div class="prd-right-normal"><h3 class="hd"><i class="dsp-tuiguangIdentifi">广告</i>店铺精选</h3><ul class="bd" id="dsp_tuiguang">'+listTpl+'</ul></div>');
+	            _dataShow = _dataShow.concat(data_left.data)
+	        }
+	        if(data_bottom.data.length > 0){
+	            var listTpl = templateSimple.compile(tpl_normal)(data_bottom);
+	            $("#prdBottom-1").append('<dl class="nSearch-bottomTuiGuang"><dt class="hd"><i class="dsp-tuiguangIdentifi">广告</i>推广商品</dt><dd class="bd"><ul class="clearfix" id="dsp_bottomTuiGuang">'+listTpl+'</ul></dd> </dl>');
+	            _dataShow = _dataShow.concat(data_bottom.data)
+	        }
+	        if (_dataShow.length > 0) {
+	            for(var i=_dataShow.length-1;i>=0;i--){
+	                new Image().src = _dataShow[i].pm;
+	            }
+	        }
+	    }
+	});
+
+/***/ },
 /* 14 */
 /***/ function(module, exports) {
 
@@ -1297,7 +1333,38 @@
 	};
 
 /***/ },
-/* 17 */,
+/* 17 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var tpl_normal = __webpack_require__(16).tpl;
+	function getData(domId){
+	    $.get(
+	        window.url.bigdata_url,
+	        {
+	            boxid: "box02",
+	            area: pageData.regionId,
+	            cid: $.cookie("__clickidc"),
+	            imagesize: 160,
+	            c1n: window.dsp_gome_c1name,
+	            c3n: window.dsp_gome_c3name,
+	            c1id: window.dsp_gome_c1id,
+	            c3id: window.dsp_gome_c3id,
+	            brid: window.dsp_gome_brid
+	        },
+	        function(data){
+	            if (data.lst && data.lst.length > 0) {
+	                data.lst.splice(6,data.lst.length)
+	                var listTpl = templateSimple.compile(tpl_normal)(data);
+	                $(domId).append('<div class="prd-right-normal"><h3 class="hd">搜了此类商品的用户还买了</h3><ul class="bd" id="bigD_liulan">'+listTpl+'</ul></div>');
+	            }
+	        }
+	    );
+	}
+	module.exports = {
+	    getData:getData
+	}
+
+/***/ },
 /* 18 */
 /***/ function(module, exports) {
 
@@ -1353,7 +1420,57 @@
 
 
 /***/ },
-/* 19 */,
+/* 19 */
+/***/ function(module, exports) {
+
+	var tpl = '{{each lst as value}}\
+	    <li class="buy-items">\
+	        <div class="pic"><a class="bigD_item" track="{{value.maima_param}}" href="{{value.purl}}" target="_blank"><img gome-src="{{value.iurl}}" src="//img.gomein.net.cn/images/grey.gif"></a></div>\
+	        <div class="price">¥<span>{{value.price}}</span></div>\
+	        <div class="name"><a class="bigD_item" track="{{value.maima_param}}" href="{{value.purl}}" target="_blank">{{value.pn}}</a></div>\
+	    </li>\
+	{{/each}}'
+
+	$.get(
+	    window.url.bigdata_url,
+	    {
+	        boxid: "box05",
+	        area: pageData.regionId,
+	        cid: $.cookie("__clickidc"),
+	        imagesize: 160,
+	        c1n: dsp_gome_c1name,
+	        c3n: dsp_gome_c3name,
+	        c1id: window.dsp_gome_c1id,
+	        c3id: window.dsp_gome_c3id,
+	        brid: window.dsp_gome_brid
+	    },
+	    function(data){
+	        if (data.lst && data.lst.length > 0) {
+	        var listTpl = templateSimple.compile(tpl)(data);
+	        var _length = data.lst.length;
+	        $("#prdBottom-2").append('<dl class="nSearch-bottom-advertisement" id="nSearch-quessYouLike"><dt class="hd"><span id="quessYouLike-refresh" class="bottom-advertisement-refresh" curp="0">换一组</span>根据浏览猜你喜欢</dt><dd class="bd"><ul class="bottom-advertisement-lists clearfix" id="bigD_quessLike">'+listTpl+'</ul></dd></dl>');
+	        
+	        if(_length<=6){$("#quessYouLike-refresh").hide()}
+	        var totlnum = (_length %6 ==0)?(parseInt(_length /6,10)-1):parseInt(_length /6,10);
+	        var _i = 0;
+	        $("#bigD_quessLike").find(".item").each(function(){
+	            if($(this).index()<6){
+	                $(this).addClass("cShow");
+	            }
+	            $(this).addClass("item"+parseInt($(this).index()/6,10))
+	        })
+	        $("#quessYouLike-refresh").bind("click",function(){
+	            $("#bigD_quessLike").find(".item").removeClass("cShow");
+	            if(_i++ == totlnum || _i==3){
+	                _i=0;
+	            }
+	            $("#bigD_quessLike").find(".item"+_i).addClass("cShow")
+	        })
+	    }
+	    }
+	);
+
+/***/ },
 /* 20 */
 /***/ function(module, exports) {
 
@@ -1390,287 +1507,6 @@
 	    getData:getData
 	}
 
-
-
-/***/ },
-/* 21 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * 价格区间筛选处理事件
-	 * 【一】输入框设置，屏蔽特殊字符，获取焦点，失去焦点
-	 * 【二】移出价格区间区域，修改样式
-	 * 【三】【取消】按钮事件
-	 * 【四】【确定】按钮事件，调用function.makeHelf模块处理跳转地址
-	 */
-	$(".priceRange-input input").bind({
-	    "keydown": function() {
-	        $(this).val($(this).val().replace(/[A-Za-z`~!@#$%^&*_+=¥￥（）()<>?:"{},\/;'[\]！。......，…——、‘；—【】|？》《“：\\\-” \u4e00-\u9fa5]/g,''));
-	    },
-	    "keyup": function() {
-	        $(this).val($(this).val().replace(/[A-Za-z`~!@#$%^&*_+=¥￥（）()<>?:"{},\/;'[\]！。......，…——、‘；—【】|？》《“：\\\-” \u4e00-\u9fa5]/g,''));
-	    },
-	    "focus": function() {
-	        $(".filter-priceRange-box").addClass("filter-priceRange-click");
-	    },
-	    "blur": function() {
-	        $(this).val() == "" && $(this).val("¥");
-	    }
-	});
-	$(".filter-priceRange-box").bind("mouseleave",function() {
-	    $(this).removeClass("filter-priceRange-click");
-	    $(".priceRange-input input").trigger("blur");
-	}).show();
-	$("#fc-btn-cancel").bind("click", function() {
-	    $(".priceRange-input input").val("¥")
-	});
-	$("#fc-btn-ok").bind("click", function(event) {
-	    event.preventDefault();
-	    var priceRange = "";
-	    var price1 = $("#fc-lowPrice").val();
-	    var price2 = $("#fc-highPrice").val();
-	    if(price2 == "¥" && price1 == "¥"){
-	        return false;
-	    }else if(price1 == "¥"){
-	        priceRange="0x"+price2;
-	    }else if(price2 == "¥"){
-	        priceRange=price1+"x*";
-	    }else{
-	        priceRange = Math.min(price1, price2) + "x" + Math.max(price1, price2);
-	    };
-	    __webpack_require__(2).dofacet('price',priceRange);
-	});
-
-/***/ },
-/* 22 */,
-/* 23 */,
-/* 24 */,
-/* 25 */,
-/* 26 */,
-/* 27 */,
-/* 28 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * 在结果中搜搜
-	 * 【一】屏蔽特殊字符，注册回车事件，获取焦点，失去焦点
-	 * 【二】【确定】按钮，调用function.makeHelf模块处理跳转地址
-	 */
-	$(".filter-resultSearch-box").show()
-	$(".filter-resultSearch-input").bind({
-	    "keyup": function(event) {
-	        if (event.which == 13) {
-	            $(".filter-resultSearch-btn").trigger("click");
-	        } else {
-	            $(this).val($(this).val().replace(/[`~!@#$%^&*_+=¥￥（）()<>?:"{},\/;'[\]！。......，…——、‘；—【】|？》《“：\\\-” ]/g,''))
-	        }
-	    },
-	    "focus": function() {
-	        $(this).val() == "在结果中搜索" && $(this).val("");
-	    },
-	    "blur": function() {
-	        $(this).val() == "" && $(this).val("在结果中搜索");
-	    }
-	}).trigger("blur");
-	$(".filter-resultSearch-btn").bind("click", function(e) {
-	    e.preventDefault();
-	    var searchVal = $(".filter-resultSearch-input").val()
-	    if (searchVal == "" || searchVal == "在结果中搜索") return false;
-	    __webpack_require__(2).dofacet('et',searchVal);
-	});
-
-/***/ },
-/* 29 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var tpl_normal = __webpack_require__(14).tpl;
-	$.ajax({
-	    type:"get",
-	    dataType:"jsonp",
-	    url:window.url.dsp_url_s,
-	    data:{
-	        "p":12,
-	        "catid":window.dsp_gome_c3id,
-	        "searchkey":window.searchkey,
-	        "c":"dsp_tg",
-	        "width_height":"210-210",
-	        "area":pageData.regionId
-	    },
-	    jsonpName:"dsp_tg",
-	    success:function(data){
-	        var _dataShow = [];
-	        var data_left = {
-	            "data": data.splice(0,8)
-	        };
-	        var data_bottom = {
-	            "data": data.length >= 6?data.splice(0,6):[]
-	        };
-	        if(data_left.data.length > 0){
-	            var listTpl = templateSimple.compile(tpl_normal)(data_left);
-	            $("#prdRight-1").append('<div class="prd-right-normal"><h3 class="hd"><i class="dsp-tuiguangIdentifi">广告</i>店铺精选</h3><ul class="bd" id="dsp_tuiguang">'+listTpl+'</ul></div>');
-	            _dataShow = _dataShow.concat(data_left.data)
-	        }
-	        if(data_bottom.data.length > 0){
-	            var listTpl = templateSimple.compile(tpl_normal)(data_bottom);
-	            $("#prdBottom-1").append('<dl class="nSearch-bottomTuiGuang"><dt class="hd"><i class="dsp-tuiguangIdentifi">广告</i>推广商品</dt><dd class="bd"><ul class="clearfix" id="dsp_bottomTuiGuang">'+listTpl+'</ul></dd> </dl>');
-	            _dataShow = _dataShow.concat(data_bottom.data)
-	        }
-	        if (_dataShow.length > 0) {
-	            for(var i=_dataShow.length-1;i>=0;i--){
-	                new Image().src = _dataShow[i].pm;
-	            }
-	        }
-	    }
-	});
-
-/***/ },
-/* 30 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var tpl_normal = __webpack_require__(16).tpl;
-	function getData(domId){
-	    $.get(
-	        window.url.bigdata_url,
-	        {
-	            boxid: "box93",
-	            area: pageData.regionId,
-	            cid: $.cookie("__clickidc"),
-	            imagesize: 160,
-	            c1n: window.dsp_gome_c1name,
-	            c3n: window.dsp_gome_c3name,
-	            c1id: window.dsp_gome_c1id,
-	            c3id: window.dsp_gome_c3id,
-	            brid: window.dsp_gome_brid,
-	            search: window.searchkey
-	        },
-	        function(data){
-	            if (data.lst && data.lst.length > 0) {
-	                data.lst.splice(6,data.lst.length)
-	                var listTpl = templateSimple.compile(tpl_normal)(data);
-	                $(domId).append('<div class="prd-right-normal"><h3 class="hd">搜了此类商品的用户还买了</h3><ul class="bd" id="bigD_liulan">'+listTpl+'</ul></div>');
-	            }
-	        }
-	    );
-	}
-	module.exports = {
-	    getData:getData
-	}
-
-/***/ },
-/* 31 */
-/***/ function(module, exports) {
-
-	
-	function getData(domId){
-	    $.ajax({
-	        type:"get",
-	        dataType:"jsonp",
-	        url:window.url.dsp_url_c,
-	        data:{
-	            "p":124,
-	            "catid":window.dsp_gome_c3id,
-	            "c":"dsp_act",
-	            "area":pageData.regionId
-	        },
-	        jsonpName:"dsp_act",
-	        success:function(data){
-	            var listTpl = "";
-	            for(var i=0,j=data.length;i<j && i<2;i++){
-	                listTpl += '<a href="'+data[i].ldp+'" target="_blank" title="'+data[i].org+'"><img src="'+data[i].src+'" /></a>';
-	                new Image().src= data[i].pm;
-	            }
-	            $(domId).append('<div class="prd-right-normal" id="dsp_advertisement">'+listTpl+'</div>');
-	        }
-	    });
-	}
-	module.exports = {
-	    getData:getData
-	}
-
-/***/ },
-/* 32 */
-/***/ function(module, exports) {
-
-	function getData(domId){
-	    $.ajax({
-	        type:"get",
-	        dataType:"jsonp",
-	        url:window.url.dsp_url_c,
-	        data:{
-	            "p":184,
-	            "catid":window.dsp_gome_c3id,
-	            "c":"dsp_act_b",
-	            "area":pageData.regionId
-	        },
-	        jsonpName:"dsp_act_b",
-	        success:function(data){
-	            var listTpl = "";
-	            for(var i=0,j=data.length;i<j && i<2;i++){
-	                listTpl += '<a href="'+data[i].ldp+'" target="_blank" title="'+data[i].org+'"><img src="'+data[i].src+'" /></a>';
-	                new Image().src= data[i].pm;
-	            }
-	            $(domId).append('<div class="nSearch-bottomTuiGuangAD" id="dsp_bottomAD">'+listTpl+'</div>');
-	        }
-	    });
-	}
-	module.exports = {
-	    getData:getData
-	}
-
-/***/ },
-/* 33 */
-/***/ function(module, exports) {
-
-	var tpl = '{{each lst as value}}\
-	    <li class="buy-items">\
-	        <div class="pic"><a class="bigD_item" track="{{value.maima_param}}" href="{{value.purl}}" target="_blank"><img gome-src="{{value.iurl}}" src="//img.gomein.net.cn/images/grey.gif"></a></div>\
-	        <div class="price">¥<span>{{value.price}}</span></div>\
-	        <div class="name"><a class="bigD_item" track="{{value.maima_param}}" href="{{value.purl}}" target="_blank">{{value.pn}}</a></div>\
-	    </li>\
-	{{/each}}'
-
-	function getData(domId){
-	    $.get(
-	        window.url.bigdata_url,
-	        {
-	            boxid: "box92",
-	            area: pageData.regionId,
-	            cid: $.cookie("__clickidc"),
-	            imagesize: 160,
-	            c1id:window.dsp_gome_c1id,
-	            c3id:window.dsp_gome_c3id,
-	            brid: window.dsp_gome_brid,
-	            search: window.searchkey
-	        },
-	        function(data){
-	            if (data.lst && data.lst.length > 0) {
-	                var listTpl = templateSimple.compile(tpl)(data);
-	                var _length = data.lst.length;
-	                $(domId).append('<dl class="nSearch-bottom-advertisement" id="nSearch-quessYouLike"><dt class="hd"><span id="quessYouLike-refresh" class="bottom-advertisement-refresh" curp="0">换一组</span>根据浏览猜你喜欢</dt><dd class="bd"><ul class="bottom-advertisement-lists clearfix" id="bigD_quessLike">'+listTpl+'</ul></dd></dl>');
-
-	                if(_length<=6){$("#quessYouLike-refresh").hide()}
-	                var totlnum = (_length %6 ==0)?(parseInt(_length /6,10)-1):parseInt(_length /6,10);
-	                var _i = 0;
-	                $("#bigD_quessLike").find(".item").each(function(){
-	                    if($(this).index()<6){
-	                        $(this).addClass("cShow");
-	                    }
-	                    $(this).addClass("item"+parseInt($(this).index()/6,10))
-	                })
-	                $("#quessYouLike-refresh").bind("click",function(){
-	                    $("#bigD_quessLike").find(".item").removeClass("cShow");
-	                    if(_i++ == totlnum || _i==3){
-	                        _i=0;
-	                    }
-	                    $("#bigD_quessLike").find(".item"+_i).addClass("cShow")
-	                })
-	            }
-	        }
-	    )
-	}
-	module.exports = {
-	    getData:getData
-	}
 
 
 /***/ }

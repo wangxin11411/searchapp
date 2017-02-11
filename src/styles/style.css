@@ -185,7 +185,7 @@ body{color: #5e5e5e;}
     height: 24px;
     border: 1px solid #ccc;
     overflow: hidden;
-    display: inline;
+    display: none;
 }
 .filter-resultSearch-box:focus{
     border-color: #c5c5c5;
@@ -222,6 +222,7 @@ body{color: #5e5e5e;}
     border: 1px solid #F3F3F3;
     white-space:nowrap;
     text-align: center;
+    display: none
 }
 .filter-priceRange-box li{
     float: left;
@@ -3160,3 +3161,47 @@ filter-bottom 閫佽揣鍦板潃锛� 鏈夋棤璐э紝鍥界背閰嶉€侊紝
     margin: 0 10px;
 }
 .hide-dom{display:none}
+.brand-active{
+    border: 1px solid #ddd;
+    height: 62px;
+    line-height: 58px;
+    margin-bottom: 10px;
+    padding-right: 120px;
+}
+.brand-active .enter-btn{
+    float: right;
+    background-color: #e3101e;
+    color: #fff;
+    cursor: pointer;
+    font-family: "simsun";
+    font-size: 14px;
+    height: 26px;
+    line-height: 26px;
+    padding: 0 20px;
+    margin: 17px -100px 0 0; 
+}
+.brand-active .enter-btn:hover{
+    color: #fff;
+    opacity: .8
+}
+.brand-active-main{
+    color: #333;
+    font-family: "microsoft yahei";
+}
+.brand-active .title{
+    display: inline-block;
+    vertical-align: middle;
+    color: #333;
+    font-weight: 700;
+    font-size: 15px;
+    padding: 0 15px 0 20px;
+}
+.brand-active .descrip{
+    display: inline-block;
+    vertical-align: middle;
+    max-width: 636px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    font-size: 13px;
+}
