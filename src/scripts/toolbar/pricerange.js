@@ -22,7 +22,7 @@ $(".priceRange-input input").bind({
 $(".filter-priceRange-box").bind("mouseleave",function() {
     $(this).removeClass("filter-priceRange-click");
     $(".priceRange-input input").trigger("blur");
-});
+}).show();
 $("#fc-btn-cancel").bind("click", function() {
     $(".priceRange-input input").val("¥")
 });

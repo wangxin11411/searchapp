@@ -48,11 +48,11 @@
 	__webpack_require__(1);
 	//引入toolbar相关模块
 	__webpack_require__(3);
-	__webpack_require__(6);
+	__webpack_require__(21);
 	//引入页面事件的模块-价格获取，懒加载图片
-	__webpack_require__(7);
+	__webpack_require__(6);
 	//引入页面事件的模块-商品事件
-	__webpack_require__(9);
+	__webpack_require__(8);
 
 	if(pageData.isBW){
 	    pageData.dataBW = __webpack_require__(12).getShopGoods(pageData.ajaxURL,1,pageData.valueBW);
@@ -61,17 +61,17 @@
 	    __webpack_require__(4).getGoods();
 	},0);
 
-	__webpack_require__(13).getData();//顶部云眼推荐商品
-	__webpack_require__(15);//右侧店铺精选和底部的推广商品
-	__webpack_require__(17).getData("#prdRight-2");//右侧一周销量排行广商品
-	__webpack_require__(18).getData("#prdRight-3");//右侧浏览了还购买商品
-	__webpack_require__(20).getData("#prdRight-4");//右侧购买了还购买商品
-	__webpack_require__(21).getData("#prdRight-5");//右侧底部推荐活动（图片）
+	__webpack_require__(22).getData();//顶部云眼推荐商品
+	__webpack_require__(13);//右侧店铺精选和底部的推广商品
+	__webpack_require__(24).getData("#prdRight-2");//右侧一周销量排行广商品
+	__webpack_require__(17).getData("#prdRight-3");//右侧浏览了还购买商品
+	__webpack_require__(25).getData("#prdRight-4");//右侧购买了还购买商品
+	__webpack_require__(26).getData("#prdRight-5");//右侧底部推荐活动（图片）
 
 	document.getElementById("lazyajaxloadarea").onmouseenter = function (event) {
-	    __webpack_require__(22).getData("#prdBottom-2");//猜你喜欢
-	    __webpack_require__(23).getData("#prdBottom-4");//页面底部推荐活动（图片）
-	    __webpack_require__(24).getData("list","#prdBottom-recent");//最近浏览
+	    __webpack_require__(19).getData("#prdBottom-2");//猜你喜欢
+	    __webpack_require__(27).getData("#prdBottom-4");//页面底部推荐活动（图片）
+	    __webpack_require__(20).getData("list","#prdBottom-recent");//最近浏览
 	    this.remove()
 	};
 
@@ -293,33 +293,38 @@
 	    function assembleHref(queryString,valueString){
 	        var reg = new RegExp("(^|&)" + queryString + "=([^&]*)(&|$)", "i");
 	        var replaceContent = "";
-
-	        if(window.isSearch){
-	            var r =href.substr(1).match(reg);
-	            if (r != null && queryString == "facets"){
-	                replaceContent = "&"+queryString+"="+unescape(r[2])+valueString+"&";
-	            }else{
-	                replaceContent = "&"+queryString+"="+valueString+"&";
-	            }
-	            href = (href.indexOf(queryString)!= -1)? href.replace(reg, replaceContent) : href+ "&"+queryString+"="+window.defaultFacets+valueString+(queryString=="price"?"&priceTag=1":"")+"&pzpq=0&pzin=v5";
-	        }else{
-	            href = window.location.pathname;
-	            if(href.split("-").length <= 1){
-	                href = href.split(".html")[0] + "-00-0-48-1-0-0-0-1-0-0-0-0-0-0-0-0-0.html";
-	            }
-	            pageCategoryQueryArray = href.split("-");
-	            if (queryString === "facets" && pageCategoryQueryArray[9] !== "0"){
-	                pageCategoryQueryArray[queryRelation[queryString]] += valueString;
-	            }else{
-	                pageCategoryQueryArray[queryRelation[queryString]] = valueString;
-	            }
-	            href = pageCategoryQueryArray.join("-");
+	        switch(window.pageName){
+	            case "搜索结果页":
+	                var r =href.substr(1).match(reg);
+	                if (r != null && queryString == "facets"){
+	                    replaceContent = "&"+queryString+"="+unescape(r[2])+valueString+"&";
+	                }else{
+	                    replaceContent = "&"+queryString+"="+valueString+"&";
+	                }
+	                href = (href.indexOf(queryString)!= -1)? href.replace(reg, replaceContent) : href+ "&"+queryString+"="+window.defaultFacets+valueString+(queryString=="price"?"&priceTag=1":"")+"&pzpq=0&pzin=v5";
+	                break;
+	            case "三级列表页":
+	                href = window.location.pathname;
+	                if(href.split("-").length <= 1){
+	                    href = href.split(".html")[0] + "-00-0-48-1-0-0-0-1-0-0-0-0-0-0-0-0-0.html";
+	                }
+	                pageCategoryQueryArray = href.split("-");
+	                if (queryString === "facets" && pageCategoryQueryArray[9] !== "0"){
+	                    pageCategoryQueryArray[queryRelation[queryString]] += valueString;
+	                }else{
+	                    pageCategoryQueryArray[queryRelation[queryString]] = valueString;
+	                }
+	                href = pageCategoryQueryArray.join("-");
+	                break;
+	            case "品牌商品页":
+	                href = window.location.protocol+"//search"+cookieDomain+"/search?question="+window.searchkey + "&" + queryString + "=" + window.brandId  + valueString +"&pzpq=0&pzin=v5";
+	                break;
 	        }
 	        window.location.href = href;
 	    }
-		module.exports = {
-			dofacet:assembleHref
-		}
+	    module.exports = {
+	        dofacet:assembleHref
+	    }
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ },
@@ -349,6 +354,7 @@
 	            }
 	        }
 	    });
+
 		$('#filter-order-box li').bind('click', function (event) {
 	        var _this = $(this),
 	            sort_target = _this.attr('data-sort');
@@ -357,10 +363,13 @@
 	            _this.addClass('cur').siblings('.cur').removeClass('cur');
 	            pageData.sort = sort_target;
 	            pageData.currentPage=1;
-
+	            if(window.pageName== "品牌商品页"){
+	                window.location.href = window.location.protocol+"//search"+cookieDomain+$(this).find('a').attr("href");
+	                return false;
+	            }
 	            __webpack_require__(4).getGoods();
 	        }
-	    }).find('a').click(function (event) {
+	    }).find('a').click(function(event){
 	        event.preventDefault();
 	    });
 	    /**
@@ -494,6 +503,9 @@
 	                {{if $value.marketTag == 1}}\
 	                <span class="promotion-hwg"></span>\
 	                {{/if}}\
+	                {{if $value.rebate == 1}}\
+	                    <span class="promotion-normal">返利</span>\
+	                {{/if}}\
 	                {{if $value.isVip == 1}}\
 	                    <span class="promotion-normal">会员商品</span>\
 	                {{/if}}\
@@ -609,7 +621,6 @@
 	        }else{
 	            ajaxData = "0";
 	        }
-
 	        $.ajax({
 	            url:pageData.ajaxURL,
 	            dataType:"json",
@@ -827,55 +838,6 @@
 /* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/**
-	 * 价格区间筛选处理事件
-	 * 【一】输入框设置，屏蔽特殊字符，获取焦点，失去焦点
-	 * 【二】移出价格区间区域，修改样式
-	 * 【三】【取消】按钮事件
-	 * 【四】【确定】按钮事件，调用function.makeHelf模块处理跳转地址
-	 */
-	$(".priceRange-input input").bind({
-	    "keydown": function() {
-	        $(this).val($(this).val().replace(/[A-Za-z`~!@#$%^&*_+=¥￥（）()<>?:"{},\/;'[\]！。......，…——、‘；—【】|？》《“：\\\-” \u4e00-\u9fa5]/g,''));
-	    },
-	    "keyup": function() {
-	        $(this).val($(this).val().replace(/[A-Za-z`~!@#$%^&*_+=¥￥（）()<>?:"{},\/;'[\]！。......，…——、‘；—【】|？》《“：\\\-” \u4e00-\u9fa5]/g,''));
-	    },
-	    "focus": function() {
-	        $(".filter-priceRange-box").addClass("filter-priceRange-click");
-	    },
-	    "blur": function() {
-	        $(this).val() == "" && $(this).val("¥");
-	    }
-	});
-	$(".filter-priceRange-box").bind("mouseleave",function() {
-	    $(this).removeClass("filter-priceRange-click");
-	    $(".priceRange-input input").trigger("blur");
-	});
-	$("#fc-btn-cancel").bind("click", function() {
-	    $(".priceRange-input input").val("¥")
-	});
-	$("#fc-btn-ok").bind("click", function(event) {
-	    event.preventDefault();
-	    var priceRange = "";
-	    var price1 = $("#fc-lowPrice").val();
-	    var price2 = $("#fc-highPrice").val();
-	    if(price2 == "¥" && price1 == "¥"){
-	        return false;
-	    }else if(price1 == "¥"){
-	        priceRange="0x"+price2;
-	    }else if(price2 == "¥"){
-	        priceRange=price1+"x*";
-	    }else{
-	        priceRange = Math.min(price1, price2) + "x" + Math.max(price1, price2);
-	    };
-	    __webpack_require__(2).dofacet('price',priceRange);
-	});
-
-/***/ },
-/* 7 */
-/***/ function(module, exports, __webpack_require__) {
-
 	var __WEBPACK_AMD_DEFINE_RESULT__;/**
 	 * 页面级事件，
 	 * 【一】1.5s定时器,，异步价格盒子asynPriceBox，
@@ -884,7 +846,7 @@
 	 *      a,asynPriceBox盒子包括：主体商品，列表页顶部热卖推荐商品（from云眼），底部对比商品，底部最近浏览商品
 	 */
 	!(__WEBPACK_AMD_DEFINE_RESULT__ = function(require,exports,module){
-	var getScreenDom = __webpack_require__(8);
+	var getScreenDom = __webpack_require__(7);
 	var itemType = {
 	    GOMEPRICE:"normal",
 	    SALEPRICE:"normal",
@@ -984,7 +946,7 @@
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ },
-/* 8 */
+/* 7 */
 /***/ function(module, exports) {
 
 	 /**
@@ -1007,13 +969,13 @@
 
 
 /***/ },
-/* 9 */
+/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
+	/*加入购物车*/
 	$("#product-box").delegate(".addTo-cart", "click", function() {
 	    var $info = $(this).parents(".product-item").find(".productInfo");
 	    var _type = 0;
-
 	    if($info.attr("isHyg") == "1"){_type = 16};
 	    if($info.attr("isTaogou") == "true"){_type = 24};
 	    /* 加入购物车美通卡入口*/
@@ -1024,19 +986,31 @@
 	    }
 	});
 
-	//添加收藏
+
+
+	/*添加收藏*/
 	$("#product-box").delegate(".add-collection", "click", function() {
 	    g.login(function(){
 	        //searchBase.addCollection($productInfoInput.attr("pId"),$productInfoInput.attr("sId"), loginData.loginId, "wishlist", $productInfoInput.attr("pName"));
-	        __webpack_require__(10).addCollect($productInfoInput.attr("pId"),$productInfoInput.attr("sId"),loginData.loginId,$productInfoInput.attr("pName"),"wishlist");
+	        __webpack_require__(9).addCollect("9134521004","1123461018",loginData.loginId,"华为 HUAWEI Mate 9 4GB+32GB 全网通版 月光银","wishlist");
 
 	    });
 	});
 
+	/*到货通知*/
+	$("#product-box").delegate(".next-buy","click",function(){
+	    var cookieAg = $.cookie("atgregion").split("|")[0];
+	    var userId = $.cookie("SSO_USER_ID");
+	    __webpack_require__(11).arriveNotice("9134521004","1123461018",userId,cookieAg);
+	})
+
+
+
+
 
 
 /***/ },
-/* 10 */
+/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -1074,7 +1048,7 @@
 	                    break;
 	            }
 	            content = content + '<div class="mask-addCart-btn"><a class="mask-shopping closeBtn" href="javascript:void(0);">继续购物</a><a class="link" href="http://myhome'+cookieDomain+'/member/myFavorites" target="_blank">查看收藏夹</a></div>'
-	            __webpack_require__(11).showMask(content,request_tre);
+	            __webpack_require__(10).showMask(content,request_tre);
 	        });
 	    }
 		module.exports = {
@@ -1083,7 +1057,7 @@
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ },
-/* 11 */
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_RESULT__ = function(require,exports,module){
@@ -1099,16 +1073,17 @@
 		        $windowHeight = $(window).height(),
 		        $h = Math.max($bodyHeight,$windowHeight);
 	        //弹出层主内容
-	        var $maskContentWarp = $('<div class="mask-box" id="mask-box"><a class="mask-close closeBtn" href="javascript:void(0);">╳</a><div class="mask-content-warp" id="mask-content-warp">'+content+'</div></div>'),
-	        	$contentHeight = $maskContentWarp.height(),
-	        	$contentWidth = $maskContentWarp.width()
+	        var $maskContentWarp = $('<div class="mask-box" id="mask-box"><a class="mask-close closeBtn" href="javascript:void(0);">╳</a><div class="mask-content-warp" id="mask-content-warp">'+content+'</div></div>');
+	        $maskContentWarp.appendTo('body');
+	        var $contentHeight = $maskContentWarp.height(),
+	        	$contentWidth = $maskContentWarp.width();
+
 
 	        $('<div id="mask-overlay" class="mask-overlay"></div>').css("height",$h).appendTo('body');
 	        $maskContentWarp.css({
 	            "margin-left":-($contentWidth/2),
 	            "margin-top":-($contentHeight/2)
-	        }).appendTo('body');
-
+	        });
 	        if(callback && typeof callback == "function"){
 	            callback.apply();
 	        }
@@ -1128,6 +1103,91 @@
 			closeMask:closeMask
 		}
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__))
+
+/***/ },
+/* 11 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_RESULT__;/**
+	 * [description]
+	 * 到货通知：根据请求返回结果判断到货通知是否成功
+	 * 请求地址："//ss"+cookieDomain+"/item/v1/notice/arrival/"+pId+"/"+sId+"/"+cookieSid+"/"+cookieAtg+"/"+phoneNum+"/"+noticeMall+"/"+collect+"/flag/search/notice",
+	 * 传入参数：pId,sId,cookieSid,cookieAtg
+	 */
+	!(__WEBPACK_AMD_DEFINE_RESULT__ = function(require,exports,module){
+	    var base = {
+	        exp:{
+	            'email':/^[a-zA-Z0-9]+([._\\-]*[a-zA-Z0-9]+)@[A-Za-z0-9]+\.[a-z]{2,4}$/,
+	            "telphone":/^(1)\d{10}$/
+	        }
+	    };
+	    function arriveNotice(pId,sId,cookieSid,cookieAtg){
+	        var request_tre1 = function(){};
+	        var content = '<div class="dh-warp"><h3 class="dh-title">到货通知</h3><p class="dh-info">一旦该商品到货，我们会通过手机短信或邮件通知您</p><table class="dh-form"><tbody><tr><td class="dh-hd"><em class="nHeigh">*</em>手机号码：</td><td><input class="dh-input-text" id="dh-telNum" type="text"><span id="dh-telNum-warn"></span></td></tr><tr><td class="dh-hd"><em class="nHeigh">*</em>邮箱地址：</td><td><input class="dh-input-text" id="dh-email" type="text"><span id="dh-email-warn"></span></td></tr><tr><td>&nbsp;</td><td class="dh-label-box"><label class="gmform-label" for="dhAddCollection"><input class="gmform-input-check" name="dhAddCollection" id="dhAddCollection" type="checkbox">同时加入收藏夹</label></td></tr><tr><td>&nbsp;</td><td class="dh-btn-box"><a href="javascript:void(0)" class="dh-btn-submite" id="dh-submite">确定</a><a href="javascript:void(0)" class="dh-btn-cancel closeBtn">取消</a></td></tr></tbody></table></div>';
+	        __webpack_require__(10).showMask(content,request_tre1);
+	        $("#mask-overlay").remove();
+	        $(".dh-btn-submite").on('click',function(){
+	            var a = $("#dhAddCollection").attr("checked");
+	            var collect = "",
+	            phoneNum = $("#dh-telNum").val(),
+	            noticeMall = $("#dh-email").val();
+	            check_phone(phoneNum,$("#dh-telNum-warn"));
+	            if(check_phone(phoneNum,$("#dh-telNum-warn"))== true){
+	                check_email(noticeMall,$("#dh-email-warn"));
+	                if(check_email(noticeMall,$("#dh-email-warn")) == true){
+	                    if(a=="checked"){
+	                        collect = true;
+	                    }else{
+	                        collect = false;
+	                    }
+	                    $.ajax({
+	                        type:"get",
+	                        url:"//ss"+cookieDomain+"/item/v1/notice/arrival/"+pId+"/"+sId+"/"+cookieSid+"/"+cookieAtg+"/"+phoneNum+"/"+noticeMall+"/"+collect+"/flag/search/notice",
+	                        dataType:"jsonp",
+	                        jsonpCallback:"notice"
+	                    }).done(function(data){
+	                        var request_tre = setTimeout(function(){
+	                            $("#mask-overlay").remove();
+	                            $("#mask-box").remove();
+	                        },3000);
+	                        var content = "一旦该商品到货，我们会通过手机短信或邮件通知您!";
+	                        $("#mask-box").remove();
+	                        __webpack_require__(10).showMask(content,request_tre);
+	                    })
+	                }
+	            }
+	        })
+	    }
+
+	    function check_phone(val,obj){
+	        if(base.exp.telphone.test(val) && val!=""){
+	            obj.html("").hide();
+	            return true;
+	        }else if(val==""){
+	            obj.html('<i></i>请填写手机号码').show();
+	            return false;
+	        }else{
+	            obj.html('<i></i>请填写正确的手机号码').show();
+	            return false;
+	        }
+	    }
+
+	    function check_email(val,obj){
+	        if(base.exp.email.test(val) && val!==""){
+	            obj.html("").hide();
+	            return true;
+	        }else if(val==""){
+	            obj.html('<i></i>请填写邮箱地址').show();
+	            return false;
+	        }else{
+	            obj.html('<i></i>请填写正确的邮箱地址').show();
+	            return false;
+	        }
+	    }
+		module.exports = {
+	        arriveNotice:arriveNotice
+		}
+	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ },
 /* 12 */
@@ -1170,120 +1230,7 @@
 /* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/**
-	 * pagename 接口标识，判断请求来源
-	 * */
-
-	var tpl_list = '\
-	<div class="hot-cuxiao-list-box">\
-	    <span class="icon_tj">促销<br>活动</span>\
-	    <ul class="hot-cuxiao-list" id="hot-cuxiao-list">\
-	    {{each activity as value}}\
-	        <li><i></i><a href="{{value.url}}" target="_blank" data-code="9000000001-{{index+1}}">{{value.title}}</a></li>\
-	    {{/each}}\
-	    </ul>\
-	</div>'
-
-	var tpl_item = '\
-	{{each products as value}}\
-	<li class="item" from="云眼">\
-	<p class="pic"><a target="_blank" href="{{value.sUrl}}" title="{{value.alt}}" data-code="9000000000-{{index}}"><img src="{{value.sImg}}" alt=""></a></p>\
-	<p class="name"><a target="_blank" href="{{value.sUrl}}" title="{{value.alt}}" data-code="9000000000-{{index}}">{{value.name}}</a></p>\
-	<p class="price aPrice"><span></span></p>\
-	<p class="btn"><a target="_blank" class=" buy" href="{{value.sUrl}}" data-code="9000000000-{{index}}">立即抢购</a></p>\
-	</li>\
-	{{/each}}'
-
-
-
-
-
-
-	function getData(){
-	    var product_id = $.cookie("proid120517atg");
-	    if(product_id == null || product_id ==""){return false;}
-
-	    $.ajax({
-	        type:"get",
-	        dataType:"jsonp",
-	        url:"//api.search"+window.cookieDomain+"/p/asynSearch",
-	        jsonpName:"recentViewed",
-	        data:{module:"recommendActivity",from:"self",catId:window.dsp_gome_c3id}
-	    }).done(function(data){
-	        if (data.activity.length>4){
-	            var listTpl_a = templateSimple.compile(tpl_list)(data);
-	            $(".hot-tj").append(listTpl_a)
-	        }
-	        if(data.products.length>3){
-	            var listTpl_b = templateSimple.compile(tpl_item)(data);
-	            $("#hot-list").append(listTpl_b)
-	        }else{
-	            __webpack_require__(14).getData("#hot-list")
-	        }
-
-	    }).fail(function(){
-	        console.log("请求失败")
-	    });
-	}
-	module.exports = {
-	    getData:getData
-	}
-
-
-
-/***/ },
-/* 14 */
-/***/ function(module, exports) {
-
-	/**
-	 * 列表页面 顶部热销推荐
-	 * 请求条件，搜索云眼配置的商品少于3个时
-	 */
-	var tpl_item = '\
-	{{each lst as value}}\
-	    <li class="item">\
-	        <p class="pic">\
-	            <a target="_blank" href="{{value.purl}}" title="{{value.pn}}"><img src="{{value.iurl}}" alt="{{value.pn}}"></a>\
-	        </p>\
-	        <p class="name">\
-	            <a target="_blank" href="{{value.purl}}" target="_blank" title="{{value.pn}}">{{value.pn}}</a>\
-	        </p>\
-	        <p class="price">¥<span>{{value.pr}}</span></p>\
-	        <p class="btn"><a class="buy" target="_blank" href="{{value.purl}}">立即抢购</a></p>\
-	    </li>\
-	{{/each}}\
-	'
-	function getData(domId){
-	    $.get(
-	        window.url.bigdata_url,
-	        {
-	            boxid: "box01",
-	            area: pageData.regionId,
-	            cid: $.cookie("__clickidc"),
-	            imagesize: 160,
-	            c1n: dsp_gome_c1name,
-	            c3n: dsp_gome_c3name,
-	            c1id: window.dsp_gome_c1id,
-	            c3id: window.dsp_gome_c3id,
-	            brid: window.dsp_gome_brid
-	        },
-	        function(data){
-	            if (data.lst && data.lst.length > 0) {
-	                var listTpl = templateSimple.compile(tpl_item)(data);
-	                $(domId).append(listTpl);
-	            }
-	        }
-	    );
-	}
-	module.exports = {
-	    getData:getData
-	}
-
-/***/ },
-/* 15 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var tpl_normal = __webpack_require__(16).tpl;
+	var tpl_normal = __webpack_require__(14).tpl;
 	$.ajax({
 	    type:"get",
 	    dataType:"jsonp",
@@ -1323,7 +1270,7 @@
 	});
 
 /***/ },
-/* 16 */
+/* 14 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -1342,51 +1289,25 @@
 	}
 
 /***/ },
-/* 17 */
+/* 15 */,
+/* 16 */
 /***/ function(module, exports) {
 
-	var tpl = '{{each lst as value index}}\
-	    <li class="active">\
-	        <p class="num {{if index<3}}num1{{else}}num2{{/if}}">{{index+1}}</p>\
-	        <p class="pname"><a class="bigD_item" track="{{value.maima_param}}" href="{{value.purl}}" target="_blank">{{value.pn}}</a></p>\
-	        <div class="pdetail">\
-	            <p class="pic"><a class="bigD_item" track="{{value.maima_param}}" href="{{value.purl}}" target="_blank"><img gome-src="{{value.iurl}}" src="//img.gomein.net.cn/images/grey.gif"></a></p>\
-	            <p class="name"><a class="bigD_item" track="{{value.maima_param}}" href="{{value.purl}}" target="_blank">{{value.pn}}</a></p>\
-	            <p class="price"><em>¥<span>{{value.price}}</span></em></p>\
-	        </div>\
-	    </li>\
-	{{/each}}';
-	function getData(domId){
-	    $.get(
-	        window.url.bigdata_url,
-	        {
-	            boxid: "box03",
-	            area: pageData.regionId,
-	            cid: $.cookie("__clickidc"),
-	            imagesize: 160,
-	            c1n: dsp_gome_c1name,
-	            c3n: dsp_gome_c3name,
-	            c1id: window.dsp_gome_c1id,
-	            c3id: window.dsp_gome_c3id,
-	            brid: window.dsp_gome_brid
-	        },
-	        function(data){
-	            if (data.lst && data.lst.length > 0) {
-	                var listTpl = templateSimple.compile(tpl)(data);
-	                $(domId).append('<div class="prd-right-normal"><h3 class="hd">一周销量排行榜</h3><ul class="sell-product" id="bigD_weekTop">'+listTpl+'</ul></div>');
-	            }
-	        }
-	    );
-	}
 	module.exports = {
-	    getData:getData
+	    tpl:'{{each lst as value}}\
+	            <li class="buy-items">\
+	                <div class="pic"><a class="bigD_item" track="{{value.maima_param}}" href="{{value.purl}}" target="_blank"><img gome-src="{{value.iurl}}" src="//img.gomein.net.cn/images/grey.gif"></a></div>\
+	                <div class="price">¥<span>{{value.price}}</span></div>\
+	                <div class="name"><a class="bigD_item" track="{{value.maima_param}}" href="{{value.purl}}" target="_blank">{{value.pn}}</a></div>\
+	            </li>\
+	        {{/each}}'
 	};
 
 /***/ },
-/* 18 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var tpl_normal = __webpack_require__(19).tpl;
+	var tpl_normal = __webpack_require__(16).tpl;
 	function getData(domId){
 	    $.get(
 	        window.url.bigdata_url,
@@ -1415,83 +1336,8 @@
 	}
 
 /***/ },
+/* 18 */,
 /* 19 */
-/***/ function(module, exports) {
-
-	module.exports = {
-	    tpl:'{{each lst as value}}\
-	            <li class="buy-items">\
-	                <div class="pic"><a class="bigD_item" track="{{value.maima_param}}" href="{{value.purl}}" target="_blank"><img gome-src="{{value.iurl}}" src="//img.gomein.net.cn/images/grey.gif"></a></div>\
-	                <div class="price">¥<span>{{value.price}}</span></div>\
-	                <div class="name"><a class="bigD_item" track="{{value.maima_param}}" href="{{value.purl}}" target="_blank">{{value.pn}}</a></div>\
-	            </li>\
-	        {{/each}}'
-	};
-
-/***/ },
-/* 20 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var tpl_normal = __webpack_require__(19).tpl;
-	function getData(domId){
-	    $.get(
-	        window.url.bigdata_url,
-	        {
-	            boxid: "box04",
-	            area: pageData.regionId,
-	            cid: $.cookie("__clickidc"),
-	            imagesize: 160,
-	            c1n: window.dsp_gome_c1name,
-	            c3n: window.dsp_gome_c3name,
-	            c1id: window.dsp_gome_c1id,
-	            c3id: window.dsp_gome_c3id,
-	            brid: window.dsp_gome_brid
-	        },
-	        function(data){
-	            if (data.lst && data.lst.length > 0) {
-	                data.lst.splice(6,data.lst.length)
-	                var listTpl = templateSimple.compile(tpl_normal)(data);
-	                $(domId).append('<div class="prd-right-normal"><h3 class="hd">搜了此类商品的用户还买了</h3><ul class="bd" id="bigD_liulan">'+listTpl+'</ul></div>');
-	            }
-	        }
-	    );
-	}
-	module.exports = {
-	    getData:getData
-	};
-
-/***/ },
-/* 21 */
-/***/ function(module, exports) {
-
-	function getData(domId){
-	    $.ajax({
-	        type:"get",
-	        dataType:"jsonp",
-	        url:window.url.dsp_url_c,
-	        data:{
-	            "p":123,
-	            "catid":window.dsp_gome_c3id,
-	            "c":"dsp_act",
-	            "area":pageData.regionId
-	        },
-	        jsonpName:"dsp_act",
-	        success:function(data){
-	            var listTpl = "";
-	            for(var i=0,j=data.length;i<j && i<2;i++){
-	                listTpl += '<a href="'+data[i].ldp+'" target="_blank" title="'+data[i].org+'"><img src="'+data[i].src+'" /></a>';
-	                new Image().src= data[i].pm;
-	            }
-	            $(domId).append('<div class="prd-right-normal" id="dsp_advertisement">'+listTpl+'</div>');
-	        }
-	    });
-	}
-	module.exports = {
-	    getData:getData
-	};
-
-/***/ },
-/* 22 */
 /***/ function(module, exports) {
 
 	var tpl = '{{each lst as value}}\
@@ -1542,34 +1388,7 @@
 	);
 
 /***/ },
-/* 23 */
-/***/ function(module, exports) {
-
-	$.ajax({
-	    type:"get",
-	    dataType:"jsonp",
-	    url:window.url.dsp_url_c,
-	    data:{
-	        "p":183,
-	        "catid":window.dsp_gome_c3id,
-	        "c":"dsp_act_b",
-	        "area":pageData.regionId
-	    },
-	    jsonpName:"dsp_act_b",
-	    success:function(data){
-	        var listTpl = ""; 
-	        for(var i=0,j=data.length;i<j && i<2;i++){
-	            listTpl += '<a href="'+data[i].ldp+'" target="_blank" title="'+data[i].org+'"><img src="'+data[i].src+'" /></a>';
-	            new Image().src= data[i].pm;
-	        }
-	        $("#prdBottom-4").append('<div class="nSearch-bottomTuiGuangAD" id="dsp_bottomAD">'+listTpl+'</div>');
-	    }
-	});
-
-
-
-/***/ },
-/* 24 */
+/* 20 */
 /***/ function(module, exports) {
 
 	/**
@@ -1604,6 +1423,298 @@
 	module.exports = {
 	    getData:getData
 	}
+
+
+
+/***/ },
+/* 21 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * 价格区间筛选处理事件
+	 * 【一】输入框设置，屏蔽特殊字符，获取焦点，失去焦点
+	 * 【二】移出价格区间区域，修改样式
+	 * 【三】【取消】按钮事件
+	 * 【四】【确定】按钮事件，调用function.makeHelf模块处理跳转地址
+	 */
+	$(".priceRange-input input").bind({
+	    "keydown": function() {
+	        $(this).val($(this).val().replace(/[A-Za-z`~!@#$%^&*_+=¥￥（）()<>?:"{},\/;'[\]！。......，…——、‘；—【】|？》《“：\\\-” \u4e00-\u9fa5]/g,''));
+	    },
+	    "keyup": function() {
+	        $(this).val($(this).val().replace(/[A-Za-z`~!@#$%^&*_+=¥￥（）()<>?:"{},\/;'[\]！。......，…——、‘；—【】|？》《“：\\\-” \u4e00-\u9fa5]/g,''));
+	    },
+	    "focus": function() {
+	        $(".filter-priceRange-box").addClass("filter-priceRange-click");
+	    },
+	    "blur": function() {
+	        $(this).val() == "" && $(this).val("¥");
+	    }
+	});
+	$(".filter-priceRange-box").bind("mouseleave",function() {
+	    $(this).removeClass("filter-priceRange-click");
+	    $(".priceRange-input input").trigger("blur");
+	}).show();
+	$("#fc-btn-cancel").bind("click", function() {
+	    $(".priceRange-input input").val("¥")
+	});
+	$("#fc-btn-ok").bind("click", function(event) {
+	    event.preventDefault();
+	    var priceRange = "";
+	    var price1 = $("#fc-lowPrice").val();
+	    var price2 = $("#fc-highPrice").val();
+	    if(price2 == "¥" && price1 == "¥"){
+	        return false;
+	    }else if(price1 == "¥"){
+	        priceRange="0x"+price2;
+	    }else if(price2 == "¥"){
+	        priceRange=price1+"x*";
+	    }else{
+	        priceRange = Math.min(price1, price2) + "x" + Math.max(price1, price2);
+	    };
+	    __webpack_require__(2).dofacet('price',priceRange);
+	});
+
+/***/ },
+/* 22 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * pagename 接口标识，判断请求来源
+	 * */
+
+	var tpl_list = '\
+	<div class="hot-cuxiao-list-box">\
+	    <span class="icon_tj">促销<br>活动</span>\
+	    <ul class="hot-cuxiao-list" id="hot-cuxiao-list">\
+	    {{each activity as value}}\
+	        <li><i></i><a href="{{value.url}}" target="_blank" data-code="9000000001-{{index+1}}">{{value.title}}</a></li>\
+	    {{/each}}\
+	    </ul>\
+	</div>'
+
+	var tpl_item = '\
+	{{each products as value}}\
+	<li class="item" from="云眼">\
+	<p class="pic"><a target="_blank" href="{{value.sUrl}}" title="{{value.alt}}" data-code="9000000000-{{index}}"><img src="{{value.sImg}}" alt=""></a></p>\
+	<p class="name"><a target="_blank" href="{{value.sUrl}}" title="{{value.alt}}" data-code="9000000000-{{index}}">{{value.name}}</a></p>\
+	<p class="price aPrice"><span></span></p>\
+	<p class="btn"><a target="_blank" class=" buy" href="{{value.sUrl}}" data-code="9000000000-{{index}}">立即抢购</a></p>\
+	</li>\
+	{{/each}}'
+
+
+
+
+
+
+	function getData(){
+	    var product_id = $.cookie("proid120517atg");
+	    if(product_id == null || product_id ==""){return false;}
+
+	    $.ajax({
+	        type:"get",
+	        dataType:"jsonp",
+	        url:"//api.search"+window.cookieDomain+"/p/asynSearch",
+	        jsonpName:"recentViewed",
+	        data:{module:"recommendActivity",from:"self",catId:window.dsp_gome_c3id}
+	    }).done(function(data){
+	        if (data.activity.length>4){
+	            var listTpl_a = templateSimple.compile(tpl_list)(data);
+	            $(".hot-tj").append(listTpl_a)
+	        }
+	        if(data.products.length>3){
+	            var listTpl_b = templateSimple.compile(tpl_item)(data);
+	            $("#hot-list").append(listTpl_b)
+	        }else{
+	            __webpack_require__(23).getData("#hot-list")
+	        }
+
+	    }).fail(function(){
+	        console.log("请求失败")
+	    });
+	}
+	module.exports = {
+	    getData:getData
+	}
+
+
+
+/***/ },
+/* 23 */
+/***/ function(module, exports) {
+
+	/**
+	 * 列表页面 顶部热销推荐
+	 * 请求条件，搜索云眼配置的商品少于3个时
+	 */
+	var tpl_item = '\
+	{{each lst as value}}\
+	    <li class="item">\
+	        <p class="pic">\
+	            <a target="_blank" href="{{value.purl}}" title="{{value.pn}}"><img src="{{value.iurl}}" alt="{{value.pn}}"></a>\
+	        </p>\
+	        <p class="name">\
+	            <a target="_blank" href="{{value.purl}}" target="_blank" title="{{value.pn}}">{{value.pn}}</a>\
+	        </p>\
+	        <p class="price">¥<span>{{value.pr}}</span></p>\
+	        <p class="btn"><a class="buy" target="_blank" href="{{value.purl}}">立即抢购</a></p>\
+	    </li>\
+	{{/each}}\
+	'
+	function getData(domId){
+	    $.get(
+	        window.url.bigdata_url,
+	        {
+	            boxid: "box01",
+	            area: pageData.regionId,
+	            cid: $.cookie("__clickidc"),
+	            imagesize: 160,
+	            c1n: dsp_gome_c1name,
+	            c3n: dsp_gome_c3name,
+	            c1id: window.dsp_gome_c1id,
+	            c3id: window.dsp_gome_c3id,
+	            brid: window.dsp_gome_brid
+	        },
+	        function(data){
+	            if (data.lst && data.lst.length > 0) {
+	                var listTpl = templateSimple.compile(tpl_item)(data);
+	                $(domId).append(listTpl);
+	            }
+	        }
+	    );
+	}
+	module.exports = {
+	    getData:getData
+	}
+
+/***/ },
+/* 24 */
+/***/ function(module, exports) {
+
+	var tpl = '{{each lst as value index}}\
+	    <li class="active">\
+	        <p class="num {{if index<3}}num1{{else}}num2{{/if}}">{{index+1}}</p>\
+	        <p class="pname"><a class="bigD_item" track="{{value.maima_param}}" href="{{value.purl}}" target="_blank">{{value.pn}}</a></p>\
+	        <div class="pdetail">\
+	            <p class="pic"><a class="bigD_item" track="{{value.maima_param}}" href="{{value.purl}}" target="_blank"><img gome-src="{{value.iurl}}" src="//img.gomein.net.cn/images/grey.gif"></a></p>\
+	            <p class="name"><a class="bigD_item" track="{{value.maima_param}}" href="{{value.purl}}" target="_blank">{{value.pn}}</a></p>\
+	            <p class="price"><em>¥<span>{{value.price}}</span></em></p>\
+	        </div>\
+	    </li>\
+	{{/each}}';
+	function getData(domId){
+	    $.get(
+	        window.url.bigdata_url,
+	        {
+	            boxid: "box03",
+	            area: pageData.regionId,
+	            cid: $.cookie("__clickidc"),
+	            imagesize: 160,
+	            c1n: dsp_gome_c1name,
+	            c3n: dsp_gome_c3name,
+	            c1id: window.dsp_gome_c1id,
+	            c3id: window.dsp_gome_c3id,
+	            brid: window.dsp_gome_brid
+	        },
+	        function(data){
+	            if (data.lst && data.lst.length > 0) {
+	                var listTpl = templateSimple.compile(tpl)(data);
+	                $(domId).append('<div class="prd-right-normal"><h3 class="hd">一周销量排行榜</h3><ul class="sell-product" id="bigD_weekTop">'+listTpl+'</ul></div>');
+	            }
+	        }
+	    );
+	}
+	module.exports = {
+	    getData:getData
+	};
+
+/***/ },
+/* 25 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var tpl_normal = __webpack_require__(16).tpl;
+	function getData(domId){
+	    $.get(
+	        window.url.bigdata_url,
+	        {
+	            boxid: "box04",
+	            area: pageData.regionId,
+	            cid: $.cookie("__clickidc"),
+	            imagesize: 160,
+	            c1n: window.dsp_gome_c1name,
+	            c3n: window.dsp_gome_c3name,
+	            c1id: window.dsp_gome_c1id,
+	            c3id: window.dsp_gome_c3id,
+	            brid: window.dsp_gome_brid
+	        },
+	        function(data){
+	            if (data.lst && data.lst.length > 0) {
+	                data.lst.splice(6,data.lst.length)
+	                var listTpl = templateSimple.compile(tpl_normal)(data);
+	                $(domId).append('<div class="prd-right-normal"><h3 class="hd">搜了此类商品的用户还买了</h3><ul class="bd" id="bigD_liulan">'+listTpl+'</ul></div>');
+	            }
+	        }
+	    );
+	}
+	module.exports = {
+	    getData:getData
+	};
+
+/***/ },
+/* 26 */
+/***/ function(module, exports) {
+
+	function getData(domId){
+	    $.ajax({
+	        type:"get",
+	        dataType:"jsonp",
+	        url:window.url.dsp_url_c,
+	        data:{
+	            "p":123,
+	            "catid":window.dsp_gome_c3id,
+	            "c":"dsp_act",
+	            "area":pageData.regionId
+	        },
+	        jsonpName:"dsp_act",
+	        success:function(data){
+	            var listTpl = "";
+	            for(var i=0,j=data.length;i<j && i<2;i++){
+	                listTpl += '<a href="'+data[i].ldp+'" target="_blank" title="'+data[i].org+'"><img src="'+data[i].src+'" /></a>';
+	                new Image().src= data[i].pm;
+	            }
+	            $(domId).append('<div class="prd-right-normal" id="dsp_advertisement">'+listTpl+'</div>');
+	        }
+	    });
+	}
+	module.exports = {
+	    getData:getData
+	};
+
+/***/ },
+/* 27 */
+/***/ function(module, exports) {
+
+	$.ajax({
+	    type:"get",
+	    dataType:"jsonp",
+	    url:window.url.dsp_url_c,
+	    data:{
+	        "p":183,
+	        "catid":window.dsp_gome_c3id,
+	        "c":"dsp_act_b",
+	        "area":pageData.regionId
+	    },
+	    jsonpName:"dsp_act_b",
+	    success:function(data){
+	        var listTpl = ""; 
+	        for(var i=0,j=data.length;i<j && i<2;i++){
+	            listTpl += '<a href="'+data[i].ldp+'" target="_blank" title="'+data[i].org+'"><img src="'+data[i].src+'" /></a>';
+	            new Image().src= data[i].pm;
+	        }
+	        $("#prdBottom-4").append('<div class="nSearch-bottomTuiGuangAD" id="dsp_bottomAD">'+listTpl+'</div>');
+	    }
+	});
 
 
 

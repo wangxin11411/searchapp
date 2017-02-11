@@ -98,46 +98,32 @@
                                     <span class="gome-zy">国美自营</span>
                                 </#if>
                             </div>
-                            <!-- <div class="shop-info">
-                                <span class="shop-info-l">主营品牌：</span>
-                                <span class="shop-info-m">海尔（Hairer）</span>
-                            </div> -->
                         </div>
                         <div class="brand-info-pj">
                             <dl class="pj-score">
-                                <dt class="score-titl">
-                                    <span>综合评分</span>
-                                    <span>商品</span>
-                                    <span>服务</span>
-                                    <span>时效</span>
-                                </dt>
+                                <dt class="score-titl"><span>综合评分</span><span>商品</span><span>服务</span><span>时效</span></dt>
                                 <dd class="score-cont">
-                        <span>
-                            <em class="color-r">${searchObj.content.banner.zhscore!}</em>
-                            <i></i>
-                        </span>
-                        <span >
-                            <!-- <i class="score-img score-down"></i> -->
-                            <em class="color-r">${searchObj.content.banner.prdscore!}</em>
-                        </span>
-                        <span>
-                            <!-- <i class="score-img score-down"></i> -->
-                            <em class="color-r">${searchObj.content.banner.srvscore!}</em>
-                        </span>
-                        <span>
-                            <!-- <i class="score-img score-up"></i> -->
-                            <em class="color-r">${searchObj.content.banner.tmsocre!}</em>
-                        </span>
+                                    <span><em class="color-r">${searchObj.content.banner.zhscore!}</em><i></i></span>
+                                    <span ><em class="color-r">${searchObj.content.banner.prdscore!}</em></span>
+                                    <span><em class="color-r">${searchObj.content.banner.srvscore!}</em></span>
+                                    <span><em class="color-r">${searchObj.content.banner.tmsocre!}</em></span>
                                 </dd>
                             </dl>
-                            <div class="shop-enter">
-                                <a data-code="${modelId!}-2" target="_blank" href="${shopurl!}">进入店铺</a>
-                            </div>
+                            <div class="shop-enter"><a data-code="${modelId!}-2" target="_blank" href="${shopurl!}">进入店铺</a></div>
                         </div>
                     </div>
                 </div>
             <#else>
-            品牌推荐活动
+            <div class="nSearchWarp">
+                <div class="brand-active" modelid="9000002400">
+                    <a class="enter-btn" data-code="9000002400-2" target="_blank" href="${(searchObj.content.banner.PCUrl)!}">进入活动</a>
+                    <div class="brand-active-main">
+                        <a data-code="9000002400-1" href="${(searchObj.content.banner.PCUrl)!}" class="title" target="_blank">${(searchObj.content.banner.name)!}</a>
+                        <span class="descrip">${(searchObj.content.banner.disp)!}</span>
+                    </div>
+                    
+                </div>
+            </div>
             </#if>
         <#else>
             <#--【facet】品牌筛选项-->
@@ -259,7 +245,7 @@
 </script>
 <script type="text/javascript">
     var isHyg = false;//${(storeConfiguration.isHwg)!};
-    var pageName = '搜索结果页';
+    window.pageName = '搜索结果页';
 </script>
 <#include "module/pagejs.ftl">
 <script src="${(storeConfiguration.stageJsServer)!}/search2017/js/search.bundle.js"></script>

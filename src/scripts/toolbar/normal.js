@@ -21,6 +21,7 @@ define(function(require,exports,module){
             }
         }
     });
+
 	$('#filter-order-box li').bind('click', function (event) {
         var _this = $(this),
             sort_target = _this.attr('data-sort');
@@ -29,10 +30,13 @@ define(function(require,exports,module){
             _this.addClass('cur').siblings('.cur').removeClass('cur');
             pageData.sort = sort_target;
             pageData.currentPage=1;
-
+            if(window.pageName== "品牌商品页"){
+                window.location.href = window.location.protocol+"//search"+cookieDomain+$(this).find('a').attr("href");
+                return false;
+            }
             require('../function/getGoods').getGoods();
         }
-    }).find('a').click(function (event) {
+    }).find('a').click(function(event){
         event.preventDefault();
     });
     /**

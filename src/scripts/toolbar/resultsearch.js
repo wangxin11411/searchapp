@@ -3,6 +3,7 @@
  * 【一】屏蔽特殊字符，注册回车事件，获取焦点，失去焦点
  * 【二】【确定】按钮，调用function.makeHelf模块处理跳转地址
  */
+$(".filter-resultSearch-box").show()
 $(".filter-resultSearch-input").bind({
     "keyup": function(event) {
         if (event.which == 13) {
