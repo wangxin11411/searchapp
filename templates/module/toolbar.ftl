@@ -114,7 +114,7 @@
             <#if (searchObj.content.selectData.isSearch)>
             <a class="gmform-label ${marketChecked!} ${hideDom!}" id="market" data-code="${modelId!}-14" href="${(market.url)!}"><i class="iic"></i>海外购</a>
             </#if>
-            <a class="gmform-label ${discountRebateChecked!} ${hideDom!}" id="discountRebate" data-code="${modelId!}-15" href="${(discountRebate.url)!}"><i class="iic"></i>返利商品</a>
+            <a class="gmform-label ${discountRebateChecked!} ${hideDom!}" id="discountRebate" data-code="${modelId!}-15" href="${(discountRebate.url)!}"><i class="iic"></i>返利</a>
             <#if ((searchObj.content.promoInfo)?? && searchObj.content.promoInfo[0]??)>
                 <label class="gmform-label filter-label-specialScreening ${hideDom!}" for="specialScreening" id="specialScreening" data-code="${modelId!}-15"><i class="iic"></i>
                     <#if (searchObj.content.promoInfo[0].imgUrl !="")>

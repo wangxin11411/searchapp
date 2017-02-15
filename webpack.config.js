@@ -1,6 +1,7 @@
 var webpack = require('webpack');
 var path = require('path');
 module.exports = {
+    devtool: 'eval-source-map',//配置生成Source Maps，开发中用于调试
     //页面入口文件配置
     entry:{
         "search":path.resolve(__dirname,'src/entry.search.js'),
@@ -27,5 +28,8 @@ module.exports = {
     resolve: {
         //自动扩展文件后缀名，意味着我们require模块可以省略不写后缀名
         extensions: ['', '.js','.json','.css']
-    }
+    },
+    plugins:[
+        new webpack.BannerPlugin("by.")//在这个数组中new一个就可以了
+    ]
 };

@@ -162,36 +162,11 @@ define(function(require,exports,module){
             }
         }
     }
-    function initPageNumber(){
-        require("../plugin/pager");
-        $("#j-page").ucPager({
-            pageClass: "",
-            currentPage: pageData.currentPage,
-            totalPage: pageData.totalPage,
-            pageSize: 48,
-            clickCallback: function(curPage) {
-                pageData.currentPage = curPage;
-                getGoods();
-            }
-        });
-        $("#min-pager-number").text(pageData.currentPage+'/'+pageData.totalPage);
-
-        if(pageData.currentPage > 1 && pageData.currentPage < pageData.totalPage){
-            $('#mp-prev').removeClass('mp-disable');
-            $('#mp-next').removeClass('mp-disable');
-        }else{
-            if(pageData.currentPage === 1){
-                $('#mp-prev').addClass('mp-disable');
-            }else{
-                $('#mp-next').addClass('mp-disable');
-            }
-        }
-    }
     /**
      * [description]
      * 异步请求主数据方法，并且渲染页面，主要参数sort，currentPage
      */
-    function getGoods(){
+    function getGoods(callback){
         if(pageData.sort === '00' && pageData.currentPage > 1){
             ajaxData = pageData.dataBW.bwsString;
         }else{
@@ -236,7 +211,34 @@ define(function(require,exports,module){
             var itemHTML = templateSimple.compile(tpl_item)($.extend({},data.content.prodInfo,{'noSkusStock':noSkusStock,'modelid':9000000700,'pageNumber':pageData.currentPage}));
             if($.trim(itemHTML) !=""){
                 $('#product-box').empty().html(itemHTML);
-                initPageNumber();
+            }
+        }).done(function(){
+            require("../plugin/pager");
+            $("#j-page").ucPager({
+                pageClass: "",
+                currentPage: pageData.currentPage,
+                totalPage: pageData.totalPage,
+                pageSize: 48,
+                clickCallback: function(curPage) {
+                    pageData.currentPage = curPage;
+                    getGoods();
+                }
+            });
+            $("#min-pager-number").text(pageData.currentPage+'/'+pageData.totalPage);
+
+            if(pageData.currentPage > 1 && pageData.currentPage < pageData.totalPage){
+                $('#mp-prev').removeClass('mp-disable');
+                $('#mp-next').removeClass('mp-disable');
+            }else{
+                if(pageData.currentPage === 1){
+                    $('#mp-prev').addClass('mp-disable');
+                }else{
+                    $('#mp-next').addClass('mp-disable');
+                }
+            }
+
+            if(callback && typeof callback == "function"){
+                callback();
             }
         }).fail(function () {
             console.log("请求错误")
