@@ -34,7 +34,7 @@ define(function(require,exports,module){
     </li>\
     {{else}}\
     <li class="product-item" from="ajax">\
-        <input class="productInfo" type="hidden" isMCard="{{$value.gomeCardType}}" isHyg="{{$value.marketTag}}" isTaogou="false" pid="{{$value.pId}}" skuid="{{$value.skuId}}" prd-index="{{$index+1}}" saleCount="{{$value.salesVolume}}" evaluateCount="{{$value.evaluateCount}}" firstCat="{{$value.firstCat}}" secondCat="{{$value.secondCat}}" thirdCat="{{$value.defCatId}}" brandIds="" thirdProduct="{{$value.thirdProduct | formatBoolean}}" shopId="{{if $value.shopId}}{{$value.shopId}}{{/if}}"  promoScore="{{$value.promoScore}}" score="{{$value.score}}" pStock="{{$value.stock}}" pWeight="{{$value.promoStock}}"/>\
+        <input class="productInfo" type="hidden" isMCard="{{$value.gomeCardType}}" isHyg="{{$value.marketTag}}" isTaogou="false" pid="{{$value.pId}}" skuid="{{$value.skuId}}" prd-index="{{$index+1}}" saleCount="{{$value.salesVolume}}" evaluateCount="{{$value.evaluateCount}}" firstCat="{{$value.firstCat}}" secondCat="{{$value.secondCat}}" thirdCat="{{$value.defCatId}}" brandIds="" thirdProduct="{{$value.thirdProduct | formatBoolean}}" shopId="{{if $value.shopId}}{{$value.shopId}}{{/if}}"  promoScore="{{$value.promoScore}}" score="{{$value.score}}" pStock="{{$value.stock}}" pWeight="{{$value.promoStock}}" taoType="{{$value.taoType}}" taoSkuId="{{$value.taoSkuId}}"/>\
         <ul class="arbitrage clearfix {{if $value.taoGou}}bor-bott{{/if}}">\
         {{if $value.taoGou}}\
             <li class="arbitrage-num arbitrage-cur" taogou="false" pId="{{$value.pId}}" sId="{{$value.skuId}}">单件</li>\
@@ -72,7 +72,11 @@ define(function(require,exports,module){
         {{/if}}\
         <div class="item-price-info">\
             <p class="item-price">\
+                {{if $value.stock == 6}}\
+                <span class="price">敬请期待</span>\
+                {{else}}\
                 <span class="price asynPrice" pid="{{$value.pId}}" skuid="{{$value.skuId}}"></span>\
+                {{/if}}\
                 {{if $value.goodsType == "ZC2M"}}\
                 <span class="promotion-c2m"></span>\
                 {{/if}}\
@@ -103,7 +107,7 @@ define(function(require,exports,module){
             <span class="dispatching">{{$value.cityName}}有货</span>\
         {{else if $value.stock==2}}\
             <span class="dispatching nOrange">{{$value.cityName}}暂不支持配送</span>\
-        {{else if $value.stock==3}}\
+        {{else if $value.stock==3 || $value.stock==6}}\
             <span class="dispatching nOrange">正在预约中</span>\
         {{else if $value.stock==4}}\
             <span class="dispatching nHeigh">正在抢购中</span>\
@@ -117,7 +121,7 @@ define(function(require,exports,module){
             <span class="add-collection">收藏</span>\
         {{if $value.stock == 0 || noSkusStock}}\
             <span class="add-cart next-buy">到货通知</span>\
-        {{else if $value.stock == 3 || $value.stock == 4}}\
+        {{else if $value.stock == 3 || $value.stock == 4 || $value.stock == 6}}\
             <a href="{{productSite}}/{{$value.pId}}-{{$value.skuId}}.html" target="_blank" class="add-cart prev-buy emcodeItem" data-code="{{modelid}}-{{pageNumber}}_{{$index+1}}_3">预约购买</a>\
         {{else}}\
             <a class="add-cart addTo-cart" href="javascript:void(0);" data-code="{{modelid}}-{{pageNumber}}_{{$index+1}}_3">加入购物车</a>\

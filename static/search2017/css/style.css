@@ -436,7 +436,7 @@ filter-bottom 閫佽揣鍦板潃锛� 鏈夋棤璐э紝鍥界背閰嶉€侊紝
 }
 .product-item .item-price .promotion-normal{
     display: inline-block;
-    margin: 0 2px 0 0;
+    margin-right: -1px;
     height: 14px;
     border:1px solid #e3101e;
     color: #FFF;
