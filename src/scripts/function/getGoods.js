@@ -216,7 +216,7 @@ define(function(require,exports,module){
             if($.trim(itemHTML) !=""){
                 $('#product-box').empty().html(itemHTML);
             }
-        }).done(function(){
+        }).done(function(data){
             if(data.content.pageBar.totalPage == 1) {return false};
             require("../plugin/pager");
             $("#j-page").ucPager({
