@@ -1,16 +1,16 @@
 var tpl_normal = require("../template.bigdata.normal").tpl;
 function getData(domId){
     $.get(
-        window.dspData.bigdata_url,
+        window.url.bigdata_url,
         {
-            boxid: "box91",
+            boxid: "box94",
             area: pageData.regionId,
             cid: $.cookie("__clickidc"),
             imagesize: 160,
-            c1id:dspData.dsp_gome_c1id,
-            c3id:dspData.dsp_gome_c3id,
-            brid: dspData.dsp_gome_brid,
-            search: pageData.searchkey
+            c1id:window.dsp_gome_c1id,
+            c3id:window.dsp_gome_c3id,
+            brid: window.dsp_gome_brid,
+            search: window.searchkey
         },
         function(data){
             if (data.lst && data.lst.length > 0) {

@@ -2,14 +2,19 @@ define(function(require,exports,module){
     /**
      * 【一】给每一个facet盒子（.facets-category）,添加一个存放已选facet参数的属性
      * 【二】初始化设置，包括热门分类，一般分类的更多按钮是否显示
+     * 【三】如果一般分类中仅有一个分类，则删除多选按钮
      **/
     $('.facets-category').data('selectFacet','');
     $(".facets-category-common").each(function(){
         var _facetHeight = $(this).find(".category-normal ul").height();
+        var _facetNum = $(this).find(".category-normal ul li").length;
         if( _facetHeight > 35){
             $(this).find(".fc-option-more").css("visibility","visible");
         }else{
             $(this).find(".fc-option-more").remove();
+        }
+        if(_facetNum == 1) {
+            $(this).find(".fc-option-multiple").remove();
         }
     });
     /**
