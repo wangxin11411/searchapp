@@ -30,8 +30,8 @@
     <meta name="Keywords" content="${keywords!}">
     <meta property="qc:admins" content="2500556177677556375636"/>
     <link rel="shortcut icon" href="//app.gomein.net.cn/favicon.ico" type="image/x-icon" />
-    <link rel="stylesheet" href='${(storeConfiguration.stageCssServer)!}/??<!--# include virtual="/n/common/b01/css.html"-->'>
-    <link rel="stylesheet" href="${(storeConfiguration.stageCssServer)!}/??/css/n/detail/gCity.min.css,/search/search2016/css/search2015.min.css,/f2ecss/stage/overseasbuy/overseas-basic.min.css?${jsCssVersion!}">
+    <link rel="stylesheet" href='<!--# include virtual="/n/common/b01/css.html"-->,/css/n/detail/gCity.min.css'>
+    <link rel="stylesheet" href="http://localhost:8080/search2017/css/style.css">
     <!--# include virtual="/n/common/global/global.html"-->
 </head>
 
@@ -51,22 +51,115 @@
 <#--nginx  -->
 <!--# include virtual="/n/common/b01/head.html"-->
 <#if searchObj.content.pageBar.totalCount != 0>
-    <#include "module/searchResults.ftl" >
+    <div class="nSearchWarp">
+        <div class="nSearch-crumb nSearch-crumb-search clearfix">
+            <span class="nSearch-crumb-keyWord" id="nSearch-crumb-keyWord"><b class="nFont14">${varSearchKeyWords!}</b></span>
+            <span class="nSearch-crumb-searchNum" id="nSearch-crumb-searchNum">共 <em id="searchTotalNumber">${searchObj.content.seoData.totalCount!}</em> 个商品</span>
+            <#--页面当前已经选择的分类-->
+            <#include "module/facet/facet_selected.ftl">
+        </div>
+    </div>
+
+    <#--facets分类-->
+    <div class="nSearchWarp nSearch-facets searchFacet" id="module-facet">
+        <#--【facet】品牌筛选项-->
+        <#assign facetsBrands = (searchObj.content.facets.brand)!>
+        <#if !(facetsBrands.selected)?? && (facetsBrands.items??)>
+            <#include "module/facet/facet_brand.ftl" >
+        </#if>
+
+        <#--设置聚合筛选项的筛选条件 如果小于4个时候用普通分类补位-->
+        <#if (searchObj.content.facets.hotCategory)?? && ((searchObj.content.facets.hotCategory)?size <= 4)>
+            <#assign facetsCommonIndex= 4 - (searchObj.content.facets.hotCategory)?size />
+        <#else>
+            <#assign facetsCommonIndex= 4>
+        </#if>
+
+        <#--【facet】热门分类  【展示方式】有多少展示多少-->
+        <#if (searchObj.content.facets.hotCategory)??>
+            <#assign facetsHot = (searchObj.content.facets.hotCategory)!>
+            <#assign displayType = "facets-hot">
+            <#assign facethotitem = "facets-hot-item">
+            <#list facetsHot as facetsItem>
+                <#assign thisFacets = facetsItem>
+                <#include "module/facet/facet_common.ftl">
+            </#list>
+            <#assign displayType = "">
+            <#assign facethotitem = "">
+        </#if>
+
+        <#--【facet】普通分类  【展示方式】最多展示4个没，多余的放在聚合分类里面-->
+        <#assign facetsCommon = (searchObj.content.facets.commonfacets)!>
+        <#if facetsCommon?size &gt; 0>
+            <#list facetsCommon as facetsItem>
+                <#if facetsItem_index < facetsCommonIndex>
+                    <#assign thisFacets = facetsItem>
+                    <#include "module/facet/facet_common.ftl">
+                </#if>
+            </#list>
+        </#if>
+
+        <#--【facet】普通分类+相关分类  【展示方式】聚合展示-->
+        <#assign facetsRelevant = (searchObj.content.facets.commomCatFacets)!>
+        <#assign facetsSelect = (searchObj.content.selectData.facets.selectCat)!>
+        <#if (facetsCommon?size >= facetsCommonIndex) || (facetsRelevant.items)?? && !facetsSelect>
+            <div class="facets-category facets-category-syn clearfix">
+                <span class="fc-key">高级筛选：</span>
+                <div class="fc-content">
+                    <#list facetsCommon as facetsItem>
+                        <#if (facetsItem_index &gt; facetsCommonIndex) && (facetsItem_index &lt; 8)>
+                            <#include "module/facet/facet_together.ftl">
+                        </#if>
+                    </#list>
+                <#--相关分类facets-->
+                <#if (facetsRelevant.items)?? && facetsRelevant.items ?size &gt; 0>
+                    <#assign facetsItem = facetsRelevant>
+                    <#assign displayType = "facets-rele">
+                    <#include "module/facet/facet_together.ftl">
+                </#if>
+                </div>
+            </div>
+        </#if>
+    </div>
+
+    <#--页面商品列表主体-->
+    <div class="nSearchWarp">
+        <div class="nSearchWarp-main clearfix">
+            <div class="product-right-box">
+                <div id="prdRight-1"><#--店铺精选商品 dsp--></div>
+                <div id="prdRight-2"><#--热销推荐商品 bigdata--></div>
+                <div id="prdRight-3"><#--搜了还还购买了 bigdata--></div>
+                <div id="prdRight-4"><#--推广活动位 dsp--></div>
+            </div>
+            <div class="product-left-list" id="product-left">
+                <#include "module/toolbar.ftl" >
+                <#include "module/prdlist.ftl" >
+            </div>
+        </div>
+    </div>
 <#else>
-    <#include "module/searchResultsNo.ftl">
+    <div class="nSearchWarp">
+        <div class="listmain">
+            <#assign searchReset=searchObj.content.commonInfo >
+            <#if (searchReset.searchLevel)?? && (searchReset.searchLevel) == 4>
+                <div class="srabox">非常抱歉，根据相关法律法规和政策，无法显示与<span>“${(searchObj.content.commonInfo.illegal)!}”</span>相关的商品。</div>
+            <#elseif (searchObj.header.searchReq.et)?? && (searchObj.header.searchReq.et) !=''>
+                <div class="srabox">非常抱歉，没有找到与<span>“${(searchObj.header.searchReq.et)!}”</span>相关的商品。</div>
+            <#elseif (searchObj.content.selectData.keywords)??>
+                <div class="srabox">非常抱歉，没有找到与<span>“${(searchObj.content.selectData.keywords)!}”</span>相关的商品。</div>
+            <#elseif (searchReset.searchLevel)?? && (searchReset.searchLevel) == 5>
+                <div class="srabox">非常抱歉，没有找到与<span>“${(searchObj.content.selectData.keywords)!}”</span>相关的商品。</div>
+            </#if>
+            <em></em> <i></i>
+        </div>
+    </div>
 </#if>
 
+<div id="lazyajaxloadarea"><div></div></div>
 <div class="nSearchWarp">
-    <#--底部推广商品-->
-    <#include "module/bottom_DSP_tuiguang.ftl">
-    <#--猜你喜欢的商品-->
-    <#include "module/bottom_mayBeLike.ftl">
-    <#--最近浏览商品-->
-    <#include "module/bottom_recentVisit.ftl">
-</div>
-<div id="search_info_box"  style="display:none">
-    <div id="searchReq">${searchReq!}</div>
-    <div id="pageType">${pageType!}</div>
+    <div id="prdBottom-1"><#--推广商品（有搜索结果） dsp 或者 热销推荐商品（无搜索结果） bigdata--></div>
+    <div id="prdBottom-2"><#--猜你喜欢 bigdata--></div>
+    <div id="prdBottom-recent"><#--最近浏览--></div>
 </div>
 <!--# include virtual="/n/common/b01/aside.html"-->
 <!--# include virtual="/n/common/b01/foot_new.html"-->
@@ -74,90 +167,15 @@
     var productId_list = "";
     var keyword = "";
     var order = [];
-    var orderby=""
-    var catid="";
-    var s_account = "gome-prd,gome-higo-prd"
+    var orderby= "";
+    var catid= "";
+    var s_account = "gome-prd,gome-higo-prd";
 </script>
 <script type="text/javascript">
     var isHyg = true//${(storeConfiguration.isHwg)!};
-    var searchSite = "${(storeConfiguration.mSearchSite)!}";
-    var timerLazyload = null;
-    var interVal = null;
-    <#if asyncPrice>
-        var asyncPrice = true;
-    <#else>
-        var asyncPrice = false;
-    </#if>
+    window.pageName = '海外购搜索结果页';
 </script>
 <#include "module/pagejs.ftl">
-
-<script>
-<#if asyncPrice>
-clearInterval(interVal)
-timerLazyload = setInterval(priceInterval,1000)
-<#else>
-clearInterval(timerLazyload)
-interVal=setInterval(nomalInterval,1000);   
-</#if>
-    $(function(){
-        //getRelevant_search.init();
-
-        window.setTimeout(function(){
-            <#if searchObj.content??>
-                <#if (searchObj.content.selectData.keywords)??>
-                    <#assign gomeResultWord=(searchObj.content.selectData.keywords)?replace('\\','')?replace('\"','')>
-                </#if>
-                <#if (searchObj.content.pageBar.pageNumber)??>
-                    <#assign gomePageCur=(searchObj.content.pageBar.pageNumber)>
-                </#if>
-                <#if (searchObj.content.pageBar.totalCount)??>
-                    <#assign gomePageTotal=(searchObj.content.pageBar.totalCount)>
-                </#if>
-                <#if (searchObj.content.toolBar.sort)??>
-                    <#assign toolItem = searchObj.content.toolBar.sort>
-                    <#if toolItem.default.isDefault??>
-                        <#assign classCur="综合">
-                    <#elseif toolItem.sale.isDefault??>
-                        <#assign classCur="销量">
-                    <#elseif toolItem.price.isDefault??>
-                        <#assign classCur="价格">
-                    <#elseif toolItem.startDate.isDefault??>
-                        <#assign classCur="新品">
-                    <#else>
-                        <#assign classCur="评价">
-                    </#if>
-                </#if>
-            </#if>
-                <#if (searchObj.header.tagWightVersion)??>
-                    <#assign version=(searchObj.header.tagWightVersion)>
-                </#if>
-                var pageCur = $(".page-nav .num em").html();
-                s.pageName = "站内搜索:搜索结果页:${(gomeResultWord)!}";
-                s.channel = s.pageName.split(':')[0];
-                s.prop1 = s.pageName;
-                s.prop2 = s.pageName;
-                s.prop3 = s.pageName;
-                s.prop4 = <#if (((searchObj.header.isNotContains??) && searchObj.header.isNotContains=true) && (searchObj.content.prodInfo.products?size = 0))>"站内搜索失败页面"<#else>"站内搜索成功页面"</#if>;
-                s.prop23 = "站内搜索:${(gomeResultWord)!}:全部";
-                s.prop24 = "${classCur!}:${(gomePageCur)!}";
-                s.eVar1 = "一般搜索:${(gomeResultWord)!}";
-                s.eVar1 = "一般搜索:${(gomeResultWord)!}";
-                s.eVar7 =${(gomePageTotal)!};
-                s.eVar3 = "站内搜索";
-                s.eVar30 = "站内搜索";
-                s.eVar41 = "站内搜索${(version)!}";
-                var url = window.location.search;
-                var arr = url.split("&");
-                for (var i = 0, j = arr.length; i < j; i++) {
-                    if (arr[i] == "promoFlag=1") {
-                        s.eVar35 ="搜索结果页:活动筛选";
-                        break;
-                    }
-                }
-                var s_code = s.t();
-                if (s_code)document.write(s_code);
-        },2000);
-    })
-</script>
+<script src="${(storeConfiguration.stageJsServer)!}/search2017/js/msearch.bundle.js"></script>
 </body>
 </html>

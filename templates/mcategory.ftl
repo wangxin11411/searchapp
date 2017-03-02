@@ -52,8 +52,8 @@
     <meta property="qc:admins" content="2500556177677556375636"/>
     <meta http-equiv="mobile-agent" content="format=html5; url= http://m.gome.com.cn/category-${(searchObj.header.searchReq.catId)!}.html">
     <link rel="shortcut icon" href="//app.gomein.net.cn/favicon.ico" type="image/x-icon" />
-    <link rel="stylesheet" href='${(storeConfiguration.stageCssServer)!}/??<!--# include virtual="/n/common/b01/css.html"-->'>
-    <link rel="stylesheet" href="${(storeConfiguration.stageCssServer)!}/??/css/n/detail/gCity.min.css,/search/search2016/css/search2015.min.css,/f2ecss/stage/overseasbuy/overseas-basic.min.css?${jsCssVersion!}">
+    <link rel="stylesheet" href='${(storeConfiguration.stageCssServer)!}/??<!--# include virtual="/n/common/b01/css.html"-->,/css/n/detail/gCity.min.css'>
+    <link rel="stylesheet" href="http://localhost:8080/search2017/css/style.css">
     <!--# include virtual="/n/common/global/global.html"-->
     <#if (searchObj.header.serverInfo.refPage)!?index_of("-00-0-48-1-0-0-0-1-0-0-0-0-0-0-0-0-0")!=-1>
         <link rel="canonical" href="${(storeConfiguration.listSite)!}/${(searchObj.content.seoData.catId)!}.html"/>
@@ -77,8 +77,6 @@
 </div>
 <#--nginx -->
 <!--# include virtual="/n/common/b01/head.html"-->
-<#--在本地测试环境引入公共头-->
-<#--<#include "static/newHeader.html">-->
 <#--热卖分类 推送少于4个的时候会异步请求大数据商品-->
 <div class="nSearchWarp">
     <div class="hot-tj">
@@ -113,19 +111,80 @@
 </div>
 <#--面包屑-->
 <div class="nSearchWarp">
-    <#include "module/crumb_category.ftl" >
+    <#--分类列表页面包屑-->
+    <#assign pageCategory = (searchObj.content.selectData.category)!>
+    <div class="nSearch-crumb clearfix">
+        <span id="category-first" catgoryId="${(pageCategory.fir.id)!}" data-code="9000000101-1" class="nSearch-crumb-tit-category">${(pageCategory.fir.name)!}</span>
+
+        <dl class="nSearch-crumb-category"  catgoryId="${(pageCategory.sec.id)!}" id="category-second">
+            <dt class="category-name">${(pageCategory.sec.name)!}</dt>
+            <dd class="category-box clearfix" id="category-box-second" modelid="9000000102"></dd>
+        </dl>
+
+        <#if (pageCategory.third)??>
+            <dl class="nSearch-crumb-category" catgoryId="${(pageCategory.sec.id)!}" id="category-third">
+                <dt class="category-name">${(pageCategory.third.name)!}</dt>
+                <dd class="category-box"  id="category-box-third" modelid="9000000103">
+                    <#if (pageCategory.sec.childs)?? && (pageCategory.sec.childs?size gt 0)>
+                        <#list pageCategory.sec.childs as thirdItem>
+                            <a href="${(thirdItem.url)!}" data-code="9000000103-${(thirdItem_index+1)!}">${(thirdItem.name)!}</a>
+                        </#list>
+                    </#if>
+                </dd>
+            </dl>
+        </#if>
+        <#--页面当前已经选择的分类-->
+        <#include "module/facet/facet_selected.ftl">
+    </div>
+
+    <div class="nSearchWarp nSearch-crumb-category-results">
+        <span class="nFont14"><b class="nHeigh">${(pageCategory.third.name)!}</b>商品筛选</span>
+        <span>共 <em id="searchTotalNumber">${searchObj.content.seoData.totalCount!}</em> 个商品</span>
+    </div>
 </div>
 <#--facets分类-->
-<div class="nSearchWarp nSearch-facets">
-    <#include "module/facet_brand.ftl" >
-    <#include "module/facet_price.ftl" >
-    <#include "module/facet_common.ftl" >
+<div class="nSearchWarp nSearch-facets" id="module-facet">
+    <#assign showThreshold = 5 />
+    <#assign showThresholdText = "" />
+    <#--【facet】品牌筛选项-->
+    <#assign facetsBrands = (searchObj.content.facets.brand)!>
+    <#if !(facetsBrands.selected)?? && (facetsBrands.items??)>
+        <#assign showThreshold= showThreshold - 1 />
+        <#include "module/facet/facet_brand.ftl" >
+    </#if>
+    <#--【facet】价格筛选-->
+    <#assign facetsPrice = (searchObj.content.facets.price)!>
+    <#if (facetsPrice.items)?? && !(facetsPrice.selected)??>
+        <#assign thisFacets = facetsPrice>
+        <#assign showThreshold= showThreshold - 1 />
+        <#include "module/facet/facet_common.ftl">
+    </#if>
+    <#--【facet】一般筛选  【展示方式】超过showThreshold的分类隐藏，通过更多展示按钮控制-->
+    <#assign facetsCommon = (searchObj.content.facets.commonfacets)!>
+    <#list facetsCommon as facetsItem>
+        <#if (facetsItem_index >=  showThreshold)>
+            <#assign showThresholdText =showThresholdText+ "," + (facetsItem.label)!/>
+            <#assign displayType ="fc-hide"/>
+        </#if>
+        <#assign thisFacets = facetsItem>
+        <#include "module/facet/facet_common.ftl">
+    </#list>
+    <#if facetsCommon?size &gt; showThreshold>
+        <div class="fccc-control-warp">
+            <span class="fccc-control"  id="fc-common-show">更多选项（${showThresholdText?substring(1)}）</span>
+            <span class="fccc-up" id="fc-common-hide">收起&nbsp;&nbsp;</span>
+        </div>
+    </#if>
 </div>
 <#--页面商品列表主体-->
 <div class="nSearchWarp">
-    <div class="nSearchWarp-main">
+    <div class="nSearchWarp-main clearfix">
         <div class="product-right-box">
-            <#include "module/prd_right.ftl" >
+            <div id="prdRight-1"><#--店铺精选商品 dsp--></div>
+            <div id="prdRight-2"><#--一周销量排行榜 bigdata--></div>
+            <div id="prdRight-3"><#--浏览此类商品的用户最终买了 bigdata--></div>
+            <div id="prdRight-4"><#--购买此类商品的用户还购买了 bigdata--></div>
+            <div id="prdRight-5"><#--推广活动位 dsp--></div>
         </div>
         <div class="product-left-list" id="product-left">
             <#include "module/toolbar.ftl" >
@@ -133,17 +192,11 @@
         </div>
     </div>
 </div>
+<div id="lazyajaxloadarea"><div></div></div>
 <div class="nSearchWarp">
-    <#--底部推广商品-->
-    <#include "module/bottom_DSP_tuiguang.ftl">
-    <#--猜你喜欢的商品-->
-    <#include "module/bottom_mayBeLike.ftl">
-    <#--最近浏览商品-->
-    <#include "module/bottom_recentVisit.ftl">
-</div>
-<div id="search_info_box" style="display:none">
-    <div id="searchReq">${searchReq!}</div>
-    <div id="pageType">${pageType!}</div>
+    <div id="prdBottom-1"><#--推广商品（） dsp--></div>
+    <div id="prdBottom-2"><#--猜你喜欢 bigdata--></div>
+    <div id="prdBottom-recent"><#--最近浏览--></div>
 </div>
 <!--# include virtual="/n/common/b01/aside.html"-->
 <!--# include virtual="/n/common/b01/foot_new.html"-->
@@ -151,82 +204,15 @@
     var productId_list = "";
     var keyword = "";
     var order = [];
-    var orderby=""
-    var catid="";
-    var s_account = "gome-prd,gome-higo-prd"
+    var orderby= "";
+    var catid= "";
+    var s_account = "gome-prd,gome-higo-prd";
 </script>
 <script type="text/javascript">
     var isHyg = true//${(storeConfiguration.isHwg)!};
-    var searchSite = "http://list.gomehigo.hk";
-    var timerLazyload = null;
-    var interVal = null;
-    <#if asyncPrice>
-        var asyncPrice = true;
-    <#else>
-        var asyncPrice = false;
-    </#if>
+    window.pageName = '海外购三级列表页';
 </script>
 <#include "module/pagejs.ftl">
-<script>
-<#if asyncPrice>
-clearInterval(interVal)
-timerLazyload = setInterval(priceInterval,1000)
-<#else>
-clearInterval(timerLazyload)
-interVal=setInterval(nomalInterval,1000);   
-</#if>
-    $(function(){
-        var  productId_list=""
-        //各种埋码
-        window.setTimeout(function(){
-        <#if searchObj.content??>
-            <#if (searchObj.content.selectData.category.fir)?? >
-                <#assign firMenu=searchObj.content.selectData.category.fir>
-            </#if>
-            <#if (searchObj.content.selectData.category.sec)?exists >
-                <#assign secrMenu=searchObj.content.selectData.category.sec>
-            </#if>
-            <#if (searchObj.content.selectData.category.third)?exists >
-                <#assign thirdMenu=searchObj.content.selectData.category.third>
-            </#if>
-            <#if (searchObj.content.pageBar.pageNumber)??>
-                <#assign gomePageCur=(searchObj.content.pageBar.pageNumber)>
-            </#if>
-            <#if (searchObj.content.toolBar.sort)??>
-                <#assign toolItem = searchObj.content.toolBar.sort>
-                <#if toolItem.default.isDefault??>
-                    <#assign classCur="综合">
-                <#elseif toolItem.sale.isDefault??>
-                    <#assign classCur="销量">
-                <#elseif toolItem.price.isDefault??>
-                    <#assign classCur="价格">
-                <#elseif toolItem.startDate.isDefault??>
-                    <#assign classCur="新品">
-                <#else>
-                    <#assign classCur="评价">
-                </#if>
-            </#if>
-        </#if>
-            var catMap ="${(firMenu.name)!}:${(secrMenu.name)!}:${(thirdMenu.name)!}";
-            s.pageName="商品列表:${(thirdMenu.name)!}";
-            s.channel=s.pageName.split(':')[0];
-            s.prop1=s.pageName.split(':')[0]+":"+catMap.split(':')[0];
-            s.prop2=s.pageName.split(':')[0]+":"+catMap.split(':')[0]+":"+catMap.split(':')[1];
-            s.prop3="商品列表:"+catMap;
-            s.prop4=s.pageName.split(':')[0];
-            s.prop24="${classCur}:${gomePageCur!}";
-            s.eVar3="分类浏览";
-            s.eVar30="分类浏览";
-            s.events="event50";
-            s.eVar41="商品列表B";
-            var url = window.location.pathname;
-            var arr = url.split("-");
-            if(arr[10] && arr[10]==1){s.eVar35 ="三级列表页:活动筛选";};
-            s.products=";null;;;event50=1;eVar37=${(firMenu.name)!}:${(secrMenu.name)!}:${(thirdMenu.name)!}:${(thirdMenu.id)!}";
-            var s_code=s.t();
-            if(s_code)document.write(s_code);
-        },2000);
-    })
-</script>
+<script src="${(storeConfiguration.stageJsServer)!}/search2017/js/mcategory.bundle.js"></script>
 </body>
 </html>

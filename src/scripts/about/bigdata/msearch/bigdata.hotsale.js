@@ -3,7 +3,7 @@ function getData(domId){
     $.get(
         window.url.bigdata_url,
         {
-            boxid: "box91",
+            boxid: "box94",
             area: pageData.regionId,
             cid: $.cookie("__clickidc"),
             imagesize: 160,
