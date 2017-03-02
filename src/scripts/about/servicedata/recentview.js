@@ -16,7 +16,7 @@ function getData(pagename,domId){
     $.ajax({
         type:"get",
         dataType:"jsonp",
-        url:"//ss"+window.cookieDomain+"/item/v1/browse/prdreturn/"+$.parseJSON(product_id).join("")+"/80/flag/"+pagename+"/recentViewed",
+        url:"//ss"+window.cookieDomain+"/item/v1/browse/prdreturn/"+$.parseJSON(product_id).join("")+"/80/flag/"+window.pagename+"/recentViewed",
         jsonpName:"recentViewed"
     }).done(function(data){
         if(data.success && data.result.length>0){

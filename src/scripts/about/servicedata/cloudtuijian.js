@@ -36,7 +36,7 @@ function getData(){
         dataType:"jsonp",
         url:"//api.search"+window.cookieDomain+"/p/asynSearch",
         jsonpName:"recentViewed",
-        data:{module:"recommendActivity",from:"self",catId:window.dsp_gome_c3id}
+        data:{module:"recommendActivity",from:"self",catId:dspData.dsp_gome_c3id}
     }).done(function(data){
         if (data.activity.length>4){
             var listTpl_a = templateSimple.compile(tpl_list)(data);

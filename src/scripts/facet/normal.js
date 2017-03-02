@@ -21,7 +21,7 @@ define(function(require,exports,module){
         var space = 0;
         var _li = $(".nSearch-crumb-facetsCurrent").find("li");
 
-        if(isSearch){
+        if(pageData.isSearch){
             space = $("#nSearch-crumb-searchNum").width() + $("#nSearch-crumb-keyWord").width() +65;
         }else{
             space = $("#category-first").width() + $("#category-second").width() + $("#category-third").width() +90;

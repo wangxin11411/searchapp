@@ -2,10 +2,10 @@ var tpl_normal = require("../template.dsp.normal").tpl;
 $.ajax({
     type:"get",
     dataType:"jsonp",
-    url:window.url.dsp_url_c,
+    url:dspData.url.dsp_url_c,
     data:{
         "p":1,
-        "catid":window.dsp_gome_c3id,
+        "catid":dspData.dsp_gome_c3id,
         "c":"dsp_tg",
         "width_height":"210-210",
         "area":pageData.regionId

@@ -24,7 +24,7 @@
                 <#list brands.items as item>
                     <li class="c-brand <#if (item_index>= 16)>brand-hide</#if>"  brand-value="${item.prefix!}">
                     <#if item.brandImg?? && item.brandImg !="">
-                        <#assign brandStyle = "background-image:url(${varBrandLogo!}/prodimg${item.brandImg!})">
+                        <#assign brandStyle = "background-image:url(${item.brandImg!})">
                     <#else>
                         <#assign brandStyle = "text-indent:0">
                     </#if>

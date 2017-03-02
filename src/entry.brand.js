@@ -14,7 +14,7 @@ setTimeout(function(){
     require('./scripts/function/getGoods').getGoods();
 },0);
 
-if(window.isResult){
+if(pageData.isResult){
     require("./scripts/about/bigdata/category/dsp.promotion");//右侧店铺精选和底部的推广商品
     require("./scripts/about/bigdata/search/bigdata.hotsale").getData("#prdRight-2");//右侧热销推荐
     require("./scripts/about/bigdata/category/bigdata.lookandbuy").getData("#prdRight-3");//右侧浏览了还购买商品

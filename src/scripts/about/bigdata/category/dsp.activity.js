@@ -2,10 +2,10 @@ function getData(domId){
     $.ajax({
         type:"get",
         dataType:"jsonp",
-        url:window.url.dsp_url_c,
+        url:dspData.url.dsp_url_c,
         data:{
             "p":123,
-            "catid":window.dsp_gome_c3id,
+            "catid":dspData.dsp_gome_c3id,
             "c":"dsp_act",
             "area":pageData.regionId
         },

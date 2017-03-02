@@ -1,4 +1,7 @@
 <#assign varSelectData = searchObj.content.selectData>
+<#assign varPageBar = searchObj.content.pageBar>
+<#assign varHeader = searchObj.header>
+
 <#if varSelectData.marketPage == "1">
     <#assign isGomehigo = true>
 <#else>

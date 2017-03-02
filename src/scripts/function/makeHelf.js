@@ -20,7 +20,7 @@ define(function(require,exports,module){
                 }else{
                     replaceContent = "&"+queryString+"="+valueString+"&";
                 }
-                href = (href.indexOf(queryString)!= -1)? href.replace(reg, replaceContent) : href+ "&"+queryString+"="+window.defaultFacets+valueString+(queryString=="price"?"&priceTag=1":"")+"&pzpq=0&pzin=v5";
+                href = (href.indexOf(queryString)!= -1)? href.replace(reg, replaceContent) : href+ "&"+queryString+"="+pageData.defaultFacets+valueString+(queryString=="price"?"&priceTag=1":"")+"&pzpq=0&pzin=v5";
                 break;
             case "三级列表页":
                 href = window.location.pathname;
@@ -36,7 +36,7 @@ define(function(require,exports,module){
                 href = pageCategoryQueryArray.join("-");
                 break;
             case "品牌商品页":
-                href = window.location.protocol+"//search"+cookieDomain+"/search?question="+window.searchkey + "&" + queryString + "=" + window.brandId  + valueString +"&pzpq=0&pzin=v5";
+                href = window.location.protocol+"//search"+cookieDomain+"/search?question="+pageData.searchkey + "&" + queryString + "=" + pageData.brandId  + valueString +"&pzpq=0&pzin=v5";
                 break;
         }
         window.location.href = href;

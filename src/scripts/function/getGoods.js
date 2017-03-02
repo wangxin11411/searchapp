@@ -51,7 +51,7 @@ define(function(require,exports,module){
         {{else}}\
         <p class="item-pic"><a class="emcodeItem item-link" rel="nofollow" href="{{$value.sUrl}}" target="_blank" data-code="{{modelid}}-{{pageNumber}}_{{$index+1}}_1" title="{{$value.alt}}"><img gome-src="{{$value.sImg}}_210.jpg" src="//img.gomein.net.cn/images/grey.gif" alt="{{$value.alt}}"></a>{{if $value.energyTag == 1}}<span class="save-energy"></span>{{/if}}</p>\
         {{/if}}\
-        {{if $value.isMulti && $value.images.length>0}}\
+        {{if $value.isBigImg && $value.images.length>0}}\
         <div class="item-pic-small-box" index="{{$value.images.length}}" curIndex="{{$value.images.length}}">\
             {{if $value.images.length> 5 }}\
             <a href="javascript:void(0);" class="icon-prev disable" onClick="javascript:smallImgSprev(this)"></a>\
@@ -117,15 +117,15 @@ define(function(require,exports,module){
             <a href="{{$value.sUrl}}#j-comment-section" target="_blank" class="comment emcodeItem" data-code="{{modelid}}-{{pageNumber}}_{{$index+1}}_2">{{$value.evaluateCount}}</a>\
         </p>\
         <p class="item-option clearfix">\
-            <span class="add-contrast display-page-compare-checkbox"></span>\
+            <span class="add-contrast" cid="{{$value.pId}}/{{$value.skuId}}"></span>\
             <span class="add-collection">收藏</span>\
-        {{if $value.stock == 0 || noSkusStock}}\
+            {{if $value.stock == 0 || noSkusStock}}\
             <span class="add-cart next-buy">到货通知</span>\
-        {{else if $value.stock == 3 || $value.stock == 4 || $value.stock == 6}}\
+            {{else if $value.stock == 3 || $value.stock == 4 || $value.stock == 6}}\
             <a href="{{productSite}}/{{$value.pId}}-{{$value.skuId}}.html" target="_blank" class="add-cart prev-buy emcodeItem" data-code="{{modelid}}-{{pageNumber}}_{{$index+1}}_3">预约购买</a>\
-        {{else}}\
+            {{else}}\
             <a class="add-cart addTo-cart" href="javascript:void(0);" data-code="{{modelid}}-{{pageNumber}}_{{$index+1}}_3">加入购物车</a>\
-        {{/if}}\
+            {{/if}}\
         </p>\
         </div>\
         <p class="item-shop">\
@@ -212,7 +212,7 @@ define(function(require,exports,module){
             template.helper("formatBoolean",function(data,format){
                 return String(data);
             });
-            var itemHTML = templateSimple.compile(tpl_item)($.extend({},data.content.prodInfo,{'noSkusStock':noSkusStock,'modelid':9000000700,'pageNumber':pageData.currentPage}));
+            var itemHTML = templateSimple.compile(tpl_item)($.extend({},data.content.prodInfo,{'noSkusStock':pageData.noSkusStock,'modelid':9000000700,'pageNumber':pageData.currentPage,'productSite':pageData.productSite}));
             if($.trim(itemHTML) !=""){
                 $('#product-box').empty().html(itemHTML);
             }
@@ -240,7 +240,7 @@ define(function(require,exports,module){
                     $('#mp-next').addClass('mp-disable');
                 }
             }
-
+            window.compare_asyn()
             if(callback && typeof callback == "function"){
                 callback();
             }

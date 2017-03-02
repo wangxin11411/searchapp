@@ -18,17 +18,17 @@ var tpl_item = '\
 '
 function getData(domId){
     $.get(
-        window.url.bigdata_url,
+        window.dspData.bigdata_url,
         {
             boxid: "box01",
             area: pageData.regionId,
             cid: $.cookie("__clickidc"),
             imagesize: 160,
-            c1n: dsp_gome_c1name,
-            c3n: dsp_gome_c3name,
-            c1id: window.dsp_gome_c1id,
-            c3id: window.dsp_gome_c3id,
-            brid: window.dsp_gome_brid
+            c1n: dspData.dsp_gome_c1name,
+            c3n: dspData.dsp_gome_c3name,
+            c1id: dspData.dsp_gome_c1id,
+            c3id: dspData.dsp_gome_c3id,
+            brid: dspData.dsp_gome_brid
         },
         function(data){
             if (data.lst && data.lst.length > 0) {
