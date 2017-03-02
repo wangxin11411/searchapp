@@ -46,7 +46,11 @@ function getData(){
             var listTpl_b = templateSimple.compile(tpl_item)(data);
             $("#hot-list").append(listTpl_b)
         }else{
-            require("../bigdata/category/bigdata.recommend").getData("#hot-list")
+            if(isHyg){
+                require("../bigdata/category/bigdata.recommend").getData("#hot-list")
+            }else{
+                require("../bigdata/mcategory/bigdata.recommend").getData("#hot-list")
+            }
         }
 
     }).fail(function(){
