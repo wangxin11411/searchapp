@@ -50,30 +50,23 @@
     <meta name="description" content="${description!}">
     <meta name="Keywords" content="${keywords!}">
     <meta property="qc:admins" content="2500556177677556375636"/>
-    <meta http-equiv="mobile-agent" content="format=html5; url= http://m.gome.com.cn/category-${(searchObj.header.searchReq.catId)!}.html">
+    <meta http-equiv="mobile-agent" content="format=html5; url= http://m.gome.com.cn/category-${(varSelectData.category.third.id)!}.html">
     <link rel="shortcut icon" href="//app.gomein.net.cn/favicon.ico" type="image/x-icon" />
     <link rel="stylesheet" href='${(storeConfiguration.stageCssServer)!}/??<!--# include virtual="/n/common/b01/css.html"-->,/css/n/detail/gCity.min.css'>
     <link rel="stylesheet" href="http://localhost:8080/search2017/css/style.css">
     <!--# include virtual="/n/common/global/global.html"-->
-    <#if (searchObj.header.serverInfo.refPage)!?index_of("-00-0-48-1-0-0-0-1-0-0-0-0-0-0-0-0-0")!=-1>
+    <#if (searchObj.header.refPage)!?index_of("-00-0-48-1-0-0-0-1-0-0-0-0-0-0-0-0-0")!=-1>
         <link rel="canonical" href="${(storeConfiguration.listSite)!}/${(searchObj.content.seoData.catId)!}.html"/>
     <#else>
-        <link rel="canonical" href="${(searchObj.header.serverInfo.refPage)!?replace("/category/","/")}"/>
+        <link rel="canonical" href="${(searchObj.header.refPage)!?replace("/category/","/")}"/>
     </#if>
-    <link rel="alternate" media="only screen and(max-width:640px)" href="http://m.gome.com.cn/category-${(searchObj.header.searchReq.catId)!}.html">
+    <link rel="alternate" media="only screen and(max-width:640px)" href="http://m.gome.com.cn/category-${(varSelectData.category.third.id)!}.html">
 </head>
 <body class="marketPage" data-page="list">
 <div id="delscript">
     <script type="text/javascript">
         var winWidth = window.screen.width,objb = document.body;if (winWidth<=1024) {objb.className += " " +"w990"; }else {objb.className=objb.className.replace("w990", '');};
     </script>
-</div>
-<div style="display:none" id="severInfolist">
-    server:${(searchObj.header.serverInfo.serverIp)!}<br/>
-    from:${(searchObj.header.serverInfo.from)!}<br/>
-    thread:${(searchObj.header.serverInfo.thread)!}<br/>
-    job:${(searchObj.header.serverInfo.job)!}<br/>
-    time:${(searchObj.header.serverInfo.time)!}<br/>
 </div>
 <#--nginx -->
 <!--# include virtual="/n/common/b01/head.html"-->

@@ -41,13 +41,6 @@
         var winWidth = window.screen.width,objb = document.body;if (winWidth<=1024) {objb.className += " " +"w990"; }else {objb.className=objb.className.replace("w990", '');};
     </script>
 </div>
-<div style="display:none" id="severInfolist">
-    server:${(searchObj.header.serverInfo.serverIp)!}<br/>
-    from:${(searchObj.header.serverInfo.from)!}<br/>
-    thread:${(searchObj.header.serverInfo.thread)!}<br/>
-    job:${(searchObj.header.serverInfo.job)!}<br/>
-    time:${(searchObj.header.serverInfo.time)!}<br/>
-</div>
 <#--nginx  -->
 <!--# include virtual="/n/common/b01/head.html"-->
 <#if searchObj.content.pageBar.totalCount != 0>
