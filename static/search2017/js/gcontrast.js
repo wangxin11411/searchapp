@@ -68,16 +68,18 @@
      * @return {[type]}             [description]
      */
     function getProductInfo(compareData){
-        $.when(
-            getSingleProductInfo(compareData[0]),
-            getSingleProductInfo(compareData[1]),
-            getSingleProductInfo(compareData[2]),
-            getSingleProductInfo(compareData[3])
-        ).done(function(data1,data2,data3,data4){
-            var dataArray = [];
-            dataArray.push(data1,data2,data3,data4)
-            makeHTML(dataArray);
-        })
+        return $.Deferred(function(defer){
+            $.when(
+                getSingleProductInfo(compareData[0]),
+                getSingleProductInfo(compareData[1]),
+                getSingleProductInfo(compareData[2]),
+                getSingleProductInfo(compareData[3])
+            ).done(function(data1,data2,data3,data4){
+                var dataArray = [];
+                dataArray.push(data1,data2,data3,data4);
+                defer.resolve(dataArray);
+            })
+        }).promise();
     }
     /**
      * [description] 初始化页面对比栏结构，找到页面上对比的商品设置高亮状态，并且获取商品信息，添加到对比栏
@@ -103,8 +105,8 @@
                 }
                 return false
             }).data("isCompared",true).css(_opt.objStyle);
-            $("#compareNum").text(_dataCompared.length)
-            getProductInfo(_dataCompared);
+            $("#compareNum").text(_dataCompared.length);
+            getProductInfo(_dataCompared).done(makeHTML);
             return arguments.callee;
         })()
     }())
@@ -120,9 +122,9 @@
             AREASALEPRICE:"normal",
             TUANPRICE:"tuanqiang",
             RUSHBUYPRICE:"tuanqiang"
-        }
+        };
         var _url = "",
-            _tags = ""
+            _tags = "";
         switch(priceType[data.priceType]){
             case "normal":
                 _url = "//item"+_opt.domain+"/"+data.productId+"-"+data.skuId+".html";
@@ -170,17 +172,17 @@
     $("#gm-compareBox-hide").on("click",function(){
         $("#gm-compareBox").fadeOut();
         $.cookie("g_co","hide",{expires: 30,path: '/'});
-    })
+    });
 
     $("#gm-compareBox-clear").on("click",function(){
         _dataCompared = [];
         init();
-    })
+    });
 
     $("#gm-compareBox").delegate(".delete","click",function(){
         _dataCompared.removeValve($(this).attr('cid'));
         init();
-    })
+    });
 
     _item.delegate(_opt.obj,"click",function(){
 
@@ -198,7 +200,7 @@
         _dataCompared.removeValve($item.attr('cid'));
       }
       init();
-    })
+    });
     return init;
 }
 })(jQuery);

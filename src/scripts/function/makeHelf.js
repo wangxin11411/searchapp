@@ -22,10 +22,32 @@ define(function(require,exports,module){
                 }
                 href = (href.indexOf(queryString)!= -1)? href.replace(reg, replaceContent) : href+ "&"+queryString+"="+pageData.defaultFacets+valueString+(queryString=="price"?"&priceTag=1":"")+"&pzpq=0&pzin=v5";
                 break;
+            case "海外购搜索结果页":
+                var r =href.substr(1).match(reg);
+                if (r != null && queryString == "facets"){
+                    replaceContent = "&"+queryString+"="+unescape(r[2])+valueString+"&";
+                }else{
+                    replaceContent = "&"+queryString+"="+valueString+"&";
+                }
+                href = (href.indexOf(queryString)!= -1)? href.replace(reg, replaceContent) : href+ "&"+queryString+"="+pageData.defaultFacets+valueString+(queryString=="price"?"&priceTag=1":"")+"&pzpq=0&pzin=v5";
+                break;
             case "三级列表页":
                 href = window.location.pathname;
                 if(href.split("-").length <= 1){
                     href = href.split(".html")[0] + "-00-0-48-1-0-0-0-1-0-0-0-0-0-0-0-0-0.html";
+                }
+                pageCategoryQueryArray = href.split("-");
+                if (queryString === "facets" && pageCategoryQueryArray[9] !== "0"){
+                    pageCategoryQueryArray[queryRelation[queryString]] += valueString;
+                }else{
+                    pageCategoryQueryArray[queryRelation[queryString]] = valueString;
+                }
+                href = pageCategoryQueryArray.join("-");
+                break;
+            case "海外购三级列表页":
+                href = window.location.pathname;
+                if(href.split("-").length <= 1){
+                    href = href.split(".html")[0] + "-00-0-48-1-0-0-0-1-0-0-0-11-0-0-0-0-0.html";
                 }
                 pageCategoryQueryArray = href.split("-");
                 if (queryString === "facets" && pageCategoryQueryArray[9] !== "0"){

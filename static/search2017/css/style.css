@@ -416,6 +416,13 @@ filter-bottom 閫佽揣鍦板潃锛� 鏈夋棤璐э紝鍥界背閰嶉€侊紝
 }
 .product-item .bigp{
     height: 275px;
+    overflow: hidden;
+}
+.product-item .bigp a{
+    display: block;
+    width:280px;
+    text-align: center;
+    margin-left: -30px;
 }
 .product-item .item-price{
     height: 20px;
