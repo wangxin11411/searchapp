@@ -42,7 +42,7 @@
     <link rel="alternate" media="only screen and(max-width:640px)" href="${href_url!}"/>
     <link rel="shortcut icon" href="//app.gomein.net.cn/favicon.ico" type="image/x-icon" />
     <link rel="stylesheet" href='<!--# include virtual="/n/common/a18/style.html"-->,/css/n/detail/gCity.min.css'>
-    <link rel="stylesheet" href="http://localhost:8080/search2017/css/style.css">
+    <link rel="stylesheet" href="http://localhost:8080/search/search2017/css/style.css">
 
 <!--# include virtual="/n/common/global/global.html"-->
 </head>
@@ -185,6 +185,6 @@
 </script>
 
 <#include "module/pagejs.ftl">
-<script src="${(storeConfiguration.stageJsServer)!}/search2017/js/brand.bundle.js"></script>
+<script src="${(storeConfiguration.stageJsServer)!}/search/search2017/js/brand.bundle.js"></script>
 </body>
 </html>

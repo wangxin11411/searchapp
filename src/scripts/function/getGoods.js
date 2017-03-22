@@ -13,6 +13,7 @@
  * 【function 3】重新设置迷你分页器，底部分页器
  */
 define(function(require,exports,module){
+    var tpl_detail = require("./templateGoods").getTemplate("normal");
     /**
      * [description]
      * 商品模板+区域推广活动 art-template
@@ -33,101 +34,17 @@ define(function(require,exports,module){
         </span>\
     </li>\
     {{else}}\
-    <li class="product-item" from="ajax">\
-        <input class="productInfo" type="hidden" isMCard="{{$value.gomeCardType}}" isHyg="{{$value.marketTag}}" isTaogou="false" pid="{{$value.pId}}" skuid="{{$value.skuId}}" prd-index="{{$index+1}}" saleCount="{{$value.salesVolume}}" evaluateCount="{{$value.evaluateCount}}" firstCat="{{$value.firstCat}}" secondCat="{{$value.secondCat}}" thirdCat="{{$value.defCatId}}" brandIds="" thirdProduct="{{$value.thirdProduct | formatBoolean}}" shopId="{{if $value.shopId}}{{$value.shopId}}{{/if}}"  promoScore="{{$value.promoScore}}" score="{{$value.score}}" pStock="{{$value.stock}}" pWeight="{{$value.promoStock}}" taoType="{{$value.taoType}}" taoSkuId="{{$value.taoSkuId}}"/>\
-        <ul class="arbitrage clearfix {{if $value.taoGou}}bor-bott{{/if}}">\
-        {{if $value.taoGou}}\
+    <li class="product-item{{if $value.taoGou}} product-item-tao{{/if}}" from="ajax" id="gm-{{$value.pId}}-{{$value.skuId}}">\
+        <input class="productInfo" type="hidden"  pid="{{$value.pId}}" skuid="{{$value.skuId}}" prd-index="{{$index+1}}" saleCount="{{$value.salesVolume}}" evaluateCount="{{$value.evaluateCount}}" firstCat="{{$value.firstCat}}" secondCat="{{$value.secondCat}}" thirdCat="{{$value.defCatId}}" brandIds="" thirdProduct="{{$value.thirdProduct | formatBoolean}}" shopId="{{if $value.shopId}}{{$value.shopId}}{{/if}}"  promoScore="{{$value.promoScore}}" score="{{$value.score}}" pStock="{{$value.stock}}" pWeight="{{$value.promoStock}}" taoType="{{$value.taoType}}" taoSkuId="{{$value.taoSkuId}}"/>\
+        <ul class="arbitrage clearfix">\
             <li class="arbitrage-num arbitrage-cur" taogou="false" pId="{{$value.pId}}" sId="{{$value.skuId}}">单件</li>\
             {{each $value.taoGou}}\
             {{if $index < 3}}\
-            <li class="arbitrage-num" taogou="true" pId="{{$value.pId}}" sId="{{$value.skuId}}">{{$value.num}}件套</li>\
+            <li class="arbitrage-num" taogou="true">{{$value}}件套</li>\
             {{/if}}\
             {{/each}}\
-        {{/if}}\
         </ul>\
-        <div class="item-tab-warp asynPriceBox" id="gm-{{$value.pId}}-{{$value.skuId}}">\
-        {{if $value.isBigImg}}\
-        <p class="item-pic bigp"><a class="emcodeItem item-link" rel="nofollow" href="{{$value.sUrl}}" target="_blank" data-code="{{modelid}}-{{pageNumber}}_{{$index+1}}_1" title="{{$value.alt}}"><img gome-src="{{$value.sImg}}_220_275.jpg" alt="{{$value.alt}}" src="//img.gomein.net.cn/images/grey.gif"></a></p>\
-        {{else}}\
-        <p class="item-pic"><a class="emcodeItem item-link" rel="nofollow" href="{{$value.sUrl}}" target="_blank" data-code="{{modelid}}-{{pageNumber}}_{{$index+1}}_1" title="{{$value.alt}}"><img gome-src="{{$value.sImg}}_210.jpg" src="//img.gomein.net.cn/images/grey.gif" alt="{{$value.alt}}"></a>{{if $value.energyTag == 1}}<span class="save-energy"></span>{{/if}}</p>\
-        {{/if}}\
-        {{if $value.isBigImg && $value.images.length>0}}\
-        <div class="item-pic-small-box" index="{{$value.images.length}}" curIndex="{{$value.images.length}}">\
-            {{if $value.images.length> 5 }}\
-            <a href="javascript:void(0);" class="icon-prev disable" onClick="javascript:smallImgSprev(this)"></a>\
-            <a href="javascript:void(0);" class="icon-next" onClick="javascript:smallImgSnext(this)"></a>\
-            {{/if}}\
-            <div class="item-pic-small-wrap">\
-                <ul class="imgList">\
-                    {{each $value.images}}\
-                    <li class="" sid="{{$value.skuId}}">\
-                    <a href="javascript:void(0);" title="{{$value.color}}">\
-                        <img onClick="javascript:smallImgOnClick(this)" gome-src="{{$value.sImg}}_30.jpg" sid="{{$value.skuId}}" d_src="{{$value.sImg}}" alt="{{$value.color}}" src="//img.gomein.net.cn/images/grey.gif" />\
-                    </a>\
-                    </li>\
-                    {{/each}}\
-                </ul>\
-            </div>\
-        </div>\
-        {{/if}}\
-        <div class="item-price-info">\
-            <p class="item-price">\
-                {{if $value.stock == 6}}\
-                <span class="price">敬请期待</span>\
-                {{else}}\
-                <span class="price asynPrice" pid="{{$value.pId}}" skuid="{{$value.skuId}}"></span>\
-                {{/if}}\
-                {{if $value.goodsType == "ZC2M"}}\
-                <span class="promotion-c2m"></span>\
-                {{/if}}\
-                {{if $value.marketTag == 1}}\
-                <span class="promotion-hwg"></span>\
-                {{/if}}\
-                {{if $value.rebate == 1}}\
-                    <span class="promotion-normal">返利</span>\
-                {{/if}}\
-                {{if $value.isVip == 1}}\
-                    <span class="promotion-normal">会员商品</span>\
-                {{/if}}\
-            </p>\
-        </div>\
-        <p class="item-name"><a rel="nofollow" class="emcodeItem item-link" data-code="{{modelid}}-{{pageNumber}}_{{$index+1}}_1" href="{{$value.sUrl}}" target="_blank" title="{{$value.alt}}">{{#$value.name}}</a></p>\
-        {{if $value.promoDesc !=""}}\
-        <p class="item-promotional-language">\
-            <!--{{if $value.promoTags && $value.promoTags != null && $value.promoTags.promoType && $value.promoTags.promoType == 2}}\
-                【{{$value.promoTags.promoPrice}}手机专享价】\
-            {{/if}}-->\
-            {{$value.promoDesc}}\
-        </p>\
-        {{/if}}\
-        <p class="item-comment-dispatching">\
-        {{if $value.stock==0 || noSkusStock}}\
-            <span class="dispatching">{{$value.cityName}}无货</span>\
-        {{else if $value.stock==1}}\
-            <span class="dispatching">{{$value.cityName}}有货</span>\
-        {{else if $value.stock==2}}\
-            <span class="dispatching nOrange">{{$value.cityName}}暂不支持配送</span>\
-        {{else if $value.stock==3 || $value.stock==6}}\
-            <span class="dispatching nOrange">正在预约中</span>\
-        {{else if $value.stock==4}}\
-            <span class="dispatching nHeigh">正在抢购中</span>\
-        {{else}}\
-            <span class="dispatching">{{$value.cityName}}无货</span>\
-        {{/if}}\
-            <a href="{{$value.sUrl}}#j-comment-section" target="_blank" class="comment emcodeItem" data-code="{{modelid}}-{{pageNumber}}_{{$index+1}}_2">{{$value.evaluateCount}}</a>\
-        </p>\
-        <p class="item-option clearfix">\
-            <span class="add-contrast" cid="{{$value.pId}}/{{$value.skuId}}"></span>\
-            <span class="add-collection">收藏</span>\
-            {{if $value.stock == 0 || noSkusStock}}\
-            <span class="add-cart next-buy">到货通知</span>\
-            {{else if $value.stock == 3 || $value.stock == 4 || $value.stock == 6}}\
-            <a href="{{productSite}}/{{$value.pId}}-{{$value.skuId}}.html" target="_blank" class="add-cart prev-buy emcodeItem" data-code="{{modelid}}-{{pageNumber}}_{{$index+1}}_3">预约购买</a>\
-            {{else}}\
-            <a class="add-cart addTo-cart" href="javascript:void(0);" data-code="{{modelid}}-{{pageNumber}}_{{$index+1}}_3">加入购物车</a>\
-            {{/if}}\
-        </p>\
-        </div>\
+        <div class="item-tab-warp">'+tpl_detail+'</div>\
         <p class="item-shop">\
         {{if $value.thirdProduct}}\
             <a class="nname" data-code="{{modelid}}-{{pageNumber}}_{{$index+1}}_4" target="_blank" href="{{$value.mUrl}}">{{$value.sName}}</a>{{if $value.shopId =="80009736" || $value.shopId =="80010355" || $value.shopId =="80010423"}}<span class="hyg-shopType">国美自营</span>{{/if}}\
@@ -212,7 +129,7 @@ define(function(require,exports,module){
             template.helper("formatBoolean",function(data,format){
                 return String(data);
             });
-            var itemHTML = templateSimple.compile(tpl_item)($.extend({},data.content.prodInfo,{'noSkusStock':pageData.noSkusStock,'modelid':9000000700,'pageNumber':pageData.currentPage,'productSite':pageData.productSite}));
+            var itemHTML = templateSimple.compile(tpl_item)($.extend({},data.content.prodInfo,{'noSkusStock':pageData.noSkusStock,'modelid':"9000000700",'pageNumber':pageData.currentPage,'productSite':pageData.productSite}));
             if($.trim(itemHTML) !=""){
                 $('#product-box').empty().html(itemHTML);
             }

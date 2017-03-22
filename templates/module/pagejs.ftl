@@ -20,6 +20,7 @@
 <script type="text/javascript">
     <#--pageData = {
         ajaxURL     :异步请求商品的地址
+        sort        :页面初始排序值00
         currentPage :当前页
         totalPage   :总页数
         regionId    :四级区域id：区县
@@ -35,7 +36,8 @@
         isSearch    :是否搜索页面
     }-->
     var pageData = {
-        ajaxURL     :"${(varHeader.url)!}",
+        ajaxURL     :encodeURI("${(varHeader.url)!}"),
+        sort        :"00",
         currentPage :${(varPageBar.pageNumber)!},
         totalPage   :${(varPageBar.totalPage)!},
         regionId    :'${(varHeader.regionId)!}' || '11010200',
@@ -130,11 +132,8 @@
 </script>
 
 
-<script src='<!--# include virtual="/n/common/default/script.html"-->,/gmlib/unit/cart/1.0.0/addCart.min.js,/gmlib/unit/g/1.0.0/g.min.js,/gmlib/unit/gcity/1.0.0/gcity.min.js'></script>
-<script src='http://localhost:8080/search2017/js/gcontrast.js'></script>
-<#--
+<script src='<!--# include virtual="/n/common/default/script.html"-->,/gmlib/unit/cart/1.0.0/addCart.min.js,/gmlib/unit/g/1.0.0/g.min.js,/gmlib/unit/gcity/1.0.0/gcity.min.js,/gmlib/unit/gcontrast/1.0.0/gcontrast.min.js'></script>
 <script src="//js.gomein.net.cn/??/gmlib/unit/scode/1.0.0/scode.min.js,/gmlib/unit/bigdata/1.0.0/bigdata.min.js,/gmlib/unit/scodecommon/1.0.0/scodecommon.min.js,/gmlib/unit/bigcode/1.0.0/bigcode.js"></script>
--->
 <script>
     $('#address').gCity({
         gc_ads: 'chtm',
@@ -159,7 +158,6 @@
     window.compare_asyn = $("body").accordion({
         obj:".add-contrast",
         objStyle:{"background-position":"0 -61px"},
-        //domain:cookieDomain
-        domain:cookieDomain
+        domain:isHyg?".gomehigo.hk":cookieDomain
     })
 </script>

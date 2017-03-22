@@ -13,7 +13,7 @@ function getShopGoods(url,pageNumber,bwValue){
         async:false,
         data:{page:pageNumber,bws:bwValue,type:"json"}
     }).done(function(data){
-        if(data.content.prodInfo.products){
+        if(data.content.prodInfo && data.content.prodInfo.products){
             bwsData = data.content.prodInfo.products;
             for(var i = 0,j= bwsData.length;i<j;i++){
                 bwsString += '"'+bwsData[i].pId+'"'

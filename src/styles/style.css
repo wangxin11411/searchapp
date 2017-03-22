@@ -2646,12 +2646,16 @@ filter-bottom 閫佽揣鍦板潃锛� 鏈夋棤璐э紝鍥界背閰嶉€侊紝
     /*border-bottom: 1px solid #ffcccc;*/
     cursor: pointer;
     overflow: hidden;
+    visibility: hidden;
 }
 .arbitrage .arbitrage-cur{
     border-width: 1px;
     border-style: solid;
     border-color: #ffcccc #ffcccc #fff #ffcccc;
     color: #e3101e;
+}
+.product-item-tao .arbitrage-num{
+    visibility: visible;
 }
 .item-tab-warp-hidd{
     display: none;

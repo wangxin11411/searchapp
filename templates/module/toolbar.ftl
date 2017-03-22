@@ -1,7 +1,7 @@
 <#assign instock = searchObj.content.toolBar.instock><#--是否为有货商品-->
 <#assign deliv = searchObj.content.toolBar.deliv><#--是否为国美自营商品-->
 <#assign market = searchObj.content.toolBar.market><#--是否为海外购商品-->
-<#assign discountQiang = searchObj.content.toolBar.sale.qiang><#--是否为聚划算商品-->
+<#assign discountQiang = searchObj.content.toolBar.sale.qiang!><#--是否为聚划算商品-->
 <#assign discountPromo = searchObj.content.toolBar.sale.promo><#--是否为促销活动商品-->
 <#assign discountRebate = searchObj.content.toolBar.sale.rebate><#--是否为返利活动商品-->
 <#--定义页面排序综合、销量、新品、评价、价格规则-->

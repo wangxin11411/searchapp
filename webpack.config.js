@@ -1,7 +1,7 @@
 var webpack = require('webpack');
 var path = require('path');
 module.exports = {
-    devtool: 'eval-source-map',//配置生成Source Maps，开发中用于调试
+    //devtool: 'eval-source-map',//配置生成Source Maps，开发中用于调试
     //页面入口文件配置
     entry:{
         "search":path.resolve(__dirname,'src/entry.search.js'),
@@ -13,7 +13,7 @@ module.exports = {
     //入口文件输出配置
     //path.resolve(__dirname,'src/entry.js')，
     output: {
-        path: path.resolve(__dirname,'static/search2017/js'),
+        path: path.resolve(__dirname,'static/search/search2017/js'),
         filename: '[name].bundle.js'
     },
     module: {

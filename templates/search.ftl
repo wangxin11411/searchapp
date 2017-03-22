@@ -30,8 +30,8 @@
     <meta name="Keywords" content="${keywords!}">
     <meta property="qc:admins" content="2500556177677556375636"/>
     <link rel="shortcut icon" href="//app.gomein.net.cn/favicon.ico" type="image/x-icon" />
-    <link rel="stylesheet" href='<!--# include virtual="/n/common/a18/style.html"-->,/css/n/detail/gCity.min.css'>
-    <link rel="stylesheet" href="http://localhost:8080/search2017/css/style.css">
+    <link rel="stylesheet" href='<!--# include virtual="/n/common/a18/style.html"-->,/css/n/detail/gCity.min.css,/search/search2017/css/style.css'>
+    <link rel="stylesheet" href="http://localhost:8080/search/search2017/css/style.css">
     <!--# include virtual="/n/common/global/global.html"-->
 </head>
 
@@ -167,7 +167,7 @@
         <#--【facet】普通分类+相关分类  【展示方式】聚合展示-->
         <#assign facetsRelevant = (searchObj.content.facets.commomCatFacets)!>
         <#assign facetsSelect = (searchObj.content.selectData.facets.selectCat)!>
-        <#if (facetsCommon?size >= facetsCommonIndex) || (facetsRelevant.items)?? && !facetsSelect>
+        <#if (facetsCommon?size >= facetsCommonIndex) && (facetsRelevant.items)?? && !facetsSelect>
             <div class="facets-category facets-category-syn clearfix">
                 <span class="fc-key">高级筛选：</span>
                 <div class="fc-content">
@@ -248,7 +248,6 @@
     window.pageName = '搜索结果页';
 </script>
 <#include "module/pagejs.ftl">
-<script src="${(storeConfiguration.stageJsServer)!}/search2017/js/search.bundle.js"></script>
-
+<script src="${(storeConfiguration.stageJsServer)!}/search/search2017/js/search.bundle.js?${jsCssVersion!}"></script>
 </body>
 </html>

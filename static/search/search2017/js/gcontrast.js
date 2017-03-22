@@ -50,7 +50,7 @@
                     $.ajax({
                         type:"get",
                         dataType:"jsonp",
-                        url:"//ss"+_opt.domain+"/item/v1/extra/detail/"+info+"/"+_areaCode+"/flag/item/fn"+ functionPargam,
+                        url:"//ss"+_opt.domain+"/item/v1/extra/command/detail/"+info+"/"+_areaCode+"/flag/item/fn"+ functionPargam,
                         jsonpCallback:"fn"+functionPargam
                     }).done(function(data){
                         cache[functionPargam] = data

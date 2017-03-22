@@ -53,7 +53,7 @@
     <meta http-equiv="mobile-agent" content="format=html5; url= http://m.gome.com.cn/category-${(varSelectData.category.third.id)!}.html">
     <link rel="shortcut icon" href="//app.gomein.net.cn/favicon.ico" type="image/x-icon" />
     <link rel="stylesheet" href='${(storeConfiguration.stageCssServer)!}/??<!--# include virtual="/n/common/b01/css.html"-->,/css/n/detail/gCity.min.css'>
-    <link rel="stylesheet" href="http://localhost:8080/search2017/css/style.css">
+    <link rel="stylesheet" href="http://localhost:8080/search/search2017/css/style.css">
     <!--# include virtual="/n/common/global/global.html"-->
     <#if (searchObj.header.refPage)!?index_of("-00-0-48-1-0-0-0-1-0-0-0-0-0-0-0-0-0")!=-1>
         <link rel="canonical" href="${(storeConfiguration.listSite)!}/${(searchObj.content.seoData.catId)!}.html"/>
@@ -206,6 +206,6 @@
     window.pageName = '海外购三级列表页';
 </script>
 <#include "module/pagejs.ftl">
-<script src="${(storeConfiguration.stageJsServer)!}/search2017/js/mcategory.bundle.js"></script>
+<script src="${(storeConfiguration.stageJsServer)!}/search/search2017/js/mcategory.bundle.js"></script>
 </body>
 </html>

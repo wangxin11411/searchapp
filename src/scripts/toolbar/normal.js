@@ -16,8 +16,10 @@ define(function(require,exports,module){
             var _this = $(this);
             if(_this.attr('data-sort') === "21"){
                 _this.attr('data-sort',"20").removeClass("price-down").addClass("price-up");
+                _this.find("a").attr("href",_this.attr("prdurl1"))
             }else{
                 _this.attr('data-sort',"21").removeClass("price-up").addClass("price-down");
+                _this.find("a").attr("href",_this.attr("prdurl2"))
             }
         }
     });
@@ -30,6 +32,7 @@ define(function(require,exports,module){
             _this.addClass('cur').siblings('.cur').removeClass('cur');
             pageData.sort = sort_target;
             pageData.currentPage=1;
+            pageData.ajaxURL = $(this).find('a').attr("href");
             if(window.pageName== "品牌商品页"){
                 window.location.href = window.location.protocol+"//search"+cookieDomain+$(this).find('a').attr("href");
                 return false;

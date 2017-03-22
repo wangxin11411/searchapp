@@ -62,7 +62,7 @@ function setAsynPriceBox(data,asynPriceBox){
      propTag+='<span class="promotion-normal">享优惠</span>'
      }*/
 
-    asynPriceBox.find(".asynPrice").text(data.price?"¥"+data.price:"").after(propTag)
+    asynPriceBox.find(".asynPrice").text(data.price?"¥"+data.price:"暂无售价").after(propTag)
     asynPriceBox.find(".item-link").attr("href",_url);
     asynPriceBox.find(".comment").attr("href",_url+_hash);
 
@@ -101,6 +101,6 @@ setInterval(function(){
         })
     }
 
-},1500);
+},1000);
 
 });
