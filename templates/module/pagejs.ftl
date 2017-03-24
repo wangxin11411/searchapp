@@ -41,6 +41,7 @@
         currentPage :${(varPageBar.pageNumber)!},
         totalPage   :${(varPageBar.totalPage)!},
         regionId    :'${(varHeader.regionId)!}' || '11010200',
+        regionId_1  :'${(varHeader.regionId)!}'.substr(0,2)+"000000" || '11000000',
         regionId_2  :'${(varHeader.regionId)!}'.substr(0,4)+"0000" || '11010000',
         ajaxStatus  :false,
         isBW        :${(varHeader.bwSec)?c},
@@ -50,6 +51,7 @@
         isSearch    :${(varSelectData.isSearch)?string},
         brandId     :"${(varSelectData.brandId)!}"
     };
+    pageData.cloudSite = "${(storeConfiguration.searchSite)!}";
     pageData.productSite="${(storeConfiguration.productSite)!}";
     <#--如果特殊地区，设置为无货状态-->
     if(pageData.regionId.indexOf("840101")!=-1){

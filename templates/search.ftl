@@ -48,10 +48,15 @@
     job:${(searchObj.header.serverInfo.job)!}<br/>
     time:${(searchObj.header.serverInfo.time)!}<br/>
 </div>
-<#--nginx  -->
 <!--# include virtual="/n/common/a18/head.html"-->
-<#--在本地测试环境引入公共头-->
-<#--<#include "static/newHeader.html">-->
+<script>
+    var keyLabelVal = "${varSelectData.keywords?replace('\\','')?replace('\"','')}";
+    keyLabelVal = keyLabelVal.replace(/\"/g,"'");
+    document.getElementById("keyLabel").setAttribute("default",keyLabelVal+",1",1);
+    document.getElementById("keyLabel").innerHTML = keyLabelVal;
+    document.getElementById("keyLabel").style.top = "-50px";
+    document.getElementById("searchInput").value = keyLabelVal;
+</script>
 <#if searchObj.content.pageBar.totalCount != 0>
 
     <div class="nSearchWarp">

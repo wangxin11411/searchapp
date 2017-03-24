@@ -43,6 +43,14 @@
 </div>
 <#--nginx  -->
 <!--# include virtual="/n/common/b01/head.html"-->
+<script>
+    var keyLabelVal = "${searchKeyWords?replace('\\','')?replace('\"','')}";
+    keyLabelVal = keyLabelVal.replace(/\"/g,"'");
+    document.getElementById("keyLabel").setAttribute("default",keyLabelVal+",1",1);
+    document.getElementById("keyLabel").innerHTML = keyLabelVal;
+    document.getElementById("keyLabel").style.top = "-50px";
+    document.getElementById("searchInput").value = keyLabelVal;
+</script>
 <#if searchObj.content.pageBar.totalCount != 0>
     <div class="nSearchWarp">
         <div class="nSearch-crumb nSearch-crumb-search clearfix">

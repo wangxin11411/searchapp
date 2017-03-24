@@ -82,6 +82,7 @@ a{color:#5e5e5e;}
     width: 992px;
     z-index: 11;
     box-shadow:0 1px 5px #CCC;
+    _position: static;
 }
 .onfixed_r{
     position: fixed;
@@ -1689,6 +1690,21 @@ filter-bottom 閫佽揣鍦板潃锛� 鏈夋棤璐э紝鍥界背閰嶉€侊紝
     z-index: 4
 }
 .categoryHover .category-box{
+    border: 1px solid #e3101e;
+    *left:-1px;
+    display: block;
+}
+#category-third:hover{
+    position: relative;
+    z-index: 3;
+    border-color: #e3101e;
+    border-bottom-color:#FFF;
+}
+#category-third:hover .category-name{
+    position: relative;
+    z-index: 4
+}
+#category-third:hover .category-box{
     border: 1px solid #e3101e;
     *left:-1px;
     display: block;

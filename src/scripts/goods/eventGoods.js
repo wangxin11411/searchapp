@@ -23,7 +23,6 @@ $("#product-box").delegate(".addTo-cart", "click", function() {
 });
 
 
-
 /*添加收藏*/
 $("#product-box").delegate(".add-collection", "click", function() {
     var $this = $(this),
@@ -52,7 +51,7 @@ $("#product-box").delegate(".arbitrage-num","mouseenter",function(){
     $(this).addClass("arbitrage-cur").siblings().removeClass("arbitrage-cur")
     if(!_this.data("taoCompate")){
         var _data = {products:[]};
-        var tpl_detail = require("../function/templateGoods").getTemplate("taogou");
+        var tpl_detail = require("./templateGoods").getTemplate("taogou");
         var tpl_taogou = '{{each products}}'+tpl_detail+'{{/each}}';
         var data = _this.attr("id").split("-");
         $.ajax({
@@ -75,8 +74,6 @@ $("#product-box").delegate(".arbitrage-num","mouseenter",function(){
 });
 
 /*多sku小图点选*/
-
-/*到货通知*/
 $("#product-box").delegate(".icon-prev","click",function(){
     var pars = $(this).parents(".item-pic-small-box");
     var ingList = pars.find(".imgList");
@@ -113,7 +110,6 @@ $("#product-box").delegate(".icon-next","click",function(){
         }
     }
 });
-
 $("#product-box").delegate(".icon-li","click",function(){
     var _o = $(this);
     var pars = _o.parents(".item-tab");
@@ -137,8 +133,58 @@ $("#product-box").delegate(".icon-li","click",function(){
 
     _o.addClass("current").siblings("li").removeClass("current");
 });
+/*商品点击 搜索云埋码统计*/
+$("#product-box").delegate(".item-link","click",function(){
+    var element_info = $(this).parents(".product-item").find(".productInfo");
+    require('../about/emcode/gateway').cloudClickMonitor(element_info);
+    //trackProdClk(tracks, pId, catName, dsp_gome_c3id, isSearch);
+});
 
+/*商品划过 请求在线客服*/
+var _onlieTimer = null;
+$("#product-box").delegate(".product-item","mouseenter mouseleave",function(e){
+    var $this = $(this),
+        element_info = $this.find(".productInfo");
+    if($this.hasClass("product-ad") || $this.data("hasOnline")) return false;
+    if (e.type == "mouseenter") {
+        var getOnlineService = require('../function/getOnlineService');
 
+        _onlieTimer = setTimeout(function(){
+            $this.data("hasOnline",true);
+            if(element_info.attr("thirdProduct") == "0"){
+                getOnlineService.selfsell(element_info.attr("cateId"),element_info.attr("brandIds")).done(function(data){
+                    $('<a href="javascript:void(0)" class="online-server"></a>').appendTo($this.find(".item-shop")).data("customer",{
+                        customerHost:data.customerHost,
+                        customerID:data.customerID,
+                        customerInfo:data.customerInfo,
+                        shopName:""
+                    });
+                });
+            }else{
+                getOnlineService.thirdsell(element_info.attr("shopId")).done(function(data){
+                    $('<a href="javascript:void(0)" class="online-server"></a>').appendTo($this.find(".item-shop")).data("customer",{
+                        customerHost:data.customerHost,
+                        customerID:data.customerID,
+                        customerInfo:data.customerInfo,
+                        shopName:element_info.attr("shopName")
+                    });
+                });
+            }
+        },1000);
 
+    }else if(e.type == "mouseleave") {
+        clearTimeout(_onlieTimer)
+    } else {}
+});
 
-
+$("#product-box").delegate(".online-server", "click", function() {
+    var $this = $(this);
+    var customerData = $this.data("customer");
+    g.login(function(){
+        window.open(
+            customerData.customerHost+'/chatClient/chatbox.jsp?companyID='+customerData.customerID+'&customerID='+customerData.customerID+
+            '&info='+customerData.customerInfo+'&page=0&enterurl='+window.location.href+'&areaCode='+pageData.regionId+'&shopname='+ encodeURI(customerData.shopName)+
+            ',customerService=' + customerData.customerID+',toolbar=0,scrollbars=0,location=0,menubar=0,resizable=1,width=1120,height=700'
+        );
+    });
+});

@@ -24,7 +24,7 @@ define(function(require,exports,module){
     {{each products}}\
     {{if $value.isActive}}\
     <li class="product-item product-ad" style="height:{{$value.height}}px">\
-        <a class="item-link activeImg" data-code="{{modelid}}-{{pageNumber}}_activities_{{$index+1}}" href="{{$value.mUrl}}" title="{{$value.title}}" target="_blank">\
+        <a class="activeImg" data-code="{{modelid}}-{{pageNumber}}_activities_{{$index+1}}" href="{{$value.mUrl}}" title="{{$value.title}}" target="_blank">\
         <img src="//img.gomein.net.cn/images/grey.gif" gome-src="{{$value.img}}" alt="{{$value.pTxt}}">\
         </a>\
         <span class="product-ad-info">\
@@ -35,12 +35,12 @@ define(function(require,exports,module){
     </li>\
     {{else}}\
     <li class="product-item{{if $value.taoGou}} product-item-tao{{/if}}" from="ajax" id="gm-{{$value.pId}}-{{$value.skuId}}">\
-        <input class="productInfo" type="hidden"  pid="{{$value.pId}}" skuid="{{$value.skuId}}" prd-index="{{$index+1}}" saleCount="{{$value.salesVolume}}" evaluateCount="{{$value.evaluateCount}}" firstCat="{{$value.firstCat}}" secondCat="{{$value.secondCat}}" thirdCat="{{$value.defCatId}}" brandIds="" thirdProduct="{{$value.thirdProduct | formatBoolean}}" shopId="{{if $value.shopId}}{{$value.shopId}}{{/if}}"  promoScore="{{$value.promoScore}}" score="{{$value.score}}" pStock="{{$value.stock}}" pWeight="{{$value.promoStock}}" taoType="{{$value.taoType}}" taoSkuId="{{$value.taoSkuId}}"/>\
+        <input class="productInfo" type="hidden" pid="{{$value.pId}}" skuid="{{$value.skuId}}" skuname="{{$value.alt}}" prd-index="{{$index+1}}" price="{{$value.price}}" salesVolume="{{$value.salesVolume}}" evaluateCount="{{$value.evaluateCount}}" cateId="{{$value.firstCat}}_{{$value.secondCat}}_{{$value.defCatId}}" brandIds="{{each $value.brandIds as value}}{{if $index==0}}{{value}}{{/if}}{{/each}}" thirdProduct="{{$value.thirdProduct | formatBoolean}}" shopId="{{if $value.shopId}}{{$value.shopId}}{{/if}}"  shopName="{{if $value.sName}}{{$value.sName}}{{/if}}"  promoScore="{{$value.promoScore}}" promoStock="{{$value.promoStock}}" score="{{$value.score}}" pStock="{{$value.stock}}" pWeight="{{$value.promoStock}}" taoType="{{$value.taoType}}" taoSkuId="{{$value.taoSkuId}}"/>\
         <ul class="arbitrage clearfix">\
-            <li class="arbitrage-num arbitrage-cur" taogou="false" pId="{{$value.pId}}" sId="{{$value.skuId}}">单件</li>\
+            <li class="arbitrage-num arbitrage-cur" pId="{{$value.pId}}" sId="{{$value.skuId}}">单件</li>\
             {{each $value.taoGou}}\
             {{if $index < 3}}\
-            <li class="arbitrage-num" taogou="true">{{$value}}件套</li>\
+            <li class="arbitrage-num">{{$value}}件套</li>\
             {{/if}}\
             {{/each}}\
         </ul>\

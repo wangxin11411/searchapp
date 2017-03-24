@@ -37,7 +37,7 @@ define(function(require,exports,module){
                 window.location.href = window.location.protocol+"//search"+cookieDomain+$(this).find('a').attr("href");
                 return false;
             }
-            require('../function/getGoods').getGoods();
+            require('../goods/getGoods').getGoods();
         }
     }).find('a').click(function(event){
         event.preventDefault();
@@ -56,7 +56,7 @@ define(function(require,exports,module){
         }
         pageData.currentPage++;
 
-        require('../function/getGoods').getGoods();
+        require('../goods/getGoods').getGoods();
     });
     $("#mp-prev").bind('click', function (event) {
         event.preventDefault();
@@ -66,7 +66,7 @@ define(function(require,exports,module){
             pageData.ajaxStatus = true
         }
         pageData.currentPage--;
-        require('../function/getGoods').getGoods();
+        require('../goods/getGoods').getGoods();
     });
     /**
      * 特殊活动筛选
@@ -85,5 +85,13 @@ define(function(require,exports,module){
             promoFlagVal = 1;
         }
         require('../function/makeHelf').dofacet('promoFlag',promoFlagVal);
-    })
+    });
+    $(window).bind("scroll",function(){
+        var productLeftOffsetTop = $("#product-left").offset()!=null?$("#product-left").offset().top:0;
+        if($(document).scrollTop() >= productLeftOffsetTop){
+            $("#filter-box").addClass("onfixed");
+        }else{
+            $("#filter-box").removeClass("onfixed");
+        }
+    });
 });

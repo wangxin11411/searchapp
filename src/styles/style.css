@@ -4,6 +4,7 @@ body{color: #5e5e5e;}
 .fullcategory-title a:hover{color: #fff;}
 .wbox{width: 1200px;}
 .nSearchWarp{ clear: both; width: 1200px; margin: 0 auto;}
+a{color:#5e5e5e;}
 .nSearchWarp a:hover{
     text-decoration: none;
     color: #e3101e;
@@ -35,11 +36,11 @@ body{color: #5e5e5e;}
 .pager a.prev:hover,.pager a.next:hover{font-weight:normal;color:#e3101e;background:#fff}
 .pager s{position:absolute}
 .pager .prev{padding:0 8px 0 21px;font-size:12px;width:40px;}
-.pager .prev s{overflow:hidden;top:10px;left:10px;width:6px;height:10px;background:url(../../../search/search2016/image/search.png) no-repeat -20px 0}
+.pager .prev s{overflow:hidden;top:10px;left:10px;width:6px;height:10px;background:url(/search/search2017/image/search.png) no-repeat -20px 0}
 .pager .disable .icon-prev{background-position:0 0}
 .pager .disable .icon-next{background-position:-10px 0}
 .pager .next{padding:0 21px 0 8px;font-size:12px;width:40px;}
-.pager .next s{overflow:hidden;top:10px;right:10px;width:6px;height:10px;background:url(../../../search/search2016/image/search.png) no-repeat -30px 0}
+.pager .next s{overflow:hidden;top:10px;right:10px;width:6px;height:10px;background:url(/search/search2017/image/search.png) no-repeat -30px 0}
 .pager .placeholder{overflow:hidden;width:16px;height:16px;margin:0 8px;border-bottom: 1px dotted}
 .pager .txt-wrap{margin:0 5px 0 10px;color:#959595;line-height:30px}
 .pager .txt{width:32px;height:18px;line-height:18px;margin:0 5px 0;padding:4px 0;border:1px solid #ccc;text-align:center;vertical-align:middle;color:#5e5e5e;}
@@ -81,6 +82,7 @@ body{color: #5e5e5e;}
     width: 992px;
     z-index: 11;
     box-shadow:0 1px 5px #CCC;
+    _position: static;
 }
 .onfixed_r{
     position: fixed;
@@ -171,10 +173,10 @@ body{color: #5e5e5e;}
     overflow: hidden;
 }
 .price-up .icon-up-down{
-    background:url(../images/search.png) no-repeat -20px -250px;
+    background:url(/search/search2017/image/search.png) no-repeat -20px -250px;
 }
 .price-down .icon-up-down{
-    background:url(../images/search.png) no-repeat 0 -250px;
+    background:url(/search/search2017/image/search.png) no-repeat 0 -250px;
 }
 .filter-order-box .cur.price-up a,.filter-order-box .cur.price-down a{
     padding:6px 26px 6px 14px;
@@ -185,7 +187,7 @@ body{color: #5e5e5e;}
     height: 24px;
     border: 1px solid #ccc;
     overflow: hidden;
-    display: none;
+    display: inline;
 }
 .filter-resultSearch-box:focus{
     border-color: #c5c5c5;
@@ -222,7 +224,6 @@ body{color: #5e5e5e;}
     border: 1px solid #F3F3F3;
     white-space:nowrap;
     text-align: center;
-    display: none
 }
 .filter-priceRange-box li{
     float: left;
@@ -334,7 +335,7 @@ filter-bottom 閫佽揣鍦板潃锛� 鏈夋棤璐э紝鍥界背閰嶉€侊紝
     cursor: pointer;
 }
 .filter-label-box .iic{
-    background: url(../images/search.png) no-repeat scroll -20px -90px;
+    background: url(/search/search2017/image/search.png) no-repeat scroll -20px -90px;
     display: inline-block;
     height: 14px;
     margin-right: 5px;
@@ -363,7 +364,7 @@ filter-bottom 閫佽揣鍦板潃锛� 鏈夋棤璐э紝鍥界背閰嶉€侊紝
     width: 120px;
     margin-top:-2px;
     *margin-top:1px;
-    background: url(../../../search/search2016/image/specialScreeningIcon.png) no-repeat;
+    background: url(/search/search2017/image/specialScreeningIcon.png) no-repeat;
 }
 /* s鍟嗗搧鍒楄〃*/
 .product-waiting{
@@ -408,7 +409,7 @@ filter-bottom 閫佽揣鍦板潃锛� 鏈夋棤璐э紝鍥界背閰嶉€侊紝
 /*节能补贴20160304*/
 .product-item .item-pic .save-energy{
     display:inline-block;
-    background:url(../../../search/search2016/image/energySaving.png) no-repeat;
+    background:url(/search/search2017/image/energySaving.png) no-repeat;
     position: absolute;
     right: 0;
     top: 0;
@@ -417,6 +418,13 @@ filter-bottom 閫佽揣鍦板潃锛� 鏈夋棤璐э紝鍥界背閰嶉€侊紝
 }
 .product-item .bigp{
     height: 275px;
+    overflow: hidden;
+}
+.product-item .bigp a{
+    display: block;
+    width:280px;
+    text-align: center;
+    margin-left: -30px;
 }
 .product-item .item-price{
     height: 20px;
@@ -437,7 +445,7 @@ filter-bottom 閫佽揣鍦板潃锛� 鏈夋棤璐э紝鍥界背閰嶉€侊紝
 }
 .product-item .item-price .promotion-normal{
     display: inline-block;
-    margin: 0 2px 0 0;
+    margin-right: -1px;
     height: 14px;
     border:1px solid #e3101e;
     color: #FFF;
@@ -452,7 +460,7 @@ filter-bottom 閫佽揣鍦板潃锛� 鏈夋棤璐э紝鍥界背閰嶉€侊紝
     width: 70px;
     height: 16px;
     vertical-align: middle;
-    background: url(../images/C2M_bg.png) no-repeat;
+    background: url(../image/C2M_bg.png) no-repeat;
 }
 .product-item .item-price .promotion-hwg{
     display: inline-block;
@@ -460,7 +468,7 @@ filter-bottom 閫佽揣鍦板潃锛� 鏈夋棤璐э紝鍥界背閰嶉€侊紝
     width: 60px;
     height: 16px;
     vertical-align: middle;
-    background: url(../images/hwg_bg.png) no-repeat;
+    background: url(../image/hwg_bg.png) no-repeat;
 }
 .product-item .item-price .promotion-hwg-ms{
     display: inline-block;
@@ -468,7 +476,7 @@ filter-bottom 閫佽揣鍦板潃锛� 鏈夋棤璐э紝鍥界背閰嶉€侊紝
     width: 34px;
     height: 16px;
     vertical-align: middle;
-    background: url(../images/hwg_bg.png) no-repeat -65px 0;
+    background: url(../image/hwg_bg.png) no-repeat -65px 0;
 }
 
 .product-item .item-smart{
@@ -587,7 +595,7 @@ filter-bottom 閫佽揣鍦板潃锛� 鏈夋棤璐э紝鍥界背閰嶉€侊紝
     padding-left: 18px;
     color: #069;
     font-weight: 700;
-    background: url(../images/search.png) -51px 2px no-repeat;
+    background: url(/search/search2017/image/search.png) -51px 2px no-repeat;
 }
 .item-comment-dispatching .comment:hover{
     text-decoration: none;
@@ -627,7 +635,7 @@ filter-bottom 閫佽揣鍦板潃锛� 鏈夋棤璐э紝鍥界背閰嶉€侊紝
     overflow: hidden;
     display: inline;
     font-size: 0;
-    background: url(../images/search.png) 0 -35px no-repeat;
+    background: url(/search/search2017/image/search.png) 0 -35px no-repeat;
 }
 .item-option .add-collection:hover,.item-option .add-cart:hover{
     border-color:#e3101e;
@@ -658,7 +666,7 @@ filter-bottom 閫佽揣鍦板潃锛� 鏈夋棤璐э紝鍥界背閰嶉€侊紝
 }
 /*在线客服icon*/
 .online-server{
-    background: url(../../../search/search2016/image/onlineicon.png) no-repeat;
+    background: url(/search/search2017/image/onlineicon.png) no-repeat;
     float: right;
     width: 78px;
     height: 23px;
@@ -754,7 +762,7 @@ filter-bottom 閫佽揣鍦板潃锛� 鏈夋棤璐э紝鍥界背閰嶉€侊紝
     margin:-2px 0 0 5px;
     vertical-align: middle;
     line-height: 31px;
-    background: url(../../../search/search2016/image/search.png) -35px -15px;
+    background: url(/search/search2017/image/search.png) -35px -15px;
 }
 .bottom-advertisement-lists li{
     float: left;
@@ -785,7 +793,7 @@ filter-bottom 閫佽揣鍦板潃锛� 鏈夋棤璐э紝鍥界背閰嶉€侊紝
     float: right;
     color: #069;
     line-height: 20px;
-    background: url(../../../search/search2016/image/search.png) -51px 5px no-repeat;
+    background: url(/search/search2017/image/search.png) -51px 5px no-repeat;
     padding-left: 17px;
 }
 .bottom-advertisement-lists .item-price{
@@ -849,7 +857,7 @@ filter-bottom 閫佽揣鍦板潃锛� 鏈夋棤璐э紝鍥界背閰嶉€侊紝
     color: #5e5e5e;
 }
 .searchFacet .facets-category{
-    background: url(../images/facetBg_grey_default.png) repeat-y;
+    background: url(../image/facetBg_grey_default.png) repeat-y;
 }
 .facets-hot .fc-option-multiple{
     display: none;
@@ -915,7 +923,7 @@ filter-bottom 閫佽揣鍦板潃锛� 鏈夋棤璐э紝鍥界背閰嶉€侊紝
     width: 18px;
     height: 18px;
     border: 1px solid #dad9d9;
-    background: url(../images/search.png) -47px -219px no-repeat;
+    background: url(/search/search2017/image/search.png) -47px -219px no-repeat;
 }
 .fc-option-more:hover{
     color: #e3101e;
@@ -990,7 +998,7 @@ filter-bottom 閫佽揣鍦板潃锛� 鏈夋棤璐э紝鍥界背閰嶉€侊紝
     _height:7px;
     *height:7px;
     margin: 11px -15px 0 0;
-    background: url(../images/search.png) -50px -225px no-repeat;
+    background: url(/search/search2017/image/search.png) -50px -225px no-repeat;
 }
 .fccc-up{
     display: inline-block;
@@ -1011,7 +1019,7 @@ filter-bottom 閫佽揣鍦板潃锛� 鏈夋棤璐э紝鍥界背閰嶉€侊紝
     width: 13px;
     height: 7px;
     margin: 11px -15px 0 0;
-    background: url(../images/search.png) 0 -225px no-repeat;
+    background: url(/search/search2017/image/search.png) 0 -225px no-repeat;
 }
 .show .fccc-control{
     display: none
@@ -1145,7 +1153,7 @@ filter-bottom 閫佽揣鍦板潃锛� 鏈夋棤璐э紝鍥界背閰嶉€侊紝
     width: 10px;
     height: 10px;
     margin: 0;
-    background: url(../images/search.png) no-repeat -54px -20px;
+    background: url(/search/search2017/image/search.png) no-repeat -54px -20px;
 }
 .category-brand .lichk .facet i{
     display: block;
@@ -1198,7 +1206,7 @@ filter-bottom 閫佽揣鍦板潃锛� 鏈夋棤璐э紝鍥界背閰嶉€侊紝
     bottom: 0;
     width: 10px;
     height: 10px;
-    background: url(../../../search/search2016/image/search.png) -54px -20px;
+    background: url(/search/search2017/image/search.png) -54px -20px;
     z-index: 3;
 }
 .category-brand .lichk:hover .brand-select{
@@ -1266,7 +1274,7 @@ filter-bottom 閫佽揣鍦板潃锛� 鏈夋棤璐э紝鍥界背閰嶉€侊紝
     width: 14px;
     height: 14px;
     margin: 8px 5px 0 0;
-    background: url(../images/search.png) 0 -90px;
+    background: url(/search/search2017/image/search.png) 0 -90px;
 }
 /*category-normal*/
 .category-normal{
@@ -1286,7 +1294,7 @@ filter-bottom 閫佽揣鍦板潃锛� 鏈夋棤璐э紝鍥界背閰嶉€侊紝
     width: 14px;
     height: 14px;
     margin: 10px 5px 0 0;
-    background: url(../images/search.png) -20px -90px;
+    background: url(/search/search2017/image/search.png) -20px -90px;
     display: none;
 }
 .category-normal a:hover i{
@@ -1296,7 +1304,7 @@ filter-bottom 閫佽揣鍦板潃锛� 鏈夋棤璐э紝鍥界背閰嶉€侊紝
     position: absolute;
     width: 14px;
     height: 14px;
-    background: url(../../../search/search2016/image/search.png) no-repeat -15px -15px;
+    background: url(/search/search2017/image/search.png) no-repeat -15px -15px;
     overflow: hidden;
     margin: 8px 0 0 2px;
     *margin-top: 0px
@@ -1305,7 +1313,7 @@ filter-bottom 閫佽揣鍦板潃锛� 鏈夋棤璐э紝鍥界背閰嶉€侊紝
     border: 2px solid #EAC600;
     margin-top: -1px;
     position: relative;
-    background: url(../images/facetBg.png) repeat-y;
+    background: url(../image/facetBg.png) repeat-y;
 }
 /* .multiSelectStatus 点击多选时，各个facet展示状态 **/
 .multiSelectStatus .category-normal .facet i{
@@ -1332,7 +1340,7 @@ filter-bottom 閫佽揣鍦板潃锛� 鏈夋棤璐э紝鍥界背閰嶉€侊紝
     border: 2px solid #ABABAB;
     margin-top: -1px;
     position: relative;
-    background: url(../images/facetBg_grey.png) repeat-y;
+    background: url(../image/facetBg_grey.png) repeat-y;
 }
 .moreStatus .fc-option-more i{
     background-position: 3px -219px
@@ -1369,7 +1377,7 @@ filter-bottom 閫佽揣鍦板潃锛� 鏈夋棤璐э紝鍥界背閰嶉€侊紝
     width: 13px;
     display: inline-block;
     margin: 0 0 0 5px;
-    background:url(../images/search.png) -50px -225px no-repeat;
+    background:url(/search/search2017/image/search.png) -50px -225px no-repeat;
     overflow: hidden;
     font-size: 0;
     _vertical-align: middle;
@@ -1412,7 +1420,7 @@ filter-bottom 閫佽揣鍦板潃锛� 鏈夋棤璐э紝鍥界背閰嶉€侊紝
     margin-right: 5px;
     width: 14px;
     height: 14px;
-    background: url(../images/search.png) -20px -90px no-repeat;
+    background: url(/search/search2017/image/search.png) -20px -90px no-repeat;
     _display:inline;
 }
 .category-syn-btn{
@@ -1519,7 +1527,7 @@ filter-bottom 閫佽揣鍦板潃锛� 鏈夋棤璐э紝鍥界背閰嶉€侊紝
     top:0;
     width: 15px;
     height: 24px;
-    background: #FFF url(../images/search.png) -45px -149px no-repeat;
+    background: #FFF url(/search/search2017/image/search.png) -45px -149px no-repeat;
     display: none;
 }
 .facetsCurrent-next{
@@ -1528,7 +1536,7 @@ filter-bottom 閫佽揣鍦板潃锛� 鏈夋棤璐э紝鍥界背閰嶉€侊紝
     top:0;
     width: 15px;
     height: 24px;
-    background: #FFF url(../images/search.png) -45px -179px no-repeat;
+    background: #FFF url(/search/search2017/image/search.png) -45px -179px no-repeat;
     display: none;
 }
 .nSearch-crumb-facetsCurrent{
@@ -1537,7 +1545,7 @@ filter-bottom 閫佽揣鍦板潃锛� 鏈夋棤璐э紝鍥界背閰嶉€侊紝
     white-space: nowrap;
 }
 .nSearch-crumb .haschecked:before{
-    background: rgba(0, 0, 0, 0) url("../../../search/search2016/image/search.png") no-repeat scroll -50px -205px;
+    background: rgba(0, 0, 0, 0) url("/search/search2017/image/search.png") no-repeat scroll -50px -205px;
     content: " ";
     float: left;
     height: 9px;
@@ -1614,7 +1622,7 @@ filter-bottom 閫佽揣鍦板潃锛� 鏈夋棤璐э紝鍥界背閰嶉€侊紝
     width: 5px;
     height: 9px;
     margin: 7px 0 0 -14px;
-    background: url(../images/search.png) -50px -205px no-repeat;
+    background: url(/search/search2017/image/search.png) -50px -205px no-repeat;
 }
 .nSearch-crumb-category .category-name{
     float: left;
@@ -1632,7 +1640,7 @@ filter-bottom 閫佽揣鍦板潃锛� 鏈夋棤璐э紝鍥界背閰嶉€侊紝
     width: 13px;
     height: 7px;
     margin: 8px -18px 0 -15px;
-    background: url(../images/search.png) -50px -225px no-repeat;
+    background: url(/search/search2017/image/search.png) -50px -225px no-repeat;
 }
 #category-second .category-name{
     padding-right:8px;
@@ -1682,6 +1690,21 @@ filter-bottom 閫佽揣鍦板潃锛� 鏈夋棤璐э紝鍥界背閰嶉€侊紝
     z-index: 4
 }
 .categoryHover .category-box{
+    border: 1px solid #e3101e;
+    *left:-1px;
+    display: block;
+}
+#category-third:hover{
+    position: relative;
+    z-index: 3;
+    border-color: #e3101e;
+    border-bottom-color:#FFF;
+}
+#category-third:hover .category-name{
+    position: relative;
+    z-index: 4
+}
+#category-third:hover .category-box{
     border: 1px solid #e3101e;
     *left:-1px;
     display: block;
@@ -1760,7 +1783,7 @@ filter-bottom 閫佽揣鍦板潃锛� 鏈夋棤璐э紝鍥界背閰嶉€侊紝
     height: 40px;
     margin: 10px 0 0 -70px;
     width: 40px;
-    background: url(../../../search/search2016/image/search.png) 0 -177px no-repeat;
+    background: url(/search/search2017/image/search.png) 0 -177px no-repeat;
 }
 .mask-box .icon-waring{
     background-position: 0 -135px;
@@ -2235,7 +2258,7 @@ filter-bottom 閫佽揣鍦板潃锛� 鏈夋棤璐э紝鍥界背閰嶉€侊紝
     width: 6px;
     height: 10px;
     margin: 10px 0 0 -10px;
-    background: url(../../../search/search2016/image/search.png) 0 0 no-repeat;
+    background: url(/search/search2017/image/search.png) 0 0 no-repeat;
     overflow: hidden;
 }
 .item-pic-small-box .icon-next{
@@ -2243,7 +2266,7 @@ filter-bottom 閫佽揣鍦板潃锛� 鏈夋棤璐э紝鍥界背閰嶉€侊紝
     width: 6px;
     height: 10px;
     margin: 10px -10px 0 0;
-    background: url(../../../search/search2016/image/search.png) -10px 0 no-repeat;
+    background: url(/search/search2017/image/search.png) -10px 0 no-repeat;
     overflow: hidden;
 }
 .item-pic-small-box .disable{
@@ -2262,6 +2285,8 @@ filter-bottom 閫佽揣鍦板潃锛� 鏈夋棤璐э紝鍥界背閰嶉€侊紝
 }
 .item-pic-small-wrap .imgList li{
     float: left;
+    width: 30px;
+    height: 30px;
     border: 1px solid #E6E6E6;
     margin: 0 3px 0 2px;
 }
@@ -2329,7 +2354,7 @@ filter-bottom 閫佽揣鍦板潃锛� 鏈夋棤璐э紝鍥界背閰嶉€侊紝
     text-decoration: none;
 }
 .listmain em {
-    background: url(../../../search/search2016/image/search.png) 0 -135px no-repeat;
+    background: url(/search/search2017/image/search.png) 0 -135px no-repeat;
     height: 41px;
     left: 15px;
     position: absolute;
@@ -2503,7 +2528,7 @@ filter-bottom 閫佽揣鍦板潃锛� 鏈夋棤璐э紝鍥界背閰嶉€侊紝
 .hot-list{
     margin-top:20px;
     height: 100px;
-    overflow: hidden;  
+    overflow: hidden;
 }
 .w990 .hot-list{
     width: 560px;
@@ -2631,10 +2656,6 @@ filter-bottom 閫佽揣鍦板潃锛� 鏈夋棤璐э紝鍥界背閰嶉€侊紝
     height: 21px;
     margin-bottom: 10px;
 }
-.bor-bott{
-    border-bottom: 1px solid #ffcccc;
-    margin-bottom: 9px;
-}
 .arbitrage .arbitrage-num{
     float: left;
     width: 54px;
@@ -2657,9 +2678,11 @@ filter-bottom 閫佽揣鍦板潃锛� 鏈夋棤璐э紝鍥界背閰嶉€侊紝
 .product-item-tao .arbitrage-num{
     visibility: visible;
 }
-.item-tab-warp-hidd{
-    display: none;
+.product-item-tao .arbitrage{
+    border-bottom: 1px solid #ffcccc;
+    margin-bottom: 9px;
 }
+.taoStyle{display: none;background: url("../image/36-36-icon.gif") center 50px no-repeat;}
 /*分享隐藏*/
 #tshare{
     display: none;
@@ -2764,25 +2787,25 @@ filter-bottom 閫佽揣鍦板潃锛� 鏈夋棤璐э紝鍥界背閰嶉€侊紝
     color: #ff5757;
 }
 .marketPage .category-brand .c-brand i{
-    background-image: url("../../../search/search2016/image/searchHyg.png");
+    background-image: url("/search/search2017/image/searchHyg.png");
 }
 .marketPage .item-option .add-contrast{
-    background-image: url("../../../search/search2016/image/searchHyg.png");
+    background-image: url("/search/search2017/image/searchHyg.png");
 }
 .marketPage .filter-label-box .iic{
-    background-image: url("../../../search/search2016/image/searchHyg.png");
+    background-image: url("/search/search2017/image/searchHyg.png");
 }
 .marketPage .pager .next s{
-    background-image: url("../../../search/search2016/image/searchHyg.png");
+    background-image: url("/search/search2017/image/searchHyg.png");
 }
 .marketPage .pager .prev s{
-    background-image: url("../../../search/search2016/image/searchHyg.png");
+    background-image: url("/search/search2017/image/searchHyg.png");
 }
 .marketPage .category-normal i{
-    background-image: url("../../../search/search2016/image/searchHyg.png");
+    background-image: url("/search/search2017/image/searchHyg.png");
 }
 .marketPage .category-syn-list i{
-    background-image: url("../../../search/search2016/image/searchHyg.png");
+    background-image: url("/search/search2017/image/searchHyg.png");
 }
 .marketPage .nSearch-crumb-category .category-name:before{
     display: none
@@ -2791,7 +2814,7 @@ filter-bottom 閫佽揣鍦板潃锛� 鏈夋棤璐э紝鍥界背閰嶉€侊紝
     padding: 0 8px;
 }
 .marketPage .category-brand-hasCheck i{
-    background-image: url("../images/searchHyg.png");
+    background-image: url("../image/searchHyg.png");
 }
 .marketPage .prd-right-normal .name a:hover{
     color: #ff5757;
@@ -2952,10 +2975,10 @@ filter-bottom 閫佽揣鍦板潃锛� 鏈夋棤璐э紝鍥界背閰嶉€侊紝
     *margin-right:3px;
 }
 .search-brand .score-down{
-    background: url(../images/search.png) -35px -253px no-repeat ;
+    background: url(/search/search2017/image/search.png) -35px -253px no-repeat ;
 }
 .search-brand .score-up{
-    background: url(../images/search.png) -45px -253px no-repeat;
+    background: url(/search/search2017/image/search.png) -45px -253px no-repeat;
 }
 .search-brand .shop-enter{
     margin-top: 10px;
@@ -2979,7 +3002,7 @@ filter-bottom 閫佽揣鍦板潃锛� 鏈夋棤璐э紝鍥界背閰嶉€侊紝
     position: absolute;
     top: 0px;
     left: 0px;
-    background: url(../../../search/search2016/image/search.png) -35px -250px no-repeat;
+    background: url(/search/search2017/image/search.png) -35px -250px no-repeat;
 }
 .dsp-tuiguangIdentifi{
     float: right;
@@ -3053,7 +3076,7 @@ filter-bottom 閫佽揣鍦板潃锛� 鏈夋棤璐э紝鍥界背閰嶉€侊紝
     bottom: 0;
     width: 39px;
     height: 44px;
-    background: url(../../../search/search2016/image/bbb_1.png) no-repeat;
+    background: url(/search/search2017/image/bbb_1.png) no-repeat;
     z-index: 1;
 }
 .sb-item-price{
@@ -3061,7 +3084,7 @@ filter-bottom 閫佽揣鍦板潃锛� 鏈夋棤璐э紝鍥界背閰嶉€侊紝
     position: absolute;
     width: 248px;
     left: -13px;
-    background: url(../../../search/search2016/image/aaa_1.png) 0 bottom no-repeat;
+    background: url(/search/search2017/image/aaa_1.png) 0 bottom no-repeat;
     overflow: hidden;
 }
 
@@ -3165,47 +3188,3 @@ filter-bottom 閫佽揣鍦板潃锛� 鏈夋棤璐э紝鍥界背閰嶉€侊紝
     margin: 0 10px;
 }
 .hide-dom{display:none}
-.brand-active{
-    border: 1px solid #ddd;
-    height: 62px;
-    line-height: 58px;
-    margin-bottom: 10px;
-    padding-right: 120px;
-}
-.brand-active .enter-btn{
-    float: right;
-    background-color: #e3101e;
-    color: #fff;
-    cursor: pointer;
-    font-family: "simsun";
-    font-size: 14px;
-    height: 26px;
-    line-height: 26px;
-    padding: 0 20px;
-    margin: 17px -100px 0 0; 
-}
-.brand-active .enter-btn:hover{
-    color: #fff;
-    opacity: .8
-}
-.brand-active-main{
-    color: #333;
-    font-family: "microsoft yahei";
-}
-.brand-active .title{
-    display: inline-block;
-    vertical-align: middle;
-    color: #333;
-    font-weight: 700;
-    font-size: 15px;
-    padding: 0 15px 0 20px;
-}
-.brand-active .descrip{
-    display: inline-block;
-    vertical-align: middle;
-    max-width: 636px;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    font-size: 13px;
-}

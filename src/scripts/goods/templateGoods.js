@@ -6,9 +6,9 @@
 function getTemplate(op){
     return '<div class="item-tab asynPriceBox'+(op == "taogou"?" taoStyle":"")+'">\
         {{if $value.isBigImg}}\
-            <p class="item-pic bigp"><a class="emcodeItem item-link" rel="nofollow" href="{{$value.sUrl}}" target="_blank" data-code="{{modelid}}-{{pageNumber}}_{{$index+1}}_1" title="{{$value.alt}}"><img gome-src="{{$value.sImg}}_220_275.jpg" alt="{{$value.alt}}" src="//img.gomein.net.cn/images/grey.gif"></a></p>\
+            <p class="item-pic bigp"><a class="item-link" rel="nofollow" href="{{$value.sUrl}}" target="_blank" data-code="{{modelid}}-{{pageNumber}}_{{$index+1}}_1" title="{{$value.alt}}"><img gome-src="{{$value.sImg}}_220_275.jpg" alt="{{$value.alt}}" src="//img.gomein.net.cn/images/grey.gif"></a></p>\
         {{else}}\
-            <p class="item-pic"><a class="emcodeItem item-link" rel="nofollow" href="{{$value.sUrl}}" target="_blank" data-code="{{modelid}}-{{pageNumber}}_{{$index+1}}_1" title="{{$value.alt}}"><img gome-src="{{$value.sImg}}_210.jpg" src="//img.gomein.net.cn/images/grey.gif" alt="{{$value.alt}}"></a>{{if $value.energyTag == 1}}<span class="save-energy"></span>{{/if}}</p>\
+            <p class="item-pic"><a class="item-link" rel="nofollow" href="{{$value.sUrl}}" target="_blank" data-code="{{modelid}}-{{pageNumber}}_{{$index+1}}_1" title="{{$value.alt}}"><img gome-src="{{$value.sImg}}_210.jpg" src="//img.gomein.net.cn/images/grey.gif" alt="{{$value.alt}}"></a>{{if $value.energyTag == 1}}<span class="save-energy"></span>{{/if}}</p>\
         {{/if}}\
         {{if $value.isMulti && $value.images.length>0}}\
             <div class="item-pic-small-box" index="{{$value.images.length}}" curIndex="{{$value.images.length}}">\
@@ -50,7 +50,7 @@ function getTemplate(op){
             {{/if}}\
             </p>\
         </div>\
-        <p class="item-name"><a rel="nofollow" class="emcodeItem item-link" data-code="{{modelid}}-{{pageNumber}}_{{$index+1}}_1" href="{{$value.sUrl}}" target="_blank" title="{{$value.alt}}">{{#$value.name}}</a></p>\
+        <p class="item-name"><a rel="nofollow" class="item-link" data-code="{{modelid}}-{{pageNumber}}_{{$index+1}}_1" href="{{$value.sUrl}}" target="_blank" title="{{$value.alt}}">{{#$value.name}}</a></p>\
         {{if $value.promoDesc !=""}}\
         <p class="item-promotional-language">\
             <!--{{if $value.promoTags && $value.promoTags != null && $value.promoTags.promoType && $value.promoTags.promoType == 2}}\
@@ -73,7 +73,7 @@ function getTemplate(op){
             {{else}}\
             <span class="dispatching">{{$value.cityName}}无货</span>\
             {{/if}}\
-            <a href="{{$value.sUrl}}#j-comment-section" target="_blank" class="comment emcodeItem" data-code="{{modelid}}-{{pageNumber}}_{{$index+1}}_2">{{$value.evaluateCount}}</a>\
+            <a href="{{$value.sUrl}}#j-comment-section" target="_blank" class="comment" data-code="{{modelid}}-{{pageNumber}}_{{$index+1}}_2">{{$value.evaluateCount}}</a>\
         </p>\
         <p class="item-option clearfix">\
             <span class="add-contrast" cid="{{$value.pId}}/{{$value.skuId}}"></span>\
@@ -81,7 +81,7 @@ function getTemplate(op){
             {{if $value.stock == 0 || noSkusStock}}\
             <span class="add-cart next-buy" pid="{{$value.pId}}" skuid="{{$value.skuId}}">到货通知</span>\
             {{else if $value.stock == 3 || $value.stock == 4 || $value.stock == 6}}\
-            <a href="{{productSite}}/{{$value.pId}}-{{$value.skuId}}.html" target="_blank" class="add-cart prev-buy emcodeItem" data-code="{{modelid}}-{{pageNumber}}_{{$index+1}}_3">预约购买</a>\
+            <a href="{{productSite}}/{{$value.pId}}-{{$value.skuId}}.html" target="_blank" class="add-cart prev-buy" data-code="{{modelid}}-{{pageNumber}}_{{$index+1}}_3">预约购买</a>\
             {{else}}\
             <a class="add-cart addTo-cart" href="javascript:void(0);" isMCard="{{$value.gomeCardType}}" isHyg="{{$value.marketTag}}" pid="{{$value.pId}}" skuid="{{$value.skuId}}" taoType="{{$value.taoType}}" taoSkuId="{{$value.taoSkuId}}" data-code="{{modelid}}-{{pageNumber}}_{{$index+1}}_3">加入购物车</a>\
             {{/if}}\

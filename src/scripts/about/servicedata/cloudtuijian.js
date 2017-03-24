@@ -59,5 +59,5 @@ function getData(){
 }
 module.exports = {
     getData:getData
-}
+};
 

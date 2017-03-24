@@ -118,7 +118,7 @@
             <dd class="category-box"  id="category-box-third" modelid="9000000103">
                 <#if (pageCategory.sec.childs)?? && (pageCategory.sec.childs?size gt 0)>
                     <#list pageCategory.sec.childs as thirdItem>
-                        <a href="${(thirdItem.url)!}" data-code="9000000103-${(thirdItem_index+1)!}">${(thirdItem.name)!}</a>
+                        <a href="${(thirdItem.url)!}?intcmp=list-9000000103-${(thirdItem_index+1)!}">${(thirdItem.name)!}</a>
                     </#list>
                 </#if>
             </dd>
