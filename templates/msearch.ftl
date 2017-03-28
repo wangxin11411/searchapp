@@ -30,8 +30,7 @@
     <meta name="Keywords" content="${keywords!}">
     <meta property="qc:admins" content="2500556177677556375636"/>
     <link rel="shortcut icon" href="//app.gomein.net.cn/favicon.ico" type="image/x-icon" />
-    <link rel="stylesheet" href='<!--# include virtual="/n/common/b01/css.html"-->,/css/n/detail/gCity.min.css'>
-    <link rel="stylesheet" href="http://localhost:8080/search/search2017/css/style.css">
+    <link rel="stylesheet" href='<!--# include virtual="/n/common/b01/style.html"-->,/css/n/detail/gCity.min.css,/search/search2017/css/style.min.css'>
     <!--# include virtual="/n/common/global/global.html"-->
 </head>
 
@@ -44,7 +43,7 @@
 <#--nginx  -->
 <!--# include virtual="/n/common/b01/head.html"-->
 <script>
-    var keyLabelVal = "${searchKeyWords?replace('\\','')?replace('\"','')}";
+    var keyLabelVal = "${varSearchKeyWords?replace('\\','')?replace('\"','')}";
     keyLabelVal = keyLabelVal.replace(/\"/g,"'");
     document.getElementById("keyLabel").setAttribute("default",keyLabelVal+",1",1);
     document.getElementById("keyLabel").innerHTML = keyLabelVal;
@@ -178,5 +177,40 @@
 </script>
 <#include "module/pagejs.ftl">
 <script src="${(storeConfiguration.stageJsServer)!}/search/search2017/js/msearch.bundle.js"></script>
+<script>
+    window.setTimeout(function(){
+    <#if (searchObj.content.toolBar.sort)??>
+        <#assign toolItem = searchObj.content.toolBar.sort>
+        <#if toolItem.default.isDefault??>
+            <#assign classCur="综合">
+        <#elseif toolItem.sale.isDefault??>
+            <#assign classCur="销量">
+        <#elseif toolItem.price.isDefault??>
+            <#assign classCur="价格">
+        <#elseif toolItem.startDate.isDefault??>
+            <#assign classCur="新品">
+        <#else>
+            <#assign classCur="评价">
+        </#if>
+    </#if>
+        var pageCur = $(".page-nav .num em").html();
+        s.pageName = "站内搜索:海外购搜索结果页:"+pageData.searchkey;
+        s.channel = "站内搜索";
+        s.prop1 = s.pageName;
+        s.prop2 = s.pageName;
+        s.prop3 = s.pageName;s.prop4 = <#if ((searchObj.header.isNotContains)?? && searchObj.header.isNotContains)  &&  (!(searchObj.content.prodInfo.products)?? || (searchObj.content.prodInfo.products)?? && searchObj.content.prodInfo.products?size = 0)>"站内搜索失败页面"<#else>"站内搜索成功页面"</#if>;
+        s.prop23 = "站内搜索:"+pageData.searchkey+":全部";
+        s.prop24 = "${classCur!}:"+pageData.currentPage;
+        s.eVar1 = "一般搜索:"+pageData.searchkey;
+        s.eVar1 = "一般搜索:"+pageData.searchkey;
+        s.eVar7 = pageData.totalPage;
+        s.eVar3 = "站内搜索";
+        s.eVar30 = "站内搜索";
+        s.eVar41 = "站内搜索${searchObj.header.tagWightVersion!}";
+
+        var s_code = s.t();
+        if (s_code)document.write(s_code);
+    },2000);
+</script>
 </body>
 </html>

@@ -62,8 +62,7 @@
     <meta property="qc:admins" content="2500556177677556375636"/>
     <meta http-equiv="mobile-agent" content="format=html5; url= http://m.gome.com.cn/category-${(searchObj.header.searchReq.catId)!}.html">
     <link rel="shortcut icon" href="//app.gomein.net.cn/favicon.ico" type="image/x-icon" />
-    <link rel="stylesheet" href='<!--# include virtual="/n/common/a18/style.html"-->,/css/n/detail/gCity.min.css'>
-    <link rel="stylesheet" href="http://localhost:8080/search/search2017/css/style.css">
+    <link rel="stylesheet" href='<!--# include virtual="/n/common/a18/style.html"-->,/css/n/detail/gCity.min.css,/search/search2017/css/style.min.css'>
     <!--# include virtual="/n/common/global/global.html"-->
     <#if (searchObj.header.serverInfo.refPage)!?index_of("-00-0-48-1-0-0-0-1-0-0-0-0-0-0-0-0-0")!=-1>
         <link rel="canonical" href="${(storeConfiguration.listSite)!}/${(searchObj.content.seoData.catId)!}.html"/>
@@ -225,5 +224,56 @@
 </script>
 <#include "module/pagejs.ftl">
 <script src="${(storeConfiguration.stageJsServer)!}/search/search2017/js/category.bundle.js"></script>
+<script>
+    var  productId_list="";
+    //各种埋码
+    window.setTimeout(function(){
+    <#if searchObj.content??>
+        <#if (searchObj.content.selectData.category.fir)?? >
+            <#assign firMenu=searchObj.content.selectData.category.fir>
+        </#if>
+        <#if (searchObj.content.selectData.category.sec)?exists >
+            <#assign secrMenu=searchObj.content.selectData.category.sec>
+        </#if>
+        <#if (searchObj.content.selectData.category.third)?exists >
+            <#assign thirdMenu=searchObj.content.selectData.category.third>
+        </#if>
+        <#if (searchObj.content.toolBar.sort)??>
+            <#assign toolItem = searchObj.content.toolBar.sort>
+            <#if toolItem.default.isDefault??>
+                <#assign classCur="综合">
+            <#elseif toolItem.sale.isDefault??>
+                <#assign classCur="销量">
+            <#elseif toolItem.price.isDefault??>
+                <#assign classCur="价格">
+            <#elseif toolItem.startDate.isDefault??>
+                <#assign classCur="新品">
+            <#else>
+                <#assign classCur="评价">
+            </#if>
+        </#if>
+    </#if>
+
+        s.pageName="商品列表:${(thirdMenu.name)!}";
+        s.channel="商品列表";
+        s.prop1="商品列表:${(firMenu.name)!}";
+        s.prop2="商品列表:${(firMenu.name)!}:${(secrMenu.name)!}";
+        s.prop3="商品列表:${(firMenu.name)!}:${(secrMenu.name)!}:${(thirdMenu.name)!}";
+        s.prop4="商品列表";
+        s.prop24="${classCur}:"+pageData.currentPage;
+        s.eVar3="分类浏览";
+        s.eVar30="分类浏览";
+        s.events="event50";
+        s.eVar41="商品列表${(searchObj.header.tagWightVersion)!}";
+        var url = window.location.pathname;
+        var arr = url.split("-");
+        if(arr[10]==1){
+            s.eVar35 ="三级列表页:活动筛选";
+        };
+        s.products=";null;;;event50=1;eVar37=${(firMenu.name)!}:${(secrMenu.name)!}:${(thirdMenu.name)!}:${(thirdMenu.id)!}";
+        var s_code=s.t();
+        if(s_code)document.write(s_code);
+    },2000);
+</script>
 </body>
 </html>

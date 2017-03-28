@@ -1,10 +1,10 @@
 <#if varSelectData.isSearch>
-    <#assign cleanURL="/search?question=${varSearchKeyWords!}">
+    <#assign cleanURL="/search?question=${varSearchKeyWords!}&intcmp=search-9000001100-0">
     <#if isGomehigo>
-        <#assign cleanURL="/search?question=${varSearchKeyWords!}&market=11&marketPage=1">
+        <#assign cleanURL="/search?question=${varSearchKeyWords!}&market=11&marketPage=1&intcmp=search-9000001100-0">
     </#if>
 <#else>
-    <#assign cleanURL="${varSelectData.category.third.url!}">
+    <#assign cleanURL="${varSeoData.catId!}.html?intcmp=list-9000001100-0">
 </#if>
 <a id="clearallfacts" class="nSearch-crumb-clearFacets" href="${cleanURL!}">全部清空</a>
 <div class="nSearch-crumb-facetsCurrent-warp" id="nSearch-crumb-facetsCurrent-warp">

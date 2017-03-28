@@ -41,9 +41,7 @@
 </#if>
     <link rel="alternate" media="only screen and(max-width:640px)" href="${href_url!}"/>
     <link rel="shortcut icon" href="//app.gomein.net.cn/favicon.ico" type="image/x-icon" />
-    <link rel="stylesheet" href='<!--# include virtual="/n/common/a18/style.html"-->,/css/n/detail/gCity.min.css'>
-    <link rel="stylesheet" href="http://localhost:8080/search/search2017/css/style.css">
-
+    <link rel="stylesheet" href='<!--# include virtual="/n/common/a18/style.html"-->,/css/n/detail/gCity.min.css,/search/search2017/css/style.min.css'>
 <!--# include virtual="/n/common/global/global.html"-->
 </head>
 <body data-page="brand">
@@ -186,5 +184,25 @@
 
 <#include "module/pagejs.ftl">
 <script src="${(storeConfiguration.stageJsServer)!}/search/search2017/js/brand.bundle.js"></script>
+
+
+<script>
+    window.setTimeout(function(){
+        s.pageName="商品列表:品牌大全:${varSearchKeyWords!}:${brandName!}";
+        s.channel="商品列表";
+        s.prop1="商品列表:品牌大全";
+        s.prop2="商品列表:品牌大全:${varSearchKeyWords!}";
+        s.prop3="商品列表:品牌大全:${brandName!}";
+        s.prop4="品牌列表页";
+        s.eVar3="品牌列表页";
+        var s_code=s.t();
+        if(s_code)document.write(s_code);
+
+        var bp = document.createElement('script');
+        bp.src = '//push.zhanzhang.baidu.com/push.js';
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    },2000);
+</script>
 </body>
 </html>

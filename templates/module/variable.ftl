@@ -1,5 +1,6 @@
 <#assign varSelectData = searchObj.content.selectData>
 <#assign varPageBar = searchObj.content.pageBar>
+<#assign varSeoData = searchObj.content.seoData>
 <#assign varHeader = searchObj.header>
 
 <#if varSelectData.marketPage == "1">

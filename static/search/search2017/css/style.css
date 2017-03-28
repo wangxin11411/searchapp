@@ -2682,7 +2682,8 @@ filter-bottom 閫佽揣鍦板潃锛� 鏈夋棤璐э紝鍥界背閰嶉€侊紝
     border-bottom: 1px solid #ffcccc;
     margin-bottom: 9px;
 }
-.taoStyle{display: none;background: url("../image/36-36-icon.gif") center 50px no-repeat;}
+.taoStyle{display: none;background: url("/search/search2017/image/36-36-icon.gif") center 50px no-repeat;}
+.taoStyle .item-pic-small-box .imgList{display: none}
 /*分享隐藏*/
 #tshare{
     display: none;

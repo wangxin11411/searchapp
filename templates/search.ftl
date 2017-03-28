@@ -30,8 +30,7 @@
     <meta name="Keywords" content="${keywords!}">
     <meta property="qc:admins" content="2500556177677556375636"/>
     <link rel="shortcut icon" href="//app.gomein.net.cn/favicon.ico" type="image/x-icon" />
-    <link rel="stylesheet" href='<!--# include virtual="/n/common/a18/style.html"-->,/css/n/detail/gCity.min.css,/search/search2017/css/style.css'>
-    <link rel="stylesheet" href="http://localhost:8080/search/search2017/css/style.css">
+    <link rel="stylesheet" href='<!--# include virtual="/n/common/a18/style.html"-->,/css/n/detail/gCity.min.css,/search/search2017/css/style.min.css'>
     <!--# include virtual="/n/common/global/global.html"-->
 </head>
 
@@ -251,8 +250,59 @@
 <script type="text/javascript">
     var isHyg = false;//${(storeConfiguration.isHwg)!};
     window.pageName = '搜索结果页';
+
+    if ( 'addEventListener' in document ) {
+        window.addEventListener('message', set_height, false);
+    } else if ( 'attachEvent' in document ) {
+        window.attachEvent('onmessage', set_height);
+    }else{
+        document.getElementById("xnframe").style.height = "450px"
+    }
+
+    //收到实际数据时的具体处理
+    function set_height(msg){
+        //根据计划使用msg.data数据
+        document.getElementById("xnframe").style.height = msg.data+"px"
+    }
 </script>
 <#include "module/pagejs.ftl">
 <script src="${(storeConfiguration.stageJsServer)!}/search/search2017/js/search.bundle.js?${jsCssVersion!}"></script>
+<script>
+    window.setTimeout(function(){
+    <#if (searchObj.content.toolBar.sort)??>
+        <#assign toolItem = searchObj.content.toolBar.sort>
+        <#if toolItem.default.isDefault??>
+            <#assign classCur="综合">
+        <#elseif toolItem.sale.isDefault??>
+            <#assign classCur="销量">
+        <#elseif toolItem.price.isDefault??>
+            <#assign classCur="价格">
+        <#elseif toolItem.startDate.isDefault??>
+            <#assign classCur="新品">
+        <#else>
+            <#assign classCur="评价">
+        </#if>
+    </#if>
+    var pageCur = $(".page-nav .num em").html();
+    s.pageName = "站内搜索:搜索结果页:"+pageData.searchkey;
+    s.channel = "站内搜索";
+    s.prop1 = s.pageName;
+    s.prop2 = s.pageName;
+    s.prop3 = s.pageName;s.prop4 = <#if ((searchObj.header.isNotContains)?? && searchObj.header.isNotContains)  &&  (!(searchObj.content.prodInfo.products)?? || (searchObj.content.prodInfo.products)?? && searchObj.content.prodInfo.products?size = 0)>"站内搜索失败页面"<#else>"站内搜索成功页面"</#if>;
+    s.prop23 = "站内搜索:"+pageData.searchkey+":全部";
+    s.prop24 = "${classCur!}:"+pageData.currentPage;
+    s.eVar1 = "一般搜索:"+pageData.searchkey;
+    s.eVar1 = "一般搜索:"+pageData.searchkey;
+    s.eVar7 = pageData.totalPage;
+    s.eVar3 = "站内搜索";
+    s.eVar30 = "站内搜索";
+    s.eVar41 = "站内搜索${searchObj.header.tagWightVersion!}";
+    if(window.location.search.indexOf("promoFlag=1") != -1){
+        s.eVar35 ="搜索结果页:活动筛选";
+    }
+    var s_code = s.t();
+    if (s_code)document.write(s_code);
+},2000);
+</script>
 </body>
 </html>

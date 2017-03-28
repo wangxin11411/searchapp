@@ -142,7 +142,8 @@
         gc_evt: function() {
             $.cookie('atgregion', this.xid + "|" + this.chtm + "|" + this.cid + "|" + this.sid + "|" + this.zid, {
                 expires: 30,
-                path: '/'
+                path: '/',
+                domain: isHyg?".gomehigo.hk":cookieDomain
             });
 
             pageData.sort = "0";
