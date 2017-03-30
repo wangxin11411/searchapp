@@ -33,7 +33,7 @@ function setAsynPriceBox(data,asynPriceBox){
         case "tuanqiang":
             _url = "//tuan"+cookieDomain+"/deal/"+data.promotionUrl+".html";
             _hash = "#j-comment-section";
-            var addCart = itemBox.find(".addTo-cart"),
+            var addCart = asynPriceBox.find(".addTo-cart"),
                 cartDataCode = addCart.attr("data-code");
             addCart.undelegate().replaceWith('<a class="add-cart" href="'+_url+'" target="_blank" data-code="'+cartDataCode+'">立即购买</a>');
             break;
