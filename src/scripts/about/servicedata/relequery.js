@@ -7,7 +7,7 @@ function getReleQuery(keyword){
     $.ajax({
         type: "get",
         dataType: "jsonp",
-        url: pageData.cloudSite + "/cloud/log",
+        url: pageData.cloudSite + "/cloud/releQuery",
         data: {
             question: keyword
         }
@@ -16,7 +16,7 @@ function getReleQuery(keyword){
         var html = '<li class="related-title">您是不是要找：</li>';
         if (data.releData) {
             var _data = data.releData.rList;
-            for (var i = 0, j = _data.length; i < j; i++) {
+            for (var i = 0, j = _data.length; i < j && i<5; i++) {
                 html += '<li class="related-key"><a href="/search?question=' + _data[i].key + '&from=releQuery&intcmp=search-9000000800"'+i+' target="_blank">' + _data[i].key + '</a></li>';
                 headKeyword += '<a href="/search?question=' + _data[i].key + '&from=releQuery&intcmp=search-9000001000"'+i+'" target="_blank">'+ _data[i].key +'</a>';
             }

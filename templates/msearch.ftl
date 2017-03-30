@@ -155,7 +155,7 @@
     </div>
 </#if>
 
-<div id="lazyajaxloadarea"><div></div></div>
+<div id="lazyajaxloadareaBox"><div id="lazyajaxloadarea"></div></div>
 <div class="nSearchWarp">
     <div id="prdBottom-1"><#--推广商品（有搜索结果） dsp 或者 热销推荐商品（无搜索结果） bigdata--></div>
     <div id="prdBottom-2"><#--猜你喜欢 bigdata--></div>

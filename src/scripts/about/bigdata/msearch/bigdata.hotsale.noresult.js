@@ -8,7 +8,7 @@ var tpl = '{{each lst as value}}\
 
 function getData(domId){
     $.get(
-        window.url.bigdata_url,
+        dspData.url.bigdata_url,
         {
             boxid: "box45",
             area: pageData.regionId,
@@ -42,7 +42,8 @@ function getData(domId){
                     $("#bottomHotSale").find(".item"+_i).addClass("cShow")
                 })
             }
-        }
+        },
+        "jsonp"
     );
 }
 module.exports = {

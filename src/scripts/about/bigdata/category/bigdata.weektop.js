@@ -28,7 +28,8 @@ function getData(domId){
                 var listTpl = templateSimple.compile(tpl)(data);
                 $(domId).append('<div class="prd-right-normal"><h3 class="hd">一周销量排行榜</h3><ul class="sell-product" id="bigD_weekTop">'+listTpl+'</ul></div>');
             }
-        }
+        },
+        "jsonp"
     );
 }
 module.exports = {

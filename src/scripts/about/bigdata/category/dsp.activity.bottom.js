@@ -1,3 +1,4 @@
+function getData(domId){
 $.ajax({
     type:"get",
     dataType:"jsonp",
@@ -15,7 +16,11 @@ $.ajax({
             listTpl += '<a href="'+data[i].ldp+'" target="_blank" title="'+data[i].org+'"><img src="'+data[i].src+'" /></a>';
             new Image().src= data[i].pm;
         }
-        $("#prdBottom-4").append('<div class="nSearch-bottomTuiGuangAD" id="dsp_bottomAD">'+listTpl+'</div>');
+        $(domId).append('<div class="nSearch-bottomTuiGuangAD" id="dsp_bottomAD">'+listTpl+'</div>');
     }
 });
+}
+module.exports = {
+    getData:getData
+};
 

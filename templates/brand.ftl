@@ -160,7 +160,7 @@
         <div id="personrecommend-warp" style="display:none"><div id="personrecommend" class="personrecommend prd-right-normal"></div></div>
     </div>
 </#if>
-<div id="lazyajaxloadarea"><div></div></div>
+<div id="lazyajaxloadareaBox"><div id="lazyajaxloadarea"></div></div>
 <div class="nSearchWarp">
     <#--猜你喜欢的商品-->
     <div id="prdBottom-1"><#--猜你喜欢 bigdata--></div>

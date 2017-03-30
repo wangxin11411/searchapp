@@ -18,7 +18,7 @@ var tpl_item = '\
 '
 function getData(domId){
     $.get(
-        window.url.bigdata_url,
+        dspData.url.bigdata_url,
         {
             boxid: "box55",
             area: pageData.regionId,
@@ -35,7 +35,8 @@ function getData(domId){
                 var listTpl = templateSimple.compile(tpl_item)(data);
                 $(domId).append(listTpl);
             }
-        }
+        },
+        "jsonp"
     );
 }
 module.exports = {

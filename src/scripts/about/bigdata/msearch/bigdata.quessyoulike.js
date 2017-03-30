@@ -8,7 +8,7 @@ var tpl = '{{each lst as value}}\
 
 function getData(domId){
     $.get(
-        window.url.bigdata_url,
+        dspData.url.bigdata_url,
         {
             boxid: "box92",
             area: pageData.regionId,
@@ -29,21 +29,22 @@ function getData(domId){
                 if(_length<=6){$("#quessYouLike-refresh").hide()}
                 var totlnum = (_length %6 ==0)?(parseInt(_length /6,10)-1):parseInt(_length /6,10);
                 var _i = 0;
-                $("#bigD_quessLike").find(".item").each(function(){
+                $("#bigD_quessLike").find(".buy-items").each(function(){
                     if($(this).index()<6){
                         $(this).addClass("cShow");
                     }
                     $(this).addClass("item"+parseInt($(this).index()/6,10))
                 })
                 $("#quessYouLike-refresh").bind("click",function(){
-                    $("#bigD_quessLike").find(".item").removeClass("cShow");
+                    $("#bigD_quessLike").find(".buy-items").removeClass("cShow");
                     if(_i++ == totlnum || _i==3){
                         _i=0;
                     }
                     $("#bigD_quessLike").find(".item"+_i).addClass("cShow")
                 })
             }
-        }
+        },
+        "jsonp"
     )
 }
 module.exports = {

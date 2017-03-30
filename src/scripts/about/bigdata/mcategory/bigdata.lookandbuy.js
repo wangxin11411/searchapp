@@ -1,7 +1,7 @@
 var tpl_normal = require("../template.bigdata.normal").tpl;
 function getData(domId){
     $.get(
-        window.url.bigdata_url,
+        dspData.url.bigdata_url,
         {
             boxid: "box56",
             area: pageData.regionId,
@@ -17,9 +17,10 @@ function getData(domId){
             if (data.lst && data.lst.length > 0) {
                 data.lst.splice(6,data.lst.length)
                 var listTpl = templateSimple.compile(tpl_normal)(data);
-                $(domId).append('<div class="prd-right-normal"><h3 class="hd">搜了此类商品的用户还买了</h3><ul class="bd" id="bigD_liulan">'+listTpl+'</ul></div>');
+                $(domId).append('<div class="prd-right-normal"><h3 class="hd">浏览此类商品的用户最终买了</h3><ul class="bd" id="bigD_liulan">'+listTpl+'</ul></div>');
             }
-        }
+        },
+        "jsonp"
     );
 }
 module.exports = {
