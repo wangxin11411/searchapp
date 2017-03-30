@@ -83,7 +83,7 @@ function getTemplate(op){
             {{else if $value.stock == 3 || $value.stock == 4 || $value.stock == 6}}\
             <a href="{{productSite}}/{{$value.pId}}-{{$value.skuId}}.html" target="_blank" class="add-cart prev-buy" data-code="{{modelid}}-{{pageNumber}}_{{$index+1}}_3">预约购买</a>\
             {{else}}\
-            <a class="add-cart addTo-cart" href="javascript:void(0);" isMCard="{{$value.gomeCardType}}" isHyg="{{$value.marketTag}}" pid="{{$value.pId}}" skuid="{{$value.skuId}}" taoType="{{$value.taoType}}" taoSkuId="{{$value.taoSkuId}}" data-code="{{modelid}}-{{pageNumber}}_{{$index+1}}_3">加入购物车</a>\
+            <a class="add-cart addTo-cart" href="javascript:void(0);" isMCard="{{$value.gomeCardType}}" shopFlag="{{$value.shopFlag}}" isHyg="{{$value.marketTag}}" pid="{{$value.pId}}" skuid="{{$value.skuId}}" taoType="{{$value.taoType}}" taoSkuId="{{$value.taoSkuId}}" data-code="{{modelid}}-{{pageNumber}}_{{$index+1}}_3">加入购物车</a>\
             {{/if}}\
         </p>\
     </div>\

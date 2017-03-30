@@ -4,9 +4,10 @@ $("#product-box").delegate(".addTo-cart", "click", function() {
         _type = 0,
         _pid = $this.attr("pid"),
         _sid = $this.attr("skuid"),
-        _taogType = $this.attr("taoType");
+        _taogType = $this.attr("taoType"),
+        _shopFlag = $this.attr("shopFlag");
 
-    if($this.attr("isHyg") == "1"){_type = 16};
+    if($this.attr("isHyg") == "1" && _shopFlag != 4 && _shopFlag != 5){_type = 16};
 
     if(_taogType == 2){_type = 24};
     if(_taogType == 3){
