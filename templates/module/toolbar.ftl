@@ -43,9 +43,7 @@
             <li class="${saleClassName!}" data-sort="10"><a href="${(sort.sale.url)!}">销量</a></li>
             <li class="${startDateClassName!}" data-sort="30"><a href="${(sort.startDate.url)!}">新品</a></li>
             <li class="${evaluateCountClassName!}" data-sort="50"><a href="${(sort.evaluateCount.url)!}">评价</a></li>
-            <li id="sort-price" class="${priceClassName!}" data-sort="${priceSort!}" prdUrl1="${(sort.price.url1)!}" prdUrl2="${(sort.price.url2)!}"><a href ="${(sort.price.url1)!}">价格</a>
-                <i class="icon-up-down"></i>
-            </li>
+            <li id="sort-price" class="${priceClassName!}" data-sort="${priceSort!}" prdUrl1="${(sort.price.url1)!}" prdUrl2="${(sort.price.url2)!}"><a href ="${(sort.price.url1)!}">价格</a><i class="icon-up-down"></i></li>
         </ul>
         <#--价格区间-->
         <#if searchObj.content.selectData.price??>
