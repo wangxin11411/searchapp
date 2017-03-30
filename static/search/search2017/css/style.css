@@ -812,7 +812,7 @@ filter-bottom 閫佽揣鍦板潃锛� 鏈夋棤璐э紝鍥界背閰嶉€侊紝
     font: 400 15px/31px "microsoft yahei";
 }
 .recentVisit-lists{
-    height: 106px;
+    height: 142px;
     margin: 0 28px 20px;
     overflow: hidden;
 }
@@ -828,6 +828,13 @@ filter-bottom 閫佽揣鍦板潃锛� 鏈夋棤璐э紝鍥界背閰嶉€侊紝
     overflow: hidden;
     margin-bottom: 5px;
     text-align: center;
+}
+.recentVisit-lists .name{
+    height: 36px;
+    line-height: 18px;
+    overflow: hidden;
+    word-break: break-all;
+    word-wrap: break-word;
 }
 .recentVisit-lists .price{
     color: #e3101e;
