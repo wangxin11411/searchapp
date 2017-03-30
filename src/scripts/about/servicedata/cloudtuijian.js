@@ -34,7 +34,7 @@ function getData(){
     $.ajax({
         type:"get",
         dataType:"jsonp",
-        url:"//api.search"+window.cookieDomain+"/p/asynSearch",
+        url:"//apis"+window.cookieDomain+"/p/asynSearch",
         jsonpName:"recentViewed",
         data:{module:"recommendActivity",from:"recommend",catId:dspData.dsp_gome_c3id}
     }).done(function(data){
