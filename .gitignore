@@ -1,4 +1,6 @@
 .git
 .gitignore
 /node_modules
-/static/search/search2017/js
+/src
+webpack.config.js
+webpack.config.webpackdevserverjs.js
