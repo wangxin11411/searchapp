@@ -60,16 +60,16 @@
     <meta name="description" content="${description!}">
     <meta name="Keywords" content="${keywords!}">
     <meta property="qc:admins" content="2500556177677556375636"/>
-    <meta http-equiv="mobile-agent" content="format=html5; url= http://m.gome.com.cn/category-${(searchObj.header.searchReq.catId)!}.html">
+    <meta http-equiv="mobile-agent" content="format=html5; url= http://m.gome.com.cn/category-${(searchObj.header.catId)!}.html">
     <link rel="shortcut icon" href="//app.gomein.net.cn/favicon.ico" type="image/x-icon" />
     <link rel="stylesheet" href='<!--# include virtual="/n/common/a18/style.html"-->,/css/n/detail/gCity.min.css,/search/search2017/css/style.min.css'>
     <!--# include virtual="/n/common/global/global.html"-->
-    <#if (searchObj.header.serverInfo.refPage)!?index_of("-00-0-48-1-0-0-0-1-0-0-0-0-0-0-0-0-0")!=-1>
+    <#if (searchObj.header.refPage)!?index_of("-00-0-48-1-0-0-0-1-0-0-0-0-0-0-0-0-0")!=-1>
         <link rel="canonical" href="${(storeConfiguration.listSite)!}/${(searchObj.content.seoData.catId)!}.html"/>
     <#else>
-        <link rel="canonical" href="${(searchObj.header.serverInfo.refPage)!?replace("/category/","/")}"/>
+        <link rel="canonical" href="${(searchObj.header.refPage)!?replace("/category/","/")}"/>
     </#if>
-    <link rel="alternate" media="only screen and(max-width:640px)" href="http://m.gome.com.cn/category-${(searchObj.header.searchReq.catId)!}.html">
+    <link rel="alternate" media="only screen and(max-width:640px)" href="http://m.gome.com.cn${(searchObj.header.url)?replace("-48-","-20-")}">
 </head>
 <body data-page="list">
 <div id="delscript">
@@ -78,11 +78,11 @@
     </script>
 </div>
 <div style="display:none" id="severInfolist">
-    server:${(searchObj.header.serverInfo.serverIp)!}<br/>
-    from:${(searchObj.header.serverInfo.from)!}<br/>
-    thread:${(searchObj.header.serverInfo.thread)!}<br/>
-    job:${(searchObj.header.serverInfo.job)!}<br/>
-    time:${(searchObj.header.serverInfo.time)!}<br/>
+    server:${(searchObj.header.serverIp)!}<br/>
+    from:${(searchObj.header.from)!}<br/>
+    thread:${(searchObj.header.thread)!}<br/>
+    job:${(searchObj.header.job)!}<br/>
+    time:${(searchObj.header.time)!}<br/>
 </div>
 <#--nginx -->
 <!--# include virtual="/n/common/a18/head.html"-->
