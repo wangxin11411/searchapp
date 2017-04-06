@@ -134,6 +134,10 @@ define(function(require,exports,module){
                 $('#product-box').empty().html(itemHTML);
             }
         }).done(function(data){
+            if(callback && typeof callback == "function"){
+                callback();
+            }
+            window.compare_asyn();
             if(data.content.pageBar.totalPage == 1) {return false};
             require("../plugin/pager");
             $("#j-page").ucPager({
@@ -157,10 +161,6 @@ define(function(require,exports,module){
                 }else{
                     $('#mp-next').addClass('mp-disable');
                 }
-            }
-            window.compare_asyn()
-            if(callback && typeof callback == "function"){
-                callback();
             }
         }).fail(function () {
             console.log("请求错误")

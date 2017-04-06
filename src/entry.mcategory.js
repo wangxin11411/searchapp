@@ -24,5 +24,5 @@ require("./scripts/about/bigdata/category/dsp.activity").getData("#prdRight-5");
 document.getElementById("lazyajaxloadarea").onmouseenter = function (event) {
     require("./scripts/about/bigdata/category/bigdata.quessyoulike").getData("#prdBottom-2");//猜你喜欢
     require("./scripts/about/servicedata/recentview").getData("list","#prdBottom-recent");//最近浏览
-    this.remove()
+    this.style.display = "none"
 };

@@ -27,6 +27,6 @@ if(pageData.isResult){
 document.getElementById("lazyajaxloadarea").onmouseenter = function (event) {
     require("./scripts/about/bigdata/msearch/bigdata.quessyoulike").getData("#prdBottom-2");//猜你喜欢
     require("./scripts/about/servicedata/recentview").getData("search","#prdBottom-recent");//最近浏览
-    this.remove()
+    this.style.display = "none"
 };
 

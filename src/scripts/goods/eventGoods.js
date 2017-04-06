@@ -56,6 +56,7 @@ $("#product-box").delegate(".arbitrage-num","mouseenter",function(){
         var tpl_taogou = '{{each products}}'+tpl_detail+'{{/each}}';
         var data = _this.attr("id").split("-");
         $.ajax({
+            type:"get",
             url:"//apis"+cookieDomain+"/p/taoGou/"+data[1]+"/"+data[2],
             dataType:"jsonp",
             data:{from:"search"},
